@@ -1,0 +1,64 @@
+{
+  "id": "cliniko-appointment-volume",
+  "title": "Cliniko — Appointment volume",
+  "description": "Total number of individual appointments in the practice.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "scheduling",
+    "kpi",
+    "appointments"
+  ],
+  "keywords": [
+    "appointment count",
+    "volume",
+    "total appointments"
+  ],
+  "connectorsUsed": [
+    "cliniko-scheduling"
+  ],
+  "popularity": 60,
+  "sizing": {
+    "preferred": {
+      "colSpan": 4,
+      "rowSpan": 2
+    },
+    "min": {
+      "colSpan": 3,
+      "rowSpan": 2
+    },
+    "max": {
+      "colSpan": 6,
+      "rowSpan": 3
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-scheduling",
+    "tool": "list_individual_appointments",
+    "params": {
+      "per_page": 1
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "stat"
+        ]
+      },
+      "stat": {
+        "type": "Stat",
+        "props": {
+          "label": "Appointments",
+          "value": {
+            "$state": "/cliniko-scheduling/list_individual_appointments/total_entries"
+          }
+        }
+      }
+    }
+  },
+  "status": "published"
+}

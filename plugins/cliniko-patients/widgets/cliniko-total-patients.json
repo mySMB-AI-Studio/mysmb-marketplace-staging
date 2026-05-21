@@ -1,0 +1,63 @@
+{
+  "id": "cliniko-total-patients",
+  "title": "Cliniko — Total patients",
+  "description": "Total number of patients on file.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "patients",
+    "kpi"
+  ],
+  "keywords": [
+    "patient count",
+    "total patients",
+    "clients"
+  ],
+  "connectorsUsed": [
+    "cliniko-patients"
+  ],
+  "popularity": 60,
+  "sizing": {
+    "preferred": {
+      "colSpan": 4,
+      "rowSpan": 2
+    },
+    "min": {
+      "colSpan": 3,
+      "rowSpan": 2
+    },
+    "max": {
+      "colSpan": 6,
+      "rowSpan": 3
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-patients",
+    "tool": "list_patients",
+    "params": {
+      "per_page": 1
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "stat"
+        ]
+      },
+      "stat": {
+        "type": "Stat",
+        "props": {
+          "label": "Patients",
+          "value": {
+            "$state": "/cliniko-patients/list_patients/total_entries"
+          }
+        }
+      }
+    }
+  },
+  "status": "published"
+}

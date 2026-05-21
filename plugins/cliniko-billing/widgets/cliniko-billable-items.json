@@ -1,0 +1,118 @@
+{
+  "id": "cliniko-billable-items",
+  "title": "Cliniko — Billable items",
+  "description": "Billable items (services/fees) and their amounts.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "billing",
+    "services",
+    "fees"
+  ],
+  "keywords": [
+    "billable",
+    "service",
+    "fee",
+    "charge",
+    "price"
+  ],
+  "connectorsUsed": [
+    "cliniko-billing"
+  ],
+  "popularity": 70,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-billing",
+    "tool": "list_billable_items",
+    "params": {
+      "per_page": 50,
+      "sort": "name:asc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Billable items",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-billing/list_billable_items/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-billing.list_billable_items"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-billing/list_billable_items/billable_items"
+          },
+          "columns": [
+            {
+              "id": "name",
+              "header": "Item",
+              "field": "name",
+              "priority": 1,
+              "width": 240
+            },
+            {
+              "id": "amount",
+              "header": "Amount",
+              "field": "amount",
+              "priority": 1,
+              "format": "currency",
+              "width": 110,
+              "align": "right"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

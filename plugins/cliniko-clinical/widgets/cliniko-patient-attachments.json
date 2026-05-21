@@ -1,0 +1,124 @@
+{
+  "id": "cliniko-patient-attachments",
+  "title": "Cliniko — Recent attachments",
+  "description": "Most recently uploaded patient files.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "clinical",
+    "files",
+    "attachments"
+  ],
+  "keywords": [
+    "attachment",
+    "file",
+    "document",
+    "upload",
+    "scan"
+  ],
+  "connectorsUsed": [
+    "cliniko-clinical"
+  ],
+  "popularity": 70,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-clinical",
+    "tool": "list_patient_attachments",
+    "params": {
+      "per_page": 25,
+      "sort": "created_at:desc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Patient attachments",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-clinical/list_patient_attachments/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-clinical.list_patient_attachments"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-clinical/list_patient_attachments/patient_attachments"
+          },
+          "columns": [
+            {
+              "id": "desc",
+              "header": "Description",
+              "field": "description",
+              "priority": 1,
+              "width": 240
+            },
+            {
+              "id": "type",
+              "header": "Type",
+              "field": "content_type",
+              "priority": 3,
+              "width": 140
+            },
+            {
+              "id": "created",
+              "header": "Uploaded",
+              "field": "created_at",
+              "priority": 2,
+              "format": "relative",
+              "width": 130
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

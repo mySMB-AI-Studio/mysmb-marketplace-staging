@@ -1,0 +1,125 @@
+{
+  "id": "cliniko-product-catalogue",
+  "title": "Cliniko — Product catalogue",
+  "description": "Sellable products and their prices.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "billing",
+    "products",
+    "inventory"
+  ],
+  "keywords": [
+    "product",
+    "inventory",
+    "price",
+    "catalogue",
+    "stock"
+  ],
+  "connectorsUsed": [
+    "cliniko-billing"
+  ],
+  "popularity": 70,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-billing",
+    "tool": "list_products",
+    "params": {
+      "per_page": 50,
+      "sort": "name:asc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Products",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-billing/list_products/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-billing.list_products"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-billing/list_products/products"
+          },
+          "columns": [
+            {
+              "id": "name",
+              "header": "Product",
+              "field": "name",
+              "priority": 1,
+              "width": 220
+            },
+            {
+              "id": "code",
+              "header": "Code",
+              "field": "item_code",
+              "priority": 3,
+              "width": 120
+            },
+            {
+              "id": "price",
+              "header": "Price",
+              "field": "price",
+              "priority": 1,
+              "format": "currency",
+              "width": 110,
+              "align": "right"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

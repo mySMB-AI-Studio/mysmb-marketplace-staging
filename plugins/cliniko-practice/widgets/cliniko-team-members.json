@@ -1,0 +1,123 @@
+{
+  "id": "cliniko-team-members",
+  "title": "Cliniko — Team members",
+  "description": "User accounts (staff) in the Cliniko account.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "practice",
+    "staff",
+    "users"
+  ],
+  "keywords": [
+    "user",
+    "team",
+    "staff",
+    "member",
+    "account"
+  ],
+  "connectorsUsed": [
+    "cliniko-practice"
+  ],
+  "popularity": 70,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-practice",
+    "tool": "list_users",
+    "params": {
+      "per_page": 50,
+      "sort": "last_name:asc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Team",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-practice/list_users/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-practice.list_users"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-practice/list_users/users"
+          },
+          "columns": [
+            {
+              "id": "first",
+              "header": "First name",
+              "field": "first_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "last",
+              "header": "Last name",
+              "field": "last_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "email",
+              "header": "Email",
+              "field": "email",
+              "priority": 2,
+              "width": 240
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

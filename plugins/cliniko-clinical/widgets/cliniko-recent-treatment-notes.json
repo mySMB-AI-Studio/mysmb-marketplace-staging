@@ -1,0 +1,124 @@
+{
+  "id": "cliniko-recent-treatment-notes",
+  "title": "Cliniko — Recent treatment notes",
+  "description": "Most recently created treatment notes (timestamps only — no clinical content).",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "clinical",
+    "treatment notes",
+    "records"
+  ],
+  "keywords": [
+    "treatment note",
+    "clinical note",
+    "records",
+    "documentation"
+  ],
+  "connectorsUsed": [
+    "cliniko-clinical"
+  ],
+  "popularity": 75,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-clinical",
+    "tool": "list_treatment_notes",
+    "params": {
+      "per_page": 25,
+      "sort": "created_at:desc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Treatment notes",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-clinical/list_treatment_notes/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-clinical.list_treatment_notes"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-clinical/list_treatment_notes/treatment_notes"
+          },
+          "columns": [
+            {
+              "id": "created",
+              "header": "Created",
+              "field": "created_at",
+              "priority": 1,
+              "format": "relative",
+              "width": 150
+            },
+            {
+              "id": "updated",
+              "header": "Updated",
+              "field": "updated_at",
+              "priority": 2,
+              "format": "relative",
+              "width": 150
+            },
+            {
+              "id": "draft",
+              "header": "Draft",
+              "field": "draft",
+              "priority": 3,
+              "width": 90
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

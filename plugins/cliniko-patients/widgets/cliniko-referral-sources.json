@@ -1,0 +1,123 @@
+{
+  "id": "cliniko-referral-sources",
+  "title": "Cliniko — Referral sources",
+  "description": "Where patients are coming from.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "patients",
+    "marketing",
+    "referrals"
+  ],
+  "keywords": [
+    "referral",
+    "referral source",
+    "marketing",
+    "acquisition"
+  ],
+  "connectorsUsed": [
+    "cliniko-patients"
+  ],
+  "popularity": 70,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-patients",
+    "tool": "list_referral_sources",
+    "params": {
+      "per_page": 50,
+      "sort": "name:asc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Referral sources",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-patients/list_referral_sources/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-patients.list_referral_sources"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-patients/list_referral_sources/referral_sources"
+          },
+          "columns": [
+            {
+              "id": "name",
+              "header": "Source",
+              "field": "name",
+              "priority": 1,
+              "width": 220
+            },
+            {
+              "id": "type",
+              "header": "Type",
+              "field": "referral_type",
+              "priority": 2,
+              "width": 160
+            },
+            {
+              "id": "created",
+              "header": "Added",
+              "field": "created_at",
+              "priority": 3,
+              "format": "relative",
+              "width": 130
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

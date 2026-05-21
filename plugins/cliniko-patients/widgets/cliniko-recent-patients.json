@@ -1,0 +1,129 @@
+{
+  "id": "cliniko-recent-patients",
+  "title": "Cliniko — Recently added patients",
+  "description": "Patients added most recently, newest first.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "patients",
+    "onboarding"
+  ],
+  "keywords": [
+    "new patient",
+    "recent patients",
+    "clients",
+    "sign ups"
+  ],
+  "connectorsUsed": [
+    "cliniko-patients"
+  ],
+  "popularity": 80,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-patients",
+    "tool": "list_patients",
+    "params": {
+      "per_page": 25,
+      "sort": "created_at:desc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "New patients",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-patients/list_patients/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-patients.list_patients"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-patients/list_patients/patients"
+          },
+          "columns": [
+            {
+              "id": "first",
+              "header": "First name",
+              "field": "first_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "last",
+              "header": "Last name",
+              "field": "last_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "email",
+              "header": "Email",
+              "field": "email",
+              "priority": 2,
+              "width": 220
+            },
+            {
+              "id": "created",
+              "header": "Added",
+              "field": "created_at",
+              "priority": 3,
+              "format": "relative",
+              "width": 130
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}

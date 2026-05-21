@@ -1,0 +1,123 @@
+{
+  "id": "cliniko-practitioners",
+  "title": "Cliniko — Practitioners",
+  "description": "Practitioners in the practice.",
+  "category": "health",
+  "tags": [
+    "cliniko",
+    "practice",
+    "staff",
+    "practitioners"
+  ],
+  "keywords": [
+    "practitioner",
+    "clinician",
+    "provider",
+    "staff",
+    "therapist"
+  ],
+  "connectorsUsed": [
+    "cliniko-practice"
+  ],
+  "popularity": 75,
+  "sizing": {
+    "preferred": {
+      "colSpan": 8,
+      "rowSpan": 5
+    },
+    "min": {
+      "colSpan": 6,
+      "rowSpan": 4
+    },
+    "max": {
+      "colSpan": 12,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "cliniko-practice",
+    "tool": "list_practitioners",
+    "params": {
+      "per_page": 50,
+      "sort": "last_name:asc"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "table"
+        ]
+      },
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "title",
+          "count"
+        ]
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Practitioners",
+          "level": "h2"
+        }
+      },
+      "count": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} total",
+              "n": {
+                "$state": "/cliniko-practice/list_practitioners/total_entries"
+              }
+            }
+          }
+        }
+      },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": {
+            "$state": "/_loading/cliniko-practice.list_practitioners"
+          },
+          "skeletonRows": 6,
+          "rows": {
+            "$state": "/cliniko-practice/list_practitioners/practitioners"
+          },
+          "columns": [
+            {
+              "id": "first",
+              "header": "First name",
+              "field": "first_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "last",
+              "header": "Last name",
+              "field": "last_name",
+              "priority": 1,
+              "width": 130
+            },
+            {
+              "id": "desig",
+              "header": "Designation",
+              "field": "designation",
+              "priority": 2,
+              "width": 180
+            }
+          ]
+        }
+      }
+    }
+  },
+  "status": "published"
+}
