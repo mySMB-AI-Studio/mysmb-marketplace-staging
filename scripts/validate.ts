@@ -209,6 +209,73 @@ function validateWidgetElements(
   }
 }
 
+function validateConnection(
+  pluginDirName,
+  connection,
+  allPlaceholders,
+  documentedVars,
+) {
+  if (connection === undefined || connection === null) return;
+  if (typeof connection !== "object") {
+    fail(`plugins/${pluginDirName}: plugin.json "connection" must be an object`);
+    return;
+  }
+  const c = connection;
+  const VALID = new Set(["oauth", "api_key", "none"]);
+  if (!c.authType || !VALID.has(c.authType)) {
+    fail(
+      `plugins/${pluginDirName}: connection.authType "${c.authType}" must be one of ${[...VALID].join(", ")}`,
+    );
+  }
+  if (c.docUrl !== undefined && typeof c.docUrl !== "string") {
+    fail(`plugins/${pluginDirName}: connection.docUrl must be a string`);
+  }
+  if (c.instructions !== undefined && typeof c.instructions !== "string") {
+    fail(`plugins/${pluginDirName}: connection.instructions must be a string`);
+  }
+  if (c.authType === "api_key") {
+    if (!Array.isArray(c.fields) || c.fields.length === 0) {
+      fail(
+        `plugins/${pluginDirName}: connection.authType "api_key" requires a non-empty "fields" array`,
+      );
+      return;
+    }
+    for (const field of c.fields) {
+      if (!field || typeof field !== "object") {
+        fail(`plugins/${pluginDirName}: each connection field must be an object`);
+        continue;
+      }
+      if (typeof field.name !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field name "${field.name}" must be UPPER_SNAKE_CASE`,
+        );
+        continue;
+      }
+      if (typeof field.label !== "string" || field.label.trim() === "") {
+        fail(`plugins/${pluginDirName}: connection field "${field.name}" needs a non-empty label`);
+      }
+      if (field.type !== undefined && field.type !== "password" && field.type !== "text") {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" type must be "password" or "text"`,
+        );
+      }
+      // The field must actually be wired: its name has to appear as a
+      // ${VAR} placeholder in some MCP server env/headers, else the
+      // value the user types never reaches the server.
+      if (!allPlaceholders.has(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" has no matching \${${field.name}} placeholder in .mcp.json env/headers`,
+        );
+      }
+      if (!documentedVars.has(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" is not documented under a "Configuration" heading in README.md`,
+        );
+      }
+    }
+  }
+}
+
 function validatePlugin(pluginDirName: string, expectedName: string) {
   const pluginDir = join(repoRoot, "plugins", pluginDirName);
   if (!existsSync(pluginDir) || !statSync(pluginDir).isDirectory()) {
@@ -233,6 +300,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
     name?: string;
     widgetElements?: string;
     widgets?: string;
+    connection?: unknown;
   }>(manifestPath);
   if (manifest && manifest.name && manifest.name !== expectedName) {
     fail(
@@ -258,6 +326,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
   const documentedVars = extractConfigVars(readme);
 
   const ALLOWED_TRANSPORTS = new Set(["stdio", "sse", "http"]);
+  const allPlaceholders = new Set<string>();
 
   for (const [serverName, server] of Object.entries(mcp.mcpServers)) {
     if (!server.type || !ALLOWED_TRANSPORTS.has(server.type)) {
@@ -275,6 +344,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
       if (typeof raw !== "string") continue;
       for (const placeholder of extractPlaceholders(raw)) {
         if (RESERVED_VARS.has(placeholder)) continue;
+        allPlaceholders.add(placeholder);
         if (!documentedVars.has(placeholder)) {
           fail(
             `plugins/${pluginDirName}: ${key} uses \${${placeholder}} but it is not documented under a "Configuration" heading in README.md`,

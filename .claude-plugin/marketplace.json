@@ -154,6 +154,56 @@
       "author": { "name": "mySMB AI Studio" },
       "tags": ["zoho", "sign", "esignature", "signature", "documents", "templates", "oauth"],
       "source": "./plugins/zoho-sign"
+    },
+    {
+      "name": "cliniko-scheduling",
+      "displayName": "Cliniko Scheduling",
+      "description": "Manage Cliniko appointments, availability, and bookings via the myHub-hosted Cliniko MCP gateway. Individual and group appointments, appointment types, availability, online bookings, cancellations and DNAs.",
+      "category": "health-wellness",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["cliniko", "healthcare", "practice-management", "appointments", "scheduling", "bookings"],
+      "source": "./plugins/cliniko-scheduling"
+    },
+    {
+      "name": "cliniko-patients",
+      "displayName": "Cliniko Patients",
+      "description": "Manage Cliniko patients, contacts, and referral sources via the myHub-hosted Cliniko MCP gateway. Patient records, patient cases, non-patient contacts, and referral attribution.",
+      "category": "health-wellness",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["cliniko", "healthcare", "practice-management", "patients", "contacts", "referrals"],
+      "source": "./plugins/cliniko-patients"
+    },
+    {
+      "name": "cliniko-clinical",
+      "displayName": "Cliniko Clinical",
+      "description": "Access Cliniko clinical records via the myHub-hosted Cliniko MCP gateway. Treatment notes, medical alerts, and patient attachments — gated by your own Cliniko permissions.",
+      "category": "health-wellness",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["cliniko", "healthcare", "practice-management", "clinical", "treatment-notes", "medical-alerts"],
+      "source": "./plugins/cliniko-clinical"
+    },
+    {
+      "name": "cliniko-billing",
+      "displayName": "Cliniko Billing",
+      "description": "Manage Cliniko invoices, payments, and products via the myHub-hosted Cliniko MCP gateway. Invoicing, payment recording and allocation, products, and billable items.",
+      "category": "health-wellness",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["cliniko", "healthcare", "practice-management", "invoices", "payments", "billing"],
+      "source": "./plugins/cliniko-billing"
+    },
+    {
+      "name": "cliniko-practice",
+      "displayName": "Cliniko Practice",
+      "description": "Manage Cliniko practitioners, businesses, users, and account settings via the myHub-hosted Cliniko MCP gateway. The structural practice-administration data behind the rest of Cliniko.",
+      "category": "health-wellness",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["cliniko", "healthcare", "practice-management", "practitioners", "businesses", "settings"],
+      "source": "./plugins/cliniko-practice"
     }
   ]
 }
