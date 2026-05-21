@@ -102,8 +102,8 @@
             },
             {
               "id": "amount",
-              "header": "Amount",
-              "field": "amount",
+              "header": "Price",
+              "field": "price",
               "priority": 1,
               "format": "currency",
               "width": 110,
