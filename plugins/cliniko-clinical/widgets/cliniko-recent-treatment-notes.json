@@ -53,7 +53,9 @@
         "props": {},
         "children": [
           "header",
+          "statsLoading",
           "stats",
+          "statsDivider",
           "filters",
           "body",
           "overlay"
@@ -81,11 +83,11 @@
         "type": "Row",
         "props": {
           "gap": "sm",
-          "align": "start"
+          "align": "center"
         },
         "children": [
           "titleIcon",
-          "titleStack"
+          "title"
         ]
       },
       "titleIcon": {
@@ -96,35 +98,11 @@
           "size": "sm"
         }
       },
-      "titleStack": {
-        "type": "Stack",
-        "props": {
-          "gap": "none"
-        },
-        "children": [
-          "title",
-          "count"
-        ]
-      },
       "title": {
         "type": "Heading",
         "props": {
           "text": "Treatment notes",
           "level": "h2"
-        }
-      },
-      "count": {
-        "type": "Eyebrow",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "{n} total",
-              "n": {
-                "$state": "/cliniko-clinical/list_treatment_notes/total_entries"
-              }
-            }
-          }
         }
       },
       "refreshBtn": {
@@ -144,21 +122,97 @@
           }
         }
       },
-      "stats": {
-        "type": "Row",
+      "statsLoading": {
+        "type": "Grid",
         "props": {
+          "cols": 3,
           "gap": "md"
         },
         "children": [
-          "stTotal",
-          "stDrafts",
-          "stFinal"
+          "skKpiA",
+          "skKpiB",
+          "skKpiC"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_treatment_notes"
+        }
+      },
+      "skKpiA": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "skKpiB": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "skKpiC": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "stats": {
+        "type": "Grid",
+        "props": {
+          "cols": 3,
+          "gap": "md"
+        },
+        "children": [
+          "kpiTotal",
+          "kpiDrafts",
+          "kpiFinal"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_treatment_notes",
+          "not": true
+        }
+      },
+      "kpiTotal": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "kpiTotalLabel",
+          "kpiTotalValue"
         ]
       },
-      "stTotal": {
+      "kpiTotalLabel": {
+        "type": "Row",
+        "props": {
+          "gap": "xs",
+          "align": "center"
+        },
+        "children": [
+          "kpiTotalIcon",
+          "kpiTotalText"
+        ]
+      },
+      "kpiTotalIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "ClipboardList",
+          "tone": "accent",
+          "size": "xs"
+        }
+      },
+      "kpiTotalText": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "Total"
+        }
+      },
+      "kpiTotalValue": {
         "type": "Stat",
         "props": {
-          "label": "Total",
+          "size": "md",
           "value": {
             "$computed": "count",
             "args": {
@@ -169,10 +223,45 @@
           }
         }
       },
-      "stDrafts": {
+      "kpiDrafts": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "kpiDraftsLabel",
+          "kpiDraftsValue"
+        ]
+      },
+      "kpiDraftsLabel": {
+        "type": "Row",
+        "props": {
+          "gap": "xs",
+          "align": "center"
+        },
+        "children": [
+          "kpiDraftsIcon",
+          "kpiDraftsText"
+        ]
+      },
+      "kpiDraftsIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "FilePen",
+          "tone": "warning",
+          "size": "xs"
+        }
+      },
+      "kpiDraftsText": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "Drafts"
+        }
+      },
+      "kpiDraftsValue": {
         "type": "Stat",
         "props": {
-          "label": "Drafts",
+          "size": "md",
           "value": {
             "$computed": "count_where",
             "args": {
@@ -185,10 +274,45 @@
           }
         }
       },
-      "stFinal": {
+      "kpiFinal": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "kpiFinalLabel",
+          "kpiFinalValue"
+        ]
+      },
+      "kpiFinalLabel": {
+        "type": "Row",
+        "props": {
+          "gap": "xs",
+          "align": "center"
+        },
+        "children": [
+          "kpiFinalIcon",
+          "kpiFinalText"
+        ]
+      },
+      "kpiFinalIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "CheckCircle2",
+          "tone": "success",
+          "size": "xs"
+        }
+      },
+      "kpiFinalText": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "Finalised"
+        }
+      },
+      "kpiFinalValue": {
         "type": "Stat",
         "props": {
-          "label": "Finalised",
+          "size": "md",
           "value": {
             "$computed": "count_where",
             "args": {
@@ -200,6 +324,10 @@
             }
           }
         }
+      },
+      "statsDivider": {
+        "type": "Divider",
+        "props": {}
       },
       "filters": {
         "type": "Row",
@@ -379,7 +507,7 @@
           "align": "center",
           "hover": true,
           "clickable": true,
-          "template": "auto minmax(0, 1fr) auto"
+          "template": "5rem minmax(0, 1fr) auto"
         },
         "children": [
           "rowStatus",
@@ -536,7 +664,7 @@
       "rowIdentity": {
         "type": "Stack",
         "props": {
-          "gap": "xs"
+          "gap": "none"
         },
         "children": [
           "rowTitle",
