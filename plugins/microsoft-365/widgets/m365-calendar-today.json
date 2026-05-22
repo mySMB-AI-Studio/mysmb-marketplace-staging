@@ -1,7 +1,7 @@
 {
   "id": "m365-calendar-today",
   "title": "Today",
-  "description": "Timeline of today's meetings with attendees, description, and one-tap RSVP.",
+  "description": "Timeline of today's meetings with attendees, description, and quick links to join or open in Outlook.",
   "category": "productivity",
   "tags": [
     "m365",
@@ -218,7 +218,7 @@
           "align": "start",
           "hover": true,
           "clickable": true,
-          "justify": "between"
+          "template": "4.5rem 1fr"
         },
         "children": [
           "timePill",
@@ -226,27 +226,6 @@
         ],
         "on": {
           "click": [
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMode",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMessage",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": ""
-              }
-            },
             {
               "action": "setState",
               "params": {
@@ -399,27 +378,6 @@
                 "statePath": "/ui/selectedEventId",
                 "value": ""
               }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMode",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMessage",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": ""
-              }
             }
           ]
         }
@@ -470,27 +428,6 @@
                 "statePath": "/ui/selectedEventId",
                 "value": ""
               }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMode",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMessage",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": ""
-              }
             }
           ]
         }
@@ -518,11 +455,6 @@
           "attHeader",
           "attList",
           "descSection",
-          "rsvpDivider",
-          "rsvpBanner",
-          "rsvpHeader",
-          "rsvpRow",
-          "declineBox",
           "linksRow"
         ],
         "visible": {
@@ -688,296 +620,6 @@
           },
           "minHeight": 80,
           "maxHeight": 320
-        }
-      },
-      "rsvpDivider": {
-        "type": "Divider"
-      },
-      "rsvpBanner": {
-        "type": "Text",
-        "props": {
-          "text": {
-            "$state": "/ui/rsvpResult"
-          },
-          "size": "sm",
-          "weight": "medium",
-          "tone": "accent"
-        },
-        "visible": {
-          "$state": "/ui/rsvpResult"
-        }
-      },
-      "rsvpHeader": {
-        "type": "Eyebrow",
-        "props": {
-          "text": "Your response"
-        },
-        "visible": {
-          "$state": "/ui/declineMode",
-          "not": true
-        }
-      },
-      "rsvpRow": {
-        "type": "Row",
-        "props": {
-          "gap": "sm"
-        },
-        "children": [
-          "acceptBtn",
-          "tentativeBtn",
-          "declineBtn"
-        ],
-        "visible": {
-          "$state": "/ui/declineMode",
-          "not": true
-        }
-      },
-      "acceptBtn": {
-        "type": "Button",
-        "props": {
-          "label": "Accept",
-          "size": "sm",
-          "leadingIcon": "Check",
-          "variant": {
-            "$cond": {
-              "$state": "/m365-calendar/get_event/responseStatus/response",
-              "eq": "accepted"
-            },
-            "$then": "primary",
-            "$else": "ghost"
-          }
-        },
-        "on": {
-          "click": [
-            {
-              "action": "m365-calendar.respond_to_event",
-              "params": {
-                "id": {
-                  "$state": "/ui/selectedEventId"
-                },
-                "response": "accept"
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": "You accepted this meeting."
-              }
-            },
-            {
-              "action": "m365-calendar.get_event",
-              "params": {
-                "id": {
-                  "$state": "/ui/selectedEventId"
-                }
-              }
-            },
-            {
-              "action": "m365-calendar.list_events",
-              "params": {
-                "limit": 50
-              }
-            }
-          ]
-        }
-      },
-      "tentativeBtn": {
-        "type": "Button",
-        "props": {
-          "label": "Tentative",
-          "size": "sm",
-          "leadingIcon": "CircleHelp",
-          "variant": {
-            "$cond": {
-              "$state": "/m365-calendar/get_event/responseStatus/response",
-              "eq": "tentativelyAccepted"
-            },
-            "$then": "primary",
-            "$else": "ghost"
-          }
-        },
-        "on": {
-          "click": [
-            {
-              "action": "m365-calendar.respond_to_event",
-              "params": {
-                "id": {
-                  "$state": "/ui/selectedEventId"
-                },
-                "response": "tentative"
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": "You marked this meeting tentative."
-              }
-            },
-            {
-              "action": "m365-calendar.get_event",
-              "params": {
-                "id": {
-                  "$state": "/ui/selectedEventId"
-                }
-              }
-            },
-            {
-              "action": "m365-calendar.list_events",
-              "params": {
-                "limit": 50
-              }
-            }
-          ]
-        }
-      },
-      "declineBtn": {
-        "type": "Button",
-        "props": {
-          "label": "Decline",
-          "size": "sm",
-          "leadingIcon": "X",
-          "variant": {
-            "$cond": {
-              "$state": "/m365-calendar/get_event/responseStatus/response",
-              "eq": "declined"
-            },
-            "$then": "primary",
-            "$else": "ghost"
-          }
-        },
-        "on": {
-          "click": {
-            "action": "setState",
-            "params": {
-              "statePath": "/ui/declineMode",
-              "value": "1"
-            }
-          }
-        }
-      },
-      "declineBox": {
-        "type": "Stack",
-        "props": {
-          "gap": "sm"
-        },
-        "children": [
-          "declineLabel",
-          "declineInput",
-          "declineActions"
-        ],
-        "visible": {
-          "$state": "/ui/declineMode"
-        }
-      },
-      "declineLabel": {
-        "type": "Text",
-        "props": {
-          "text": "Add a message for the organizer (required to decline).",
-          "size": "sm",
-          "tone": "muted"
-        }
-      },
-      "declineInput": {
-        "type": "TextInput",
-        "props": {
-          "value": {
-            "$bindState": "/ui/declineMessage"
-          },
-          "placeholder": "Let them know why you can't make it…",
-          "multiline": true,
-          "rows": 3
-        }
-      },
-      "declineActions": {
-        "type": "Row",
-        "props": {
-          "gap": "sm",
-          "justify": "end"
-        },
-        "children": [
-          "declineBackBtn",
-          "declineSendBtn"
-        ]
-      },
-      "declineBackBtn": {
-        "type": "Button",
-        "props": {
-          "label": "Back",
-          "variant": "ghost",
-          "size": "sm"
-        },
-        "on": {
-          "click": {
-            "action": "setState",
-            "params": {
-              "statePath": "/ui/declineMode",
-              "value": ""
-            }
-          }
-        }
-      },
-      "declineSendBtn": {
-        "type": "Button",
-        "props": {
-          "label": "Send decline",
-          "variant": "primary",
-          "size": "sm",
-          "leadingIcon": "Send"
-        },
-        "visible": {
-          "$state": "/ui/declineMessage"
-        },
-        "on": {
-          "click": [
-            {
-              "action": "m365-calendar.respond_to_event",
-              "params": {
-                "id": {
-                  "$state": "/ui/selectedEventId"
-                },
-                "response": "decline",
-                "comment": {
-                  "$state": "/ui/declineMessage"
-                }
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/selectedEventId",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMode",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/declineMessage",
-                "value": ""
-              }
-            },
-            {
-              "action": "setState",
-              "params": {
-                "statePath": "/ui/rsvpResult",
-                "value": ""
-              }
-            },
-            {
-              "action": "m365-calendar.list_events",
-              "params": {
-                "limit": 50
-              }
-            }
-          ]
         }
       },
       "linksRow": {
