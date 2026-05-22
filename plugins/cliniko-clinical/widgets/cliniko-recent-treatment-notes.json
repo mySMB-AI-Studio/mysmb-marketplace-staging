@@ -53,9 +53,9 @@
         "props": {},
         "children": [
           "header",
-          "statsLoading",
-          "stats",
-          "statsDivider",
+          "donutLoading",
+          "donut",
+          "donutDivider",
           "filters",
           "body",
           "overlay"
@@ -121,213 +121,6 @@
             }
           }
         }
-      },
-      "statsLoading": {
-        "type": "Grid",
-        "props": {
-          "cols": 3,
-          "gap": "md"
-        },
-        "children": [
-          "skKpiA",
-          "skKpiB",
-          "skKpiC"
-        ],
-        "visible": {
-          "$state": "/_loading/cliniko-clinical.list_treatment_notes"
-        }
-      },
-      "skKpiA": {
-        "type": "Skeleton",
-        "props": {
-          "height": "3rem",
-          "rounded": "md"
-        }
-      },
-      "skKpiB": {
-        "type": "Skeleton",
-        "props": {
-          "height": "3rem",
-          "rounded": "md"
-        }
-      },
-      "skKpiC": {
-        "type": "Skeleton",
-        "props": {
-          "height": "3rem",
-          "rounded": "md"
-        }
-      },
-      "stats": {
-        "type": "Grid",
-        "props": {
-          "cols": 3,
-          "gap": "md"
-        },
-        "children": [
-          "kpiTotal",
-          "kpiDrafts",
-          "kpiFinal"
-        ],
-        "visible": {
-          "$state": "/_loading/cliniko-clinical.list_treatment_notes",
-          "not": true
-        }
-      },
-      "kpiTotal": {
-        "type": "Stack",
-        "props": {
-          "gap": "xs"
-        },
-        "children": [
-          "kpiTotalLabel",
-          "kpiTotalValue"
-        ]
-      },
-      "kpiTotalLabel": {
-        "type": "Row",
-        "props": {
-          "gap": "xs",
-          "align": "center"
-        },
-        "children": [
-          "kpiTotalIcon",
-          "kpiTotalText"
-        ]
-      },
-      "kpiTotalIcon": {
-        "type": "Icon",
-        "props": {
-          "name": "ClipboardList",
-          "tone": "accent",
-          "size": "xs"
-        }
-      },
-      "kpiTotalText": {
-        "type": "Eyebrow",
-        "props": {
-          "text": "Total"
-        }
-      },
-      "kpiTotalValue": {
-        "type": "Stat",
-        "props": {
-          "size": "md",
-          "value": {
-            "$computed": "count",
-            "args": {
-              "value": {
-                "$state": "/cliniko-clinical/list_treatment_notes/treatment_notes"
-              }
-            }
-          }
-        }
-      },
-      "kpiDrafts": {
-        "type": "Stack",
-        "props": {
-          "gap": "xs"
-        },
-        "children": [
-          "kpiDraftsLabel",
-          "kpiDraftsValue"
-        ]
-      },
-      "kpiDraftsLabel": {
-        "type": "Row",
-        "props": {
-          "gap": "xs",
-          "align": "center"
-        },
-        "children": [
-          "kpiDraftsIcon",
-          "kpiDraftsText"
-        ]
-      },
-      "kpiDraftsIcon": {
-        "type": "Icon",
-        "props": {
-          "name": "FilePen",
-          "tone": "warning",
-          "size": "xs"
-        }
-      },
-      "kpiDraftsText": {
-        "type": "Eyebrow",
-        "props": {
-          "text": "Drafts"
-        }
-      },
-      "kpiDraftsValue": {
-        "type": "Stat",
-        "props": {
-          "size": "md",
-          "value": {
-            "$computed": "count_where",
-            "args": {
-              "value": {
-                "$state": "/cliniko-clinical/list_treatment_notes/treatment_notes"
-              },
-              "whereField": "draft",
-              "equals": true
-            }
-          }
-        }
-      },
-      "kpiFinal": {
-        "type": "Stack",
-        "props": {
-          "gap": "xs"
-        },
-        "children": [
-          "kpiFinalLabel",
-          "kpiFinalValue"
-        ]
-      },
-      "kpiFinalLabel": {
-        "type": "Row",
-        "props": {
-          "gap": "xs",
-          "align": "center"
-        },
-        "children": [
-          "kpiFinalIcon",
-          "kpiFinalText"
-        ]
-      },
-      "kpiFinalIcon": {
-        "type": "Icon",
-        "props": {
-          "name": "CheckCircle2",
-          "tone": "success",
-          "size": "xs"
-        }
-      },
-      "kpiFinalText": {
-        "type": "Eyebrow",
-        "props": {
-          "text": "Finalised"
-        }
-      },
-      "kpiFinalValue": {
-        "type": "Stat",
-        "props": {
-          "size": "md",
-          "value": {
-            "$computed": "count_where",
-            "args": {
-              "value": {
-                "$state": "/cliniko-clinical/list_treatment_notes/treatment_notes"
-              },
-              "whereField": "draft",
-              "equals": false
-            }
-          }
-        }
-      },
-      "statsDivider": {
-        "type": "Divider",
-        "props": {}
       },
       "filters": {
         "type": "Row",
@@ -936,6 +729,45 @@
             }
           }
         }
+      },
+      "donutLoading": {
+        "type": "Skeleton",
+        "props": {
+          "height": "9rem",
+          "rounded": "md"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_treatment_notes"
+        }
+      },
+      "donut": {
+        "type": "Donut",
+        "props": {
+          "data": {
+            "$state": "/cliniko-clinical/list_treatment_notes/treatment_notes"
+          },
+          "groupField": "draft",
+          "legend": {
+            "true": {
+              "label": "Drafts",
+              "tone": "warning"
+            },
+            "false": {
+              "label": "Finalised",
+              "tone": "success"
+            }
+          },
+          "centerLabel": "notes",
+          "size": 124
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_treatment_notes",
+          "not": true
+        }
+      },
+      "donutDivider": {
+        "type": "Divider",
+        "props": {}
       }
     }
   },

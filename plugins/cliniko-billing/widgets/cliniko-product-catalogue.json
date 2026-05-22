@@ -395,8 +395,54 @@
           "kpiLoading",
           "kpis",
           "kpiDivider",
+          "chartLabel",
+          "chartLoading",
+          "chart",
+          "chartDivider",
           "body"
         ]
+      },
+      "chartLabel": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "Top products by price"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_products",
+          "not": true
+        }
+      },
+      "chartLoading": {
+        "type": "Skeleton",
+        "props": {
+          "height": "6rem",
+          "rounded": "md"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_products"
+        }
+      },
+      "chart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$state": "/cliniko-billing/list_products/products"
+          },
+          "labelField": "name",
+          "valueField": "price",
+          "valueFormat": "currency",
+          "limit": 6,
+          "tone": "accent",
+          "sort": "desc"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_products",
+          "not": true
+        }
+      },
+      "chartDivider": {
+        "type": "Divider",
+        "props": {}
       }
     }
   },

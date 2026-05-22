@@ -238,8 +238,54 @@
         "props": {},
         "children": [
           "header",
+          "chartLabel",
+          "chartLoading",
+          "chart",
+          "chartDivider",
           "body"
         ]
+      },
+      "chartLabel": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "Top items by price"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_billable_items",
+          "not": true
+        }
+      },
+      "chartLoading": {
+        "type": "Skeleton",
+        "props": {
+          "height": "6rem",
+          "rounded": "md"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_billable_items"
+        }
+      },
+      "chart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$state": "/cliniko-billing/list_billable_items/billable_items"
+          },
+          "labelField": "name",
+          "valueField": "price",
+          "valueFormat": "currency",
+          "limit": 8,
+          "tone": "accent",
+          "sort": "desc"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_billable_items",
+          "not": true
+        }
+      },
+      "chartDivider": {
+        "type": "Divider",
+        "props": {}
       }
     }
   },

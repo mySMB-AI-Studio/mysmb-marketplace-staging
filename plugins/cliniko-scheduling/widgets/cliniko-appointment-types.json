@@ -236,8 +236,54 @@
         "props": {},
         "children": [
           "header",
+          "chartLabel",
+          "chartLoading",
+          "chart",
+          "chartDivider",
           "body"
         ]
+      },
+      "chartLabel": {
+        "type": "Eyebrow",
+        "props": {
+          "text": "By duration"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-scheduling.list_appointment_types",
+          "not": true
+        }
+      },
+      "chartLoading": {
+        "type": "Skeleton",
+        "props": {
+          "height": "6rem",
+          "rounded": "md"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-scheduling.list_appointment_types"
+        }
+      },
+      "chart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$state": "/cliniko-scheduling/list_appointment_types/appointment_types"
+          },
+          "labelField": "name",
+          "valueField": "duration_in_minutes",
+          "valueFormat": "minutes",
+          "limit": 8,
+          "tone": "info",
+          "sort": "desc"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-scheduling.list_appointment_types",
+          "not": true
+        }
+      },
+      "chartDivider": {
+        "type": "Divider",
+        "props": {}
       }
     }
   },
