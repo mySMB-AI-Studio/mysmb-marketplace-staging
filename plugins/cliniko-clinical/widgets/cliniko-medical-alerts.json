@@ -21,16 +21,16 @@
   "popularity": 70,
   "sizing": {
     "preferred": {
-      "colSpan": 8,
-      "rowSpan": 5
+      "colSpan": 6,
+      "rowSpan": 6
     },
     "min": {
-      "colSpan": 6,
+      "colSpan": 4,
       "rowSpan": 4
     },
     "max": {
       "colSpan": 12,
-      "rowSpan": 10
+      "rowSpan": 12
     }
   },
   "dataProvider": {
@@ -44,17 +44,48 @@
   "spec": {
     "root": "card",
     "elements": {
-      "card": {
-        "type": "Card",
-        "props": {},
-        "children": [
-          "header",
-          "table"
-        ]
-      },
       "header": {
         "type": "Header",
         "props": {},
+        "children": [
+          "headerRow"
+        ]
+      },
+      "headerRow": {
+        "type": "Row",
+        "props": {
+          "justify": "between",
+          "align": "center"
+        },
+        "children": [
+          "titleGroup",
+          "refreshBtn"
+        ]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": {
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": [
+          "titleIcon",
+          "titleStack"
+        ]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "ShieldAlert",
+          "tone": "destructive",
+          "size": "sm"
+        }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": {
+          "gap": "none"
+        },
         "children": [
           "title",
           "count"
@@ -81,36 +112,137 @@
           }
         }
       },
-      "table": {
-        "type": "Table",
+      "refreshBtn": {
+        "type": "IconButton",
         "props": {
-          "loading": {
-            "$state": "/_loading/cliniko-clinical.list_medical_alerts"
-          },
-          "skeletonRows": 6,
-          "rows": {
-            "$state": "/cliniko-clinical/list_medical_alerts/medical_alerts"
-          },
-          "columns": [
+          "name": "RefreshCw",
+          "size": "sm",
+          "ariaLabel": "Refresh"
+        },
+        "on": {
+          "click": {
+            "action": "cliniko-clinical.list_medical_alerts",
+            "params": {
+              "per_page": 50,
+              "sort": "created_at:desc"
+            }
+          }
+        }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": [
+          "loading",
+          "empty",
+          "list"
+        ]
+      },
+      "loading": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "lk1",
+          "lk2",
+          "lk3",
+          "lk4"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_medical_alerts"
+        }
+      },
+      "lk1": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk2": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk3": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk4": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "empty": {
+        "type": "Empty",
+        "props": {
+          "message": "No medical alerts recorded."
+        },
+        "visible": {
+          "$and": [
             {
-              "id": "name",
-              "header": "Alert",
-              "field": "name",
-              "priority": 1,
-              "width": 260
+              "$state": "/_loading/cliniko-clinical.list_medical_alerts",
+              "not": true
             },
             {
-              "id": "created",
-              "header": "Added",
-              "field": "created_at",
-              "priority": 2,
-              "format": "relative",
-              "width": 130
+              "$state": "/cliniko-clinical/list_medical_alerts/medical_alerts/0",
+              "not": true
             }
           ]
         }
+      },
+      "list": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "row"
+        ],
+        "repeat": {
+          "statePath": "/cliniko-clinical/list_medical_alerts/medical_alerts",
+          "key": "id"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-clinical.list_medical_alerts",
+          "not": true
+        }
+      },
+      "row": {
+        "type": "ActivityItem",
+        "props": {
+          "iconName": "AlertTriangle",
+          "tone": "warning",
+          "title": {
+            "$item": "name"
+          },
+          "timestamp": {
+            "$computed": "relative_time",
+            "args": {
+              "value": {
+                "$item": "created_at"
+              }
+            }
+          }
+        }
+      },
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "body"
+        ]
       }
     }
   },
-  "status": "published"
+  "status": "draft"
 }

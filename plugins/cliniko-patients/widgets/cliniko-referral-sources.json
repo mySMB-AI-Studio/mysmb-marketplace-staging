@@ -1,7 +1,7 @@
 {
   "id": "cliniko-referral-sources",
   "title": "Cliniko — Referral sources",
-  "description": "Where patients are coming from.",
+  "description": "Where your patients come from.",
   "category": "health",
   "tags": [
     "cliniko",
@@ -18,19 +18,19 @@
   "connectorsUsed": [
     "cliniko-patients"
   ],
-  "popularity": 70,
+  "popularity": 20,
   "sizing": {
     "preferred": {
-      "colSpan": 8,
-      "rowSpan": 5
+      "colSpan": 6,
+      "rowSpan": 6
     },
     "min": {
-      "colSpan": 6,
+      "colSpan": 4,
       "rowSpan": 4
     },
     "max": {
       "colSpan": 12,
-      "rowSpan": 10
+      "rowSpan": 12
     }
   },
   "dataProvider": {
@@ -44,17 +44,48 @@
   "spec": {
     "root": "card",
     "elements": {
-      "card": {
-        "type": "Card",
-        "props": {},
-        "children": [
-          "header",
-          "table"
-        ]
-      },
       "header": {
         "type": "Header",
         "props": {},
+        "children": [
+          "headerRow"
+        ]
+      },
+      "headerRow": {
+        "type": "Row",
+        "props": {
+          "justify": "between",
+          "align": "center"
+        },
+        "children": [
+          "titleGroup",
+          "refreshBtn"
+        ]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": {
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": [
+          "titleIcon",
+          "titleStack"
+        ]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "Share2",
+          "tone": "accent",
+          "size": "sm"
+        }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": {
+          "gap": "none"
+        },
         "children": [
           "title",
           "count"
@@ -81,43 +112,130 @@
           }
         }
       },
-      "table": {
-        "type": "Table",
+      "refreshBtn": {
+        "type": "IconButton",
         "props": {
-          "loading": {
-            "$state": "/_loading/cliniko-patients.list_referral_sources"
-          },
-          "skeletonRows": 6,
-          "rows": {
-            "$state": "/cliniko-patients/list_referral_sources/referral_sources"
-          },
-          "columns": [
+          "name": "RefreshCw",
+          "size": "sm",
+          "ariaLabel": "Refresh"
+        },
+        "on": {
+          "click": {
+            "action": "cliniko-patients.list_referral_sources",
+            "params": {
+              "per_page": 50,
+              "sort": "name:asc"
+            }
+          }
+        }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": [
+          "loading",
+          "empty",
+          "list"
+        ]
+      },
+      "loading": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "lk1",
+          "lk2",
+          "lk3",
+          "lk4"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-patients.list_referral_sources"
+        }
+      },
+      "lk1": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk2": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk3": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk4": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "empty": {
+        "type": "Empty",
+        "props": {
+          "message": "No referral sources yet — these populate as patients record how they found you."
+        },
+        "visible": {
+          "$and": [
             {
-              "id": "name",
-              "header": "Source",
-              "field": "name",
-              "priority": 1,
-              "width": 220
+              "$state": "/_loading/cliniko-patients.list_referral_sources",
+              "not": true
             },
             {
-              "id": "type",
-              "header": "Type",
-              "field": "referral_type",
-              "priority": 2,
-              "width": 160
-            },
-            {
-              "id": "created",
-              "header": "Added",
-              "field": "created_at",
-              "priority": 3,
-              "format": "relative",
-              "width": 130
+              "$state": "/cliniko-patients/list_referral_sources/referral_sources/0",
+              "not": true
             }
           ]
         }
+      },
+      "list": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "row"
+        ],
+        "repeat": {
+          "statePath": "/cliniko-patients/list_referral_sources/referral_sources",
+          "key": "id"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-patients.list_referral_sources",
+          "not": true
+        }
+      },
+      "row": {
+        "type": "ListItem",
+        "props": {
+          "title": {
+            "$item": "name"
+          },
+          "subtitle": {
+            "$item": "referral_type"
+          }
+        }
+      },
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "body"
+        ]
       }
     }
   },
-  "status": "published"
+  "status": "draft"
 }

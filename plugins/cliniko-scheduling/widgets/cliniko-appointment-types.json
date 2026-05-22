@@ -1,7 +1,7 @@
 {
   "id": "cliniko-appointment-types",
   "title": "Cliniko — Appointment types",
-  "description": "Appointment types configured in the practice and their durations.",
+  "description": "Appointment types offered, with their durations.",
   "category": "health",
   "tags": [
     "cliniko",
@@ -18,19 +18,19 @@
   "connectorsUsed": [
     "cliniko-scheduling"
   ],
-  "popularity": 70,
+  "popularity": 60,
   "sizing": {
     "preferred": {
-      "colSpan": 8,
-      "rowSpan": 5
+      "colSpan": 6,
+      "rowSpan": 6
     },
     "min": {
-      "colSpan": 6,
+      "colSpan": 4,
       "rowSpan": 4
     },
     "max": {
       "colSpan": 12,
-      "rowSpan": 10
+      "rowSpan": 12
     }
   },
   "dataProvider": {
@@ -44,17 +44,48 @@
   "spec": {
     "root": "card",
     "elements": {
-      "card": {
-        "type": "Card",
-        "props": {},
-        "children": [
-          "header",
-          "table"
-        ]
-      },
       "header": {
         "type": "Header",
         "props": {},
+        "children": [
+          "headerRow"
+        ]
+      },
+      "headerRow": {
+        "type": "Row",
+        "props": {
+          "justify": "between",
+          "align": "center"
+        },
+        "children": [
+          "titleGroup",
+          "refreshBtn"
+        ]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": {
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": [
+          "titleIcon",
+          "titleStack"
+        ]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "ListChecks",
+          "tone": "accent",
+          "size": "sm"
+        }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": {
+          "gap": "none"
+        },
         "children": [
           "title",
           "count"
@@ -81,43 +112,134 @@
           }
         }
       },
-      "table": {
-        "type": "Table",
+      "refreshBtn": {
+        "type": "IconButton",
         "props": {
-          "loading": {
-            "$state": "/_loading/cliniko-scheduling.list_appointment_types"
-          },
-          "skeletonRows": 6,
-          "rows": {
-            "$state": "/cliniko-scheduling/list_appointment_types/appointment_types"
-          },
-          "columns": [
+          "name": "RefreshCw",
+          "size": "sm",
+          "ariaLabel": "Refresh"
+        },
+        "on": {
+          "click": {
+            "action": "cliniko-scheduling.list_appointment_types",
+            "params": {
+              "per_page": 50,
+              "sort": "name:asc"
+            }
+          }
+        }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": [
+          "loading",
+          "empty",
+          "list"
+        ]
+      },
+      "loading": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "lk1",
+          "lk2",
+          "lk3",
+          "lk4"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-scheduling.list_appointment_types"
+        }
+      },
+      "lk1": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk2": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk3": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk4": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "empty": {
+        "type": "Empty",
+        "props": {
+          "message": "No appointment types configured."
+        },
+        "visible": {
+          "$and": [
             {
-              "id": "name",
-              "header": "Name",
-              "field": "name",
-              "priority": 1,
-              "width": 220
+              "$state": "/_loading/cliniko-scheduling.list_appointment_types",
+              "not": true
             },
             {
-              "id": "mins",
-              "header": "Minutes",
-              "field": "duration_in_minutes",
-              "priority": 1,
-              "width": 90,
-              "align": "right"
-            },
-            {
-              "id": "cat",
-              "header": "Category",
-              "field": "category",
-              "priority": 3,
-              "width": 140
+              "$state": "/cliniko-scheduling/list_appointment_types/appointment_types/0",
+              "not": true
             }
           ]
         }
+      },
+      "list": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "row"
+        ],
+        "repeat": {
+          "statePath": "/cliniko-scheduling/list_appointment_types/appointment_types",
+          "key": "id"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-scheduling.list_appointment_types",
+          "not": true
+        }
+      },
+      "row": {
+        "type": "ListItem",
+        "props": {
+          "title": {
+            "$item": "name"
+          },
+          "subtitle": {
+            "$item": "category"
+          },
+          "value": {
+            "$item": "duration_in_minutes"
+          },
+          "valueHint": "min"
+        }
+      },
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "body"
+        ]
       }
     }
   },
-  "status": "published"
+  "status": "draft"
 }

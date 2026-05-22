@@ -22,40 +22,71 @@
   "popularity": 85,
   "sizing": {
     "preferred": {
-      "colSpan": 8,
-      "rowSpan": 5
+      "colSpan": 6,
+      "rowSpan": 6
     },
     "min": {
-      "colSpan": 6,
+      "colSpan": 4,
       "rowSpan": 4
     },
     "max": {
       "colSpan": 12,
-      "rowSpan": 10
+      "rowSpan": 12
     }
   },
   "dataProvider": {
     "mcp": "cliniko-billing",
     "tool": "list_invoices",
     "params": {
-      "per_page": 25,
+      "per_page": 30,
       "sort": "issue_date:desc"
     }
   },
   "spec": {
     "root": "card",
     "elements": {
-      "card": {
-        "type": "Card",
-        "props": {},
-        "children": [
-          "header",
-          "table"
-        ]
-      },
       "header": {
         "type": "Header",
         "props": {},
+        "children": [
+          "headerRow"
+        ]
+      },
+      "headerRow": {
+        "type": "Row",
+        "props": {
+          "justify": "between",
+          "align": "center"
+        },
+        "children": [
+          "titleGroup",
+          "refreshBtn"
+        ]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": {
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": [
+          "titleIcon",
+          "titleStack"
+        ]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "Receipt",
+          "tone": "accent",
+          "size": "sm"
+        }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": {
+          "gap": "none"
+        },
         "children": [
           "title",
           "count"
@@ -64,7 +95,7 @@
       "title": {
         "type": "Heading",
         "props": {
-          "text": "Invoices",
+          "text": "Recent invoices",
           "level": "h2"
         }
       },
@@ -82,51 +113,144 @@
           }
         }
       },
-      "table": {
-        "type": "Table",
+      "refreshBtn": {
+        "type": "IconButton",
         "props": {
-          "loading": {
-            "$state": "/_loading/cliniko-billing.list_invoices"
-          },
-          "skeletonRows": 6,
-          "rows": {
-            "$state": "/cliniko-billing/list_invoices/invoices"
-          },
-          "columns": [
+          "name": "RefreshCw",
+          "size": "sm",
+          "ariaLabel": "Refresh"
+        },
+        "on": {
+          "click": {
+            "action": "cliniko-billing.list_invoices",
+            "params": {
+              "per_page": 30,
+              "sort": "issue_date:desc"
+            }
+          }
+        }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": [
+          "loading",
+          "empty",
+          "list"
+        ]
+      },
+      "loading": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "lk1",
+          "lk2",
+          "lk3",
+          "lk4"
+        ],
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_invoices"
+        }
+      },
+      "lk1": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk2": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk3": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "lk4": {
+        "type": "Skeleton",
+        "props": {
+          "height": "3rem",
+          "rounded": "md"
+        }
+      },
+      "empty": {
+        "type": "Empty",
+        "props": {
+          "message": "No invoices yet — invoices are raised from appointments in Cliniko."
+        },
+        "visible": {
+          "$and": [
             {
-              "id": "num",
-              "header": "Invoice",
-              "field": "number",
-              "priority": 1,
-              "width": 110
+              "$state": "/_loading/cliniko-billing.list_invoices",
+              "not": true
             },
             {
-              "id": "issued",
-              "header": "Issued",
-              "field": "issue_date",
-              "priority": 2,
-              "width": 120
-            },
-            {
-              "id": "status",
-              "header": "Status",
-              "field": "status",
-              "priority": 2,
-              "width": 110
-            },
-            {
-              "id": "total",
-              "header": "Total",
-              "field": "total_amount",
-              "priority": 1,
-              "format": "currency",
-              "width": 110,
-              "align": "right"
+              "$state": "/cliniko-billing/list_invoices/invoices/0",
+              "not": true
             }
           ]
         }
+      },
+      "list": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "row"
+        ],
+        "repeat": {
+          "statePath": "/cliniko-billing/list_invoices/invoices",
+          "key": "id"
+        },
+        "visible": {
+          "$state": "/_loading/cliniko-billing.list_invoices",
+          "not": true
+        }
+      },
+      "row": {
+        "type": "ListItem",
+        "props": {
+          "title": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "Invoice {n}",
+              "n": {
+                "$item": "number"
+              }
+            }
+          },
+          "subtitle": {
+            "$item": "status"
+          },
+          "value": {
+            "$computed": "format_currency",
+            "args": {
+              "value": {
+                "$item": "total_amount"
+              }
+            }
+          }
+        }
+      },
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": [
+          "header",
+          "body"
+        ]
       }
     }
   },
-  "status": "published"
+  "status": "draft"
 }

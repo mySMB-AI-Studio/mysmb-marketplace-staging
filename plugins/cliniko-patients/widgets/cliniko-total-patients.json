@@ -16,11 +16,11 @@
   "connectorsUsed": [
     "cliniko-patients"
   ],
-  "popularity": 60,
+  "popularity": 30,
   "sizing": {
     "preferred": {
       "colSpan": 4,
-      "rowSpan": 2
+      "rowSpan": 3
     },
     "min": {
       "colSpan": 3,
@@ -28,7 +28,7 @@
     },
     "max": {
       "colSpan": 6,
-      "rowSpan": 3
+      "rowSpan": 4
     }
   },
   "dataProvider": {
@@ -45,19 +45,115 @@
         "type": "Card",
         "props": {},
         "children": [
-          "stat"
+          "header",
+          "heroRow"
         ]
       },
-      "stat": {
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": [
+          "headerRow"
+        ]
+      },
+      "headerRow": {
+        "type": "Row",
+        "props": {
+          "justify": "between",
+          "align": "center"
+        },
+        "children": [
+          "titleGroup",
+          "refreshBtn"
+        ]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": {
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": [
+          "titleIcon",
+          "title"
+        ]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "Users",
+          "tone": "accent",
+          "size": "sm"
+        }
+      },
+      "title": {
+        "type": "Heading",
+        "props": {
+          "text": "Patients",
+          "level": "h2"
+        }
+      },
+      "refreshBtn": {
+        "type": "IconButton",
+        "props": {
+          "name": "RefreshCw",
+          "size": "sm",
+          "ariaLabel": "Refresh"
+        },
+        "on": {
+          "click": {
+            "action": "cliniko-patients.list_patients",
+            "params": {
+              "per_page": 1
+            }
+          }
+        }
+      },
+      "heroRow": {
+        "type": "Row",
+        "props": {
+          "gap": "md",
+          "align": "center"
+        },
+        "children": [
+          "heroIcon",
+          "heroStack"
+        ]
+      },
+      "heroIcon": {
+        "type": "Icon",
+        "props": {
+          "name": "Users",
+          "tone": "accent",
+          "size": "lg"
+        }
+      },
+      "heroStack": {
+        "type": "Stack",
+        "props": {
+          "gap": "xs"
+        },
+        "children": [
+          "heroVal",
+          "heroCaption"
+        ]
+      },
+      "heroVal": {
         "type": "Stat",
         "props": {
-          "label": "Patients",
+          "size": "lg",
           "value": {
             "$state": "/cliniko-patients/list_patients/total_entries"
           }
         }
+      },
+      "heroCaption": {
+        "type": "Caption",
+        "props": {
+          "text": "On file"
+        }
       }
     }
   },
-  "status": "published"
+  "status": "draft"
 }
