@@ -55,6 +55,17 @@
       "widgetElements": "widget-elements/dist/index.js"
     },
     {
+      "name": "myob-accounting",
+      "displayName": "MYOB Accounting",
+      "description": "MYOB AccountRight & Business via the myHub-hosted OAuth MCP gateway. 28 tools covering sales invoices, purchase bills, contacts, chart of accounts, tax codes, payments, and financial reports. AU/NZ organisations only. Browser OAuth, no API keys.",
+      "category": "accounting",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["myob", "accounting", "invoices", "bills", "australia", "nz", "reports", "oauth", "smb"],
+      "source": "./plugins/myob-accounting",
+      "widgets": "widgets"
+    },
+    {
       "name": "xero-accounting",
       "displayName": "Xero Accounting",
       "description": "Full Xero Accounting API coverage via the myHub-hosted OAuth MCP gateway. 119 tools covering sales, purchases, banking, attachments, history, linked transactions, expense claims, receipts, payment services, and all 8 financial reports. Browser OAuth, no API keys.",
@@ -157,6 +168,7 @@
       "source": "./plugins/zoho-sign"
     },
     {
+<<<<<<< HEAD
       "name": "cliniko-scheduling",
       "displayName": "Cliniko Scheduling",
       "description": "Manage Cliniko appointments, availability, and bookings via the myHub-hosted Cliniko MCP gateway. Individual and group appointments, appointment types, availability, online bookings, cancellations and DNAs.",
@@ -205,6 +217,28 @@
       "author": { "name": "mySMB AI Studio" },
       "tags": ["cliniko", "healthcare", "practice-management", "practitioners", "businesses", "settings"],
       "source": "./plugins/cliniko-practice"
+    },
+    {
+      "name": "talkdesk",
+      "displayName": "Talkdesk",
+      "description": "Talkdesk AI Agent Platform integration via the myHub-hosted MCP gateway. Exposes mySMB Workspace knowledge search and call QA scoring as MCP tools. API-key auth, no OAuth required.",
+      "category": "support",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["talkdesk", "call-centre", "qa", "knowledge", "support", "smb"],
+      "source": "./plugins/talkdesk",
+      "widgets": "widgets"
+    },
+    {
+      "name": "talkdesk-demo",
+      "displayName": "Talkdesk (Demo)",
+      "description": "Talkdesk integration demo with static sample data — no Talkdesk account required. Installs the Call QA Scorecard and Knowledge Search widgets into the Workspace. Swap for the 'talkdesk' plugin once a real account is provisioned.",
+      "category": "support",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["talkdesk", "call-centre", "qa", "knowledge", "support", "demo", "smb"],
+      "source": "./plugins/talkdesk-demo",
+      "widgets": "widgets"
     }
   ]
 }
