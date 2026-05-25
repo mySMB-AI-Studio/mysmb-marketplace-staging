@@ -1,0 +1,44 @@
+{
+  "id": "talkdesk-knowledge-search",
+  "title": "Knowledge Search",
+  "description": "Search the mySMB Workspace knowledge base — the same tool Talkdesk AI Agent uses for live customer queries.",
+  "category": "support",
+  "tags": ["talkdesk", "knowledge", "search", "articles", "support"],
+  "keywords": ["knowledge base", "search", "articles", "faq", "talkdesk"],
+  "connectorsUsed": ["talkdesk"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 4 },
+    "min":       { "colSpan": 4, "rowSpan": 3 },
+    "max":       { "colSpan": 10, "rowSpan": 8 }
+  },
+  "dataProvider": {
+    "mcp": "talkdesk",
+    "tool": "knowledge_search",
+    "params": { "query": "common issues", "limit": 5 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "results"]
+      },
+      "header": {
+        "type": "Header",
+        "props": { "title": "Knowledge Search", "subtitle": "Top articles from mySMB Workspace" }
+      },
+      "results": {
+        "type": "Table",
+        "props": {
+          "rows": { "$state": "/talkdesk/knowledge_search" },
+          "columns": [
+            { "key": "title",   "label": "Article" },
+            { "key": "excerpt", "label": "Summary" },
+            { "key": "url",     "label": "Link" }
+          ]
+        }
+      }
+    }
+  }
+}

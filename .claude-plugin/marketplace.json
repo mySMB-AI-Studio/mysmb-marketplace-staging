@@ -165,6 +165,28 @@
       "author": { "name": "mySMB AI Studio" },
       "tags": ["zoho", "sign", "esignature", "signature", "documents", "templates", "oauth"],
       "source": "./plugins/zoho-sign"
+    },
+    {
+      "name": "talkdesk",
+      "displayName": "Talkdesk",
+      "description": "Talkdesk AI Agent Platform integration via the myHub-hosted MCP gateway. Exposes mySMB Workspace knowledge search and call QA scoring as MCP tools. API-key auth, no OAuth required.",
+      "category": "support",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["talkdesk", "call-centre", "qa", "knowledge", "support", "smb"],
+      "source": "./plugins/talkdesk",
+      "widgets": "widgets"
+    },
+    {
+      "name": "talkdesk-demo",
+      "displayName": "Talkdesk (Demo)",
+      "description": "Talkdesk integration demo with static sample data — no Talkdesk account required. Installs the Call QA Scorecard and Knowledge Search widgets into the Workspace. Swap for the 'talkdesk' plugin once a real account is provisioned.",
+      "category": "support",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["talkdesk", "call-centre", "qa", "knowledge", "support", "demo", "smb"],
+      "source": "./plugins/talkdesk-demo",
+      "widgets": "widgets"
     }
   ]
 }
