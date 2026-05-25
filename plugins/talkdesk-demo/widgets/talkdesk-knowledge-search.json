@@ -12,11 +12,6 @@
     "min":       { "colSpan": 4, "rowSpan": 3 },
     "max":       { "colSpan": 10, "rowSpan": 8 }
   },
-  "dataProvider": {
-    "mcp": "talkdesk",
-    "tool": "knowledge_search",
-    "params": { "query": "common issues", "limit": 5 }
-  },
   "spec": {
     "root": "card",
     "elements": {
@@ -31,11 +26,17 @@
       "results": {
         "type": "Table",
         "props": {
-          "rows": { "$state": "/talkdesk/knowledge_search" },
+          "rows": [
+            { "title": "How to reset your mySMB password",       "excerpt": "Step-by-step guide to resetting your account password via the login screen or admin portal.",          "category": "Account" },
+            { "title": "Setting up Microsoft 365 integration",   "excerpt": "Connect your M365 tenant to mySMB Workspace to sync emails, calendar, and files.",                    "category": "Integrations" },
+            { "title": "Billing and subscription management",    "excerpt": "How to view invoices, update payment methods, and manage your mySMB subscription.",                   "category": "Billing" },
+            { "title": "Inviting team members to the Workspace", "excerpt": "Add colleagues as users, assign roles, and manage access permissions.",                               "category": "Admin" },
+            { "title": "Troubleshooting Xero sync issues",       "excerpt": "Common Xero connection errors and how to resolve them, including token refresh and permission scopes.", "category": "Integrations" }
+          ],
           "columns": [
-            { "key": "title",   "label": "Article" },
-            { "key": "excerpt", "label": "Summary" },
-            { "key": "url",     "label": "Link" }
+            { "key": "title",    "label": "Article" },
+            { "key": "excerpt",  "label": "Summary" },
+            { "key": "category", "label": "Category" }
           ]
         }
       }
