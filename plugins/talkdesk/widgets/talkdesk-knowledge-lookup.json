@@ -1,0 +1,229 @@
+{
+  "id": "talkdesk-knowledge-lookup",
+  "title": "Knowledge Lookup Activity",
+  "description": "Today's AI Agent knowledge lookups — how many queries were resolved by the knowledge base versus escalated to a human agent.",
+  "category": "support",
+  "tags": [
+    "talkdesk",
+    "knowledge",
+    "ai",
+    "support",
+    "workspace",
+    "agent",
+    "activity"
+  ],
+  "keywords": [
+    "talkdesk",
+    "knowledge base",
+    "ai agent",
+    "lookup",
+    "resolved",
+    "escalated",
+    "support",
+    "workspace",
+    "activity",
+    "history"
+  ],
+  "connectorsUsed": [
+    "talkdesk"
+  ],
+  "popularity": 0,
+  "sizing": {
+    "preferred": {
+      "colSpan": 5,
+      "rowSpan": 6
+    },
+    "min": {
+      "colSpan": 4,
+      "rowSpan": 5
+    },
+    "max": {
+      "colSpan": 10,
+      "rowSpan": 10
+    }
+  },
+  "dataProvider": {
+    "mcp": "talkdesk",
+    "tool": "list_lookup_history",
+    "params": {
+      "date": "$today",
+      "limit": 20
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "body"]
+      },
+
+      "header": {
+        "type": "Header",
+        "children": ["titleGroup"]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "start" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": { "name": "BookOpen", "tone": "accent", "size": "sm" }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["title", "eyebrow"]
+      },
+      "title": {
+        "type": "Heading",
+        "props": { "text": "Knowledge Lookup Activity", "level": "h2" }
+      },
+      "eyebrow": {
+        "type": "Eyebrow",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n} lookups today",
+              "n": { "$state": "/talkdesk/list_lookup_history/total" }
+            }
+          }
+        },
+        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+      },
+
+      "body": {
+        "type": "Body",
+        "children": ["empty", "statsSection", "lookupTable", "footer"]
+      },
+
+      "empty": {
+        "type": "Empty",
+        "props": { "message": "No knowledge lookups recorded today." },
+        "visible": {
+          "$and": [
+            {
+              "$state": "/_loading/talkdesk.list_lookup_history",
+              "not": true
+            },
+            {
+              "$state": "/talkdesk/list_lookup_history/lookups/0",
+              "not": true
+            }
+          ]
+        }
+      },
+
+      "statsSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statsRow"],
+        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+      },
+      "statsRow": {
+        "type": "Row",
+        "props": { "gap": "lg" },
+        "children": ["statTotal", "statResolved", "statEscalated"]
+      },
+      "statTotal": {
+        "type": "Stat",
+        "props": {
+          "label": "Lookups",
+          "value": { "$state": "/talkdesk/list_lookup_history/total" }
+        }
+      },
+      "statResolved": {
+        "type": "Stat",
+        "props": {
+          "label": "Resolved",
+          "value": { "$state": "/talkdesk/list_lookup_history/resolved" }
+        }
+      },
+      "statEscalated": {
+        "type": "Stat",
+        "props": {
+          "label": "Escalated",
+          "value": { "$state": "/talkdesk/list_lookup_history/escalated" }
+        }
+      },
+
+      "lookupTable": {
+        "type": "Table",
+        "props": {
+          "loading": { "$state": "/_loading/talkdesk.list_lookup_history" },
+          "skeletonRows": 5,
+          "rows": { "$state": "/talkdesk/list_lookup_history/lookups" },
+          "columns": [
+            {
+              "id": "query",
+              "header": "Query",
+              "field": "query",
+              "width": 200,
+              "priority": 1
+            },
+            {
+              "id": "article",
+              "header": "Article",
+              "field": "articleTitle",
+              "width": 180,
+              "priority": 2
+            },
+            {
+              "id": "category",
+              "header": "Category",
+              "field": "category",
+              "width": 140,
+              "priority": 3
+            },
+            {
+              "id": "outcome",
+              "header": "Outcome",
+              "field": "outcome",
+              "variant": "badge",
+              "toneFormat": "talkdesk_outcome",
+              "width": 110,
+              "priority": 1
+            },
+            {
+              "id": "time",
+              "header": "Time",
+              "field": "timestamp",
+              "format": "time",
+              "align": "right",
+              "width": 80,
+              "priority": 2
+            }
+          ]
+        }
+      },
+
+      "footer": {
+        "type": "Row",
+        "props": { "justify": "end", "gap": "xs", "align": "center" },
+        "children": ["footerBtn"],
+        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+      },
+      "footerBtn": {
+        "type": "Button",
+        "props": {
+          "label": "Open in Talkdesk",
+          "variant": "ghost",
+          "size": "sm",
+          "leadingIcon": "ExternalLink"
+        },
+        "on": {
+          "click": {
+            "action": "open_url",
+            "params": {
+              "url": "https://my.talkdesk.com",
+              "target": "_blank"
+            }
+          }
+        }
+      }
+    }
+  },
+  "status": "draft"
+}
