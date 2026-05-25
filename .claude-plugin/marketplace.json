@@ -168,7 +168,6 @@
       "source": "./plugins/zoho-sign"
     },
     {
-<<<<<<< HEAD
       "name": "cliniko-scheduling",
       "displayName": "Cliniko Scheduling",
       "description": "Manage Cliniko appointments, availability, and bookings via the myHub-hosted Cliniko MCP gateway. Individual and group appointments, appointment types, availability, online bookings, cancellations and DNAs.",
