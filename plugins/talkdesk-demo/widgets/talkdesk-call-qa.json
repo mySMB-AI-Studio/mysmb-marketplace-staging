@@ -12,11 +12,6 @@
     "min":       { "colSpan": 4, "rowSpan": 3 },
     "max":       { "colSpan": 10, "rowSpan": 8 }
   },
-  "dataProvider": {
-    "mcp": "talkdesk",
-    "tool": "get_qa_scorecard",
-    "params": { "limit": 5 }
-  },
   "spec": {
     "root": "card",
     "elements": {
@@ -32,14 +27,20 @@
         "type": "Stat",
         "props": {
           "label": "Avg Score",
-          "value": { "$state": "/talkdesk/get_qa_scorecard/average_score" },
+          "value": 82,
           "suffix": "/100"
         }
       },
       "table": {
         "type": "Table",
         "props": {
-          "rows": { "$state": "/talkdesk/get_qa_scorecard/calls" },
+          "rows": [
+            { "agent": "Alice M.",  "overall_score": 92, "grade": "A", "summary": "92/100 — Excellent",         "scored_at": "2026-05-25T08:10:00Z" },
+            { "agent": "Bob K.",    "overall_score": 74, "grade": "C", "summary": "74/100 — Needs Improvement", "scored_at": "2026-05-25T09:22:00Z" },
+            { "agent": "Alice M.",  "overall_score": 88, "grade": "B", "summary": "88/100 — Good",              "scored_at": "2026-05-25T10:05:00Z" },
+            { "agent": "Carol T.",  "overall_score": 95, "grade": "A", "summary": "95/100 — Excellent",         "scored_at": "2026-05-25T11:15:00Z" },
+            { "agent": "Bob K.",    "overall_score": 61, "grade": "C", "summary": "61/100 — Needs Improvement", "scored_at": "2026-05-25T12:30:00Z" }
+          ],
           "columns": [
             { "key": "agent",         "label": "Agent" },
             { "key": "overall_score", "label": "Score" },
