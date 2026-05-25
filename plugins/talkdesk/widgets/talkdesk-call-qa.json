@@ -8,47 +8,215 @@
   "connectorsUsed": ["talkdesk"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 4 },
-    "min":       { "colSpan": 4, "rowSpan": 3 },
-    "max":       { "colSpan": 10, "rowSpan": 8 }
-  },
-  "dataProvider": {
-    "mcp": "talkdesk",
-    "tool": "get_qa_scorecard",
-    "params": { "limit": 5 }
+    "preferred": { "colSpan": 5, "rowSpan": 7 },
+    "min":       { "colSpan": 4, "rowSpan": 6 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
   },
   "spec": {
     "root": "card",
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "avg", "table"]
+        "children": ["header", "body"]
       },
+
       "header": {
         "type": "Header",
-        "props": { "title": "Call QA Scorecard", "subtitle": "Recent scored calls" }
+        "children": ["titleGroup"]
       },
-      "avg": {
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "start" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": { "name": "ClipboardCheck", "tone": "accent", "size": "sm" }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["title", "eyebrow"]
+      },
+      "title": {
+        "type": "Heading",
+        "props": { "text": "Call QA Scorecard", "level": "h2" }
+      },
+      "eyebrow": {
+        "type": "Eyebrow",
+        "props": { "text": "Recent scored calls" }
+      },
+
+      "body": {
+        "type": "Body",
+        "children": ["statsSection", "callList", "footer"]
+      },
+
+      "statsSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statsRow"]
+      },
+      "statsRow": {
+        "type": "Row",
+        "props": { "gap": "xl" },
+        "children": ["statAvg", "statScored", "statPass"]
+      },
+      "statAvg": {
         "type": "Stat",
-        "props": {
-          "label": "Avg Score",
-          "value": { "$state": "/talkdesk/get_qa_scorecard/average_score" },
-          "suffix": "/100"
-        }
+        "props": { "label": "Avg Score", "value": "83", "suffix": "/100" }
       },
-      "table": {
-        "type": "Table",
+      "statScored": {
+        "type": "Stat",
+        "props": { "label": "Calls Scored", "value": "5" }
+      },
+      "statPass": {
+        "type": "Stat",
+        "props": { "label": "Pass Rate", "value": "80%"  }
+      },
+
+      "callList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["c1", "c2", "c3", "c4", "c5"]
+      },
+
+      "c1": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["c1left", "c1badge"]
+      },
+      "c1left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["c1agent", "c1summary"]
+      },
+      "c1agent": {
+        "type": "Text",
+        "props": { "text": "Sarah Chen — 92 / A", "size": "sm", "weight": "medium" }
+      },
+      "c1summary": {
+        "type": "Caption",
+        "props": { "text": "Excellent empathy and resolution" }
+      },
+      "c1badge": {
+        "type": "Badge",
+        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+      },
+
+      "c2": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["c2left", "c2badge"]
+      },
+      "c2left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["c2agent", "c2summary"]
+      },
+      "c2agent": {
+        "type": "Text",
+        "props": { "text": "Mark Williams — 78 / B", "size": "sm", "weight": "medium" }
+      },
+      "c2summary": {
+        "type": "Caption",
+        "props": { "text": "Good handling, minor script deviation" }
+      },
+      "c2badge": {
+        "type": "Badge",
+        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+      },
+
+      "c3": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["c3left", "c3badge"]
+      },
+      "c3left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["c3agent", "c3summary"]
+      },
+      "c3agent": {
+        "type": "Text",
+        "props": { "text": "Jessica Park — 95 / A+", "size": "sm", "weight": "medium" }
+      },
+      "c3summary": {
+        "type": "Caption",
+        "props": { "text": "Perfect adherence and fast resolution" }
+      },
+      "c3badge": {
+        "type": "Badge",
+        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+      },
+
+      "c4": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["c4left", "c4badge"]
+      },
+      "c4left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["c4agent", "c4summary"]
+      },
+      "c4agent": {
+        "type": "Text",
+        "props": { "text": "Tom Bradley — 61 / D", "size": "sm", "weight": "medium" }
+      },
+      "c4summary": {
+        "type": "Caption",
+        "props": { "text": "Escalation handled poorly, rework needed" }
+      },
+      "c4badge": {
+        "type": "Badge",
+        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
+      },
+
+      "c5": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["c5left", "c5badge"]
+      },
+      "c5left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["c5agent", "c5summary"]
+      },
+      "c5agent": {
+        "type": "Text",
+        "props": { "text": "Lisa Monroe — 88 / B+", "size": "sm", "weight": "medium" }
+      },
+      "c5summary": {
+        "type": "Caption",
+        "props": { "text": "Strong performance, slight hold time" }
+      },
+      "c5badge": {
+        "type": "Badge",
+        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+      },
+
+      "footer": {
+        "type": "Row",
+        "props": { "justify": "end", "gap": "xs", "align": "center" },
+        "children": ["footerBtn"]
+      },
+      "footerBtn": {
+        "type": "Button",
         "props": {
-          "rows": { "$state": "/talkdesk/get_qa_scorecard/calls" },
-          "columns": [
-            { "key": "agent",         "label": "Agent" },
-            { "key": "overall_score", "label": "Score" },
-            { "key": "grade",         "label": "Grade" },
-            { "key": "summary",       "label": "Result" },
-            { "key": "scored_at",     "label": "Time", "format": "datetime" }
-          ]
+          "label": "Open QA Dashboard",
+          "variant": "ghost",
+          "size": "sm",
+          "leadingIcon": "ExternalLink"
+        },
+        "on": {
+          "click": {
+            "action": "open_url",
+            "params": { "url": "https://my.talkdesk.com", "target": "_blank" }
+          }
         }
       }
     }
-  }
+  },
+  "status": "draft"
 }

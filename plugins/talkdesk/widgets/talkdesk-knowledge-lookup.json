@@ -3,52 +3,14 @@
   "title": "Knowledge Lookup Activity",
   "description": "Today's AI Agent knowledge lookups — how many queries were resolved by the knowledge base versus escalated to a human agent.",
   "category": "support",
-  "tags": [
-    "talkdesk",
-    "knowledge",
-    "ai",
-    "support",
-    "workspace",
-    "agent",
-    "activity"
-  ],
-  "keywords": [
-    "talkdesk",
-    "knowledge base",
-    "ai agent",
-    "lookup",
-    "resolved",
-    "escalated",
-    "support",
-    "workspace",
-    "activity",
-    "history"
-  ],
-  "connectorsUsed": [
-    "talkdesk"
-  ],
+  "tags": ["talkdesk", "knowledge", "ai", "support", "workspace", "agent", "activity"],
+  "keywords": ["talkdesk", "knowledge base", "ai agent", "lookup", "resolved", "escalated", "support", "workspace", "activity", "history"],
+  "connectorsUsed": ["talkdesk"],
   "popularity": 0,
   "sizing": {
-    "preferred": {
-      "colSpan": 5,
-      "rowSpan": 6
-    },
-    "min": {
-      "colSpan": 4,
-      "rowSpan": 5
-    },
-    "max": {
-      "colSpan": 10,
-      "rowSpan": 10
-    }
-  },
-  "dataProvider": {
-    "mcp": "talkdesk",
-    "tool": "list_lookup_history",
-    "params": {
-      "date": "$today",
-      "limit": 20
-    }
+    "preferred": { "colSpan": 5, "rowSpan": 7 },
+    "min":       { "colSpan": 4, "rowSpan": 6 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
   },
   "spec": {
     "root": "card",
@@ -82,128 +44,162 @@
       },
       "eyebrow": {
         "type": "Eyebrow",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "{n} lookups today",
-              "n": { "$state": "/talkdesk/list_lookup_history/total" }
-            }
-          }
-        },
-        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+        "props": { "text": "5 lookups today" }
       },
 
       "body": {
         "type": "Body",
-        "children": ["empty", "statsSection", "lookupTable", "footer"]
-      },
-
-      "empty": {
-        "type": "Empty",
-        "props": { "message": "No knowledge lookups recorded today." },
-        "visible": {
-          "$and": [
-            {
-              "$state": "/_loading/talkdesk.list_lookup_history",
-              "not": true
-            },
-            {
-              "$state": "/talkdesk/list_lookup_history/lookups/0",
-              "not": true
-            }
-          ]
-        }
+        "children": ["statsSection", "lookupList", "footer"]
       },
 
       "statsSection": {
         "type": "Section",
         "props": { "variant": "muted" },
-        "children": ["statsRow"],
-        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+        "children": ["statsRow"]
       },
       "statsRow": {
         "type": "Row",
-        "props": { "gap": "lg" },
+        "props": { "gap": "xl" },
         "children": ["statTotal", "statResolved", "statEscalated"]
       },
       "statTotal": {
         "type": "Stat",
-        "props": {
-          "label": "Lookups",
-          "value": { "$state": "/talkdesk/list_lookup_history/total" }
-        }
+        "props": { "label": "Lookups", "value": "5" }
       },
       "statResolved": {
         "type": "Stat",
-        "props": {
-          "label": "Resolved",
-          "value": { "$state": "/talkdesk/list_lookup_history/resolved" }
-        }
+        "props": { "label": "Resolved", "value": "3" }
       },
       "statEscalated": {
         "type": "Stat",
-        "props": {
-          "label": "Escalated",
-          "value": { "$state": "/talkdesk/list_lookup_history/escalated" }
-        }
+        "props": { "label": "Escalated", "value": "2" }
       },
 
-      "lookupTable": {
-        "type": "Table",
-        "props": {
-          "loading": { "$state": "/_loading/talkdesk.list_lookup_history" },
-          "skeletonRows": 5,
-          "rows": { "$state": "/talkdesk/list_lookup_history/lookups" },
-          "columns": [
-            {
-              "id": "query",
-              "header": "Query",
-              "field": "query",
-              "width": 200,
-              "priority": 1
-            },
-            {
-              "id": "article",
-              "header": "Article",
-              "field": "articleTitle",
-              "width": 180,
-              "priority": 2
-            },
-            {
-              "id": "category",
-              "header": "Category",
-              "field": "category",
-              "width": 140,
-              "priority": 3
-            },
-            {
-              "id": "outcome",
-              "header": "Outcome",
-              "field": "outcome",
-              "variant": "badge",
-              "toneFormat": "talkdesk_outcome",
-              "width": 110,
-              "priority": 1
-            },
-            {
-              "id": "time",
-              "header": "Time",
-              "field": "timestamp",
-              "format": "time",
-              "align": "right",
-              "width": 80,
-              "priority": 2
-            }
-          ]
-        }
+      "lookupList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["r1", "r2", "r3", "r4", "r5"]
+      },
+
+      "r1": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["r1left", "r1badge"]
+      },
+      "r1left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["r1text", "r1sub"]
+      },
+      "r1text": {
+        "type": "Text",
+        "props": { "text": "Password reset steps", "size": "sm", "weight": "medium" }
+      },
+      "r1sub": {
+        "type": "Caption",
+        "props": { "text": "Account & Security" }
+      },
+      "r1badge": {
+        "type": "Badge",
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+      },
+
+      "r2": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["r2left", "r2badge"]
+      },
+      "r2left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["r2text", "r2sub"]
+      },
+      "r2text": {
+        "type": "Text",
+        "props": { "text": "Cancel subscription process", "size": "sm", "weight": "medium" }
+      },
+      "r2sub": {
+        "type": "Caption",
+        "props": { "text": "Billing & Subscriptions" }
+      },
+      "r2badge": {
+        "type": "Badge",
+        "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
+      },
+
+      "r3": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["r3left", "r3badge"]
+      },
+      "r3left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["r3text", "r3sub"]
+      },
+      "r3text": {
+        "type": "Text",
+        "props": { "text": "Invoice download & PDF export", "size": "sm", "weight": "medium" }
+      },
+      "r3sub": {
+        "type": "Caption",
+        "props": { "text": "Billing & Payments" }
+      },
+      "r3badge": {
+        "type": "Badge",
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+      },
+
+      "r4": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["r4left", "r4badge"]
+      },
+      "r4left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["r4text", "r4sub"]
+      },
+      "r4text": {
+        "type": "Text",
+        "props": { "text": "Two-factor authentication setup", "size": "sm", "weight": "medium" }
+      },
+      "r4sub": {
+        "type": "Caption",
+        "props": { "text": "Account & Security" }
+      },
+      "r4badge": {
+        "type": "Badge",
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+      },
+
+      "r5": {
+        "type": "Row",
+        "props": { "align": "start", "gap": "md" },
+        "children": ["r5left", "r5badge"]
+      },
+      "r5left": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["r5text", "r5sub"]
+      },
+      "r5text": {
+        "type": "Text",
+        "props": { "text": "Refund policy for annual plans", "size": "sm", "weight": "medium" }
+      },
+      "r5sub": {
+        "type": "Caption",
+        "props": { "text": "Billing & Subscriptions" }
+      },
+      "r5badge": {
+        "type": "Badge",
+        "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
       },
 
       "footer": {
         "type": "Row",
         "props": { "justify": "end", "gap": "xs", "align": "center" },
-        "children": ["footerBtn"],
-        "visible": { "$state": "/talkdesk/list_lookup_history/lookups/0" }
+        "children": ["footerBtn"]
       },
       "footerBtn": {
         "type": "Button",
@@ -216,10 +212,7 @@
         "on": {
           "click": {
             "action": "open_url",
-            "params": {
-              "url": "https://my.talkdesk.com",
-              "target": "_blank"
-            }
+            "params": { "url": "https://my.talkdesk.com", "target": "_blank" }
           }
         }
       }
