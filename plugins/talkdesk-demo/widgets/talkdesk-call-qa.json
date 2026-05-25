@@ -8,16 +8,16 @@
   "connectorsUsed": ["talkdesk"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 4 },
-    "min":       { "colSpan": 4, "rowSpan": 3 },
-    "max":       { "colSpan": 10, "rowSpan": 8 }
+    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "min":       { "colSpan": 4, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
   },
   "spec": {
     "root": "card",
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "avg", "table"]
+        "children": ["header", "avg", "divider", "list"]
       },
       "header": {
         "type": "Header",
@@ -25,31 +25,38 @@
       },
       "avg": {
         "type": "Stat",
-        "props": {
-          "label": "Avg Score",
-          "value": 82,
-          "suffix": "/100"
-        }
+        "props": { "label": "Avg Score", "value": 82, "suffix": "/100" }
       },
-      "table": {
-        "type": "Table",
-        "props": {
-          "rows": [
-            { "agent": "Alice M.",  "overall_score": 92, "grade": "A", "summary": "92/100 — Excellent",         "scored_at": "2026-05-25T08:10:00Z" },
-            { "agent": "Bob K.",    "overall_score": 74, "grade": "C", "summary": "74/100 — Needs Improvement", "scored_at": "2026-05-25T09:22:00Z" },
-            { "agent": "Alice M.",  "overall_score": 88, "grade": "B", "summary": "88/100 — Good",              "scored_at": "2026-05-25T10:05:00Z" },
-            { "agent": "Carol T.",  "overall_score": 95, "grade": "A", "summary": "95/100 — Excellent",         "scored_at": "2026-05-25T11:15:00Z" },
-            { "agent": "Bob K.",    "overall_score": 61, "grade": "C", "summary": "61/100 — Needs Improvement", "scored_at": "2026-05-25T12:30:00Z" }
-          ],
-          "columns": [
-            { "key": "agent",         "label": "Agent" },
-            { "key": "overall_score", "label": "Score" },
-            { "key": "grade",         "label": "Grade" },
-            { "key": "summary",       "label": "Result" },
-            { "key": "scored_at",     "label": "Time", "format": "datetime" }
-          ]
-        }
-      }
+      "divider": { "type": "Divider" },
+      "list": {
+        "type": "Stack",
+        "children": ["row1", "row2", "row3", "row4", "row5"]
+      },
+
+      "row1": { "type": "Row", "props": { "gap": "sm" }, "children": ["r1agent", "r1score", "r1grade"] },
+      "r1agent": { "type": "Text", "props": { "text": "Alice M.", "grow": true } },
+      "r1score": { "type": "Text", "props": { "text": "92/100" } },
+      "r1grade": { "type": "Badge", "props": { "label": "A" } },
+
+      "row2": { "type": "Row", "props": { "gap": "sm" }, "children": ["r2agent", "r2score", "r2grade"] },
+      "r2agent": { "type": "Text", "props": { "text": "Bob K.", "grow": true } },
+      "r2score": { "type": "Text", "props": { "text": "74/100" } },
+      "r2grade": { "type": "Badge", "props": { "label": "C" } },
+
+      "row3": { "type": "Row", "props": { "gap": "sm" }, "children": ["r3agent", "r3score", "r3grade"] },
+      "r3agent": { "type": "Text", "props": { "text": "Alice M.", "grow": true } },
+      "r3score": { "type": "Text", "props": { "text": "88/100" } },
+      "r3grade": { "type": "Badge", "props": { "label": "B" } },
+
+      "row4": { "type": "Row", "props": { "gap": "sm" }, "children": ["r4agent", "r4score", "r4grade"] },
+      "r4agent": { "type": "Text", "props": { "text": "Carol T.", "grow": true } },
+      "r4score": { "type": "Text", "props": { "text": "95/100" } },
+      "r4grade": { "type": "Badge", "props": { "label": "A" } },
+
+      "row5": { "type": "Row", "props": { "gap": "sm" }, "children": ["r5agent", "r5score", "r5grade"] },
+      "r5agent": { "type": "Text", "props": { "text": "Bob K.", "grow": true } },
+      "r5score": { "type": "Text", "props": { "text": "61/100" } },
+      "r5grade": { "type": "Badge", "props": { "label": "C" } }
     }
   }
 }

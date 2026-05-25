@@ -8,38 +8,45 @@
   "connectorsUsed": ["talkdesk"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 4 },
-    "min":       { "colSpan": 4, "rowSpan": 3 },
-    "max":       { "colSpan": 10, "rowSpan": 8 }
+    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "min":       { "colSpan": 4, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
   },
   "spec": {
     "root": "card",
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "results"]
+        "children": ["header", "list"]
       },
       "header": {
         "type": "Header",
         "props": { "title": "Knowledge Search", "subtitle": "Top articles from mySMB Workspace" }
       },
-      "results": {
-        "type": "Table",
-        "props": {
-          "rows": [
-            { "title": "How to reset your mySMB password",       "excerpt": "Step-by-step guide to resetting your account password via the login screen or admin portal.",          "category": "Account" },
-            { "title": "Setting up Microsoft 365 integration",   "excerpt": "Connect your M365 tenant to mySMB Workspace to sync emails, calendar, and files.",                    "category": "Integrations" },
-            { "title": "Billing and subscription management",    "excerpt": "How to view invoices, update payment methods, and manage your mySMB subscription.",                   "category": "Billing" },
-            { "title": "Inviting team members to the Workspace", "excerpt": "Add colleagues as users, assign roles, and manage access permissions.",                               "category": "Admin" },
-            { "title": "Troubleshooting Xero sync issues",       "excerpt": "Common Xero connection errors and how to resolve them, including token refresh and permission scopes.", "category": "Integrations" }
-          ],
-          "columns": [
-            { "key": "title",    "label": "Article" },
-            { "key": "excerpt",  "label": "Summary" },
-            { "key": "category", "label": "Category" }
-          ]
-        }
-      }
+      "list": {
+        "type": "Stack",
+        "children": ["art1", "art2", "art3", "art4", "art5"]
+      },
+
+      "art1": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a1title", "a1excerpt"] },
+      "a1title":   { "type": "Text",    "props": { "text": "How to reset your mySMB password", "weight": "bold" } },
+      "a1excerpt": { "type": "Caption", "props": { "text": "Step-by-step guide to resetting your account password via the login screen or admin portal." } },
+
+      "art2": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a2title", "a2excerpt"] },
+      "a2title":   { "type": "Text",    "props": { "text": "Setting up Microsoft 365 integration", "weight": "bold" } },
+      "a2excerpt": { "type": "Caption", "props": { "text": "Connect your M365 tenant to mySMB Workspace to sync emails, calendar, and files." } },
+
+      "art3": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a3title", "a3excerpt"] },
+      "a3title":   { "type": "Text",    "props": { "text": "Billing and subscription management", "weight": "bold" } },
+      "a3excerpt": { "type": "Caption", "props": { "text": "How to view invoices, update payment methods, and manage your mySMB subscription." } },
+
+      "art4": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a4title", "a4excerpt"] },
+      "a4title":   { "type": "Text",    "props": { "text": "Inviting team members to the Workspace", "weight": "bold" } },
+      "a4excerpt": { "type": "Caption", "props": { "text": "Add colleagues as users, assign roles, and manage access permissions." } },
+
+      "art5": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a5title", "a5excerpt"] },
+      "a5title":   { "type": "Text",    "props": { "text": "Troubleshooting Xero sync issues", "weight": "bold" } },
+      "a5excerpt": { "type": "Caption", "props": { "text": "Common Xero connection errors and how to resolve them, including token refresh and permission scopes." } }
     }
   }
 }
