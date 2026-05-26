@@ -43,7 +43,7 @@
       "callCard": {
         "type": "Stack",
         "props": { "gap": "xs" },
-        "children": ["callSummary", "callMeta", "callScore"]
+        "children": ["callSummary", "callMeta", "callCustomer", "callScore", "callComment"]
       },
       "callSummary": {
         "type": "Text",
@@ -51,9 +51,7 @@
       },
       "callMeta": {
         "type": "Caption",
-        "props": {
-          "text": { "$item": "custom_agentname" }
-        }
+        "props": { "text": { "$item": "custom_agentname" } }
       },
       "callCustomer": {
         "type": "Caption",
@@ -71,6 +69,10 @@
       "gradeText": {
         "type": "Badge",
         "props": { "label": { "$item": "custom_grade" } }
+      },
+      "callComment": {
+        "type": "Caption",
+        "props": { "text": { "$item": "custom_comment" } }
       }
     }
   }
