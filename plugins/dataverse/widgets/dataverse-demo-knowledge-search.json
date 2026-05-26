@@ -20,32 +20,22 @@
         "children": ["header", "articleList", "div1", "footer"]
       },
 
-      "header": {
-        "type": "Header",
-        "children": ["titleGroup"]
+      "header": { "type": "Header", "children": ["titleRow"] },
+      "titleRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center" },
+        "children": ["titleLeft", "brandBadge"]
       },
-      "titleGroup": {
+      "titleLeft": {
         "type": "Row",
         "props": { "gap": "sm", "align": "start" },
         "children": ["titleIcon", "titleStack"]
       },
-      "titleIcon": {
-        "type": "Icon",
-        "props": { "name": "BookOpen", "tone": "accent", "size": "sm" }
-      },
-      "titleStack": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["title", "eyebrow"]
-      },
-      "title": {
-        "type": "Heading",
-        "props": { "text": "D365 Knowledge Search", "level": "h2" }
-      },
-      "eyebrow": {
-        "type": "Eyebrow",
-        "props": { "text": "Dynamics 365 Customer Service · Demo" }
-      },
+      "titleIcon": { "type": "Icon", "props": { "name": "BookOpen", "tone": "accent", "size": "sm" } },
+      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
+      "title": { "type": "Heading", "props": { "text": "D365 Knowledge Search", "level": "h2" } },
+      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service · Demo" } },
+      "brandBadge": { "type": "Badge", "props": { "text": "Dynamics 365", "variant": "soft" } },
 
       "articleList": {
         "type": "Stack",

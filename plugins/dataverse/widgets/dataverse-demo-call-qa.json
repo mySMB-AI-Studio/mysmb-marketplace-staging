@@ -8,9 +8,9 @@
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 10 },
-    "min":       { "colSpan": 4, "rowSpan": 8 },
-    "max":       { "colSpan": 10, "rowSpan": 14 }
+    "preferred": { "colSpan": 5, "rowSpan": 8 },
+    "min":       { "colSpan": 4, "rowSpan": 7 },
+    "max":       { "colSpan": 10, "rowSpan": 12 }
   },
   "spec": {
     "root": "card",
@@ -20,75 +20,38 @@
         "children": ["header", "statsGrid", "div1", "callList", "div2", "footer"]
       },
 
-      "header": {
-        "type": "Header",
-        "children": ["titleGroup"]
+      "header": { "type": "Header", "children": ["titleRow"] },
+      "titleRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center" },
+        "children": ["titleLeft", "brandBadge"]
       },
-      "titleGroup": {
+      "titleLeft": {
         "type": "Row",
         "props": { "gap": "sm", "align": "start" },
         "children": ["titleIcon", "titleStack"]
       },
-      "titleIcon": {
-        "type": "Icon",
-        "props": { "name": "ClipboardCheck", "tone": "accent", "size": "sm" }
-      },
-      "titleStack": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["title", "eyebrow"]
-      },
-      "title": {
-        "type": "Heading",
-        "props": { "text": "Call QA Scorecard", "level": "h2" }
-      },
-      "eyebrow": {
-        "type": "Eyebrow",
-        "props": { "text": "Dynamics 365 Customer Service · Demo" }
-      },
+      "titleIcon": { "type": "Icon", "props": { "name": "ClipboardCheck", "tone": "accent", "size": "sm" } },
+      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
+      "title": { "type": "Heading", "props": { "text": "Call QA Scorecard", "level": "h2" } },
+      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service · Demo" } },
+      "brandBadge": { "type": "Badge", "props": { "text": "Dynamics 365", "variant": "soft" } },
 
       "statsGrid": {
         "type": "Grid",
         "props": { "cols": 3, "gap": "sm" },
         "children": ["tileScored", "tilePassed", "tileRate"]
       },
-
-      "tileScored": {
-        "type": "Section",
-        "props": { "variant": "muted" },
-        "children": ["stackScored"]
-      },
-      "stackScored": {
-        "type": "Stack",
-        "props": { "gap": "xxs", "align": "center" },
-        "children": ["valScored", "lblScored"]
-      },
+      "tileScored": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackScored"] },
+      "stackScored": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valScored", "lblScored"] },
       "valScored": { "type": "Heading", "props": { "text": "4", "level": "h2" } },
       "lblScored": { "type": "Caption", "props": { "text": "Scored" } },
-
-      "tilePassed": {
-        "type": "Section",
-        "props": { "variant": "muted" },
-        "children": ["stackPassed"]
-      },
-      "stackPassed": {
-        "type": "Stack",
-        "props": { "gap": "xxs", "align": "center" },
-        "children": ["valPassed", "lblPassed"]
-      },
+      "tilePassed": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackPassed"] },
+      "stackPassed": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valPassed", "lblPassed"] },
       "valPassed": { "type": "Heading", "props": { "text": "3", "level": "h2" } },
       "lblPassed": { "type": "Caption", "props": { "text": "Passed" } },
-
-      "tileRate": {
-        "type": "Section",
-        "props": { "variant": "muted" },
-        "children": ["stackRate"]
-      },
-      "stackRate": {
-        "type": "Stack",
-        "props": { "gap": "xxs", "align": "center" },
-        "children": ["valRate", "lblRate"]
-      },
+      "tileRate": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackRate"] },
+      "stackRate": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valRate", "lblRate"] },
       "valRate": { "type": "Heading", "props": { "text": "75%", "level": "h2" } },
       "lblRate": { "type": "Caption", "props": { "text": "Pass Rate" } },
 
@@ -97,36 +60,29 @@
       "callList": {
         "type": "Stack",
         "props": { "gap": "sm" },
-        "children": ["q1", "q2", "q3", "q4"]
+        "children": ["q1", "q2", "q3"]
       },
 
-      "q1": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["q1left", "q1badge"] },
+      "q1": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["q1left", "q1badge"] },
       "q1left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["q1summary", "q1meta", "q1score"] },
       "q1summary": { "type": "Text", "props": { "text": "Invoice dispute — credit memo not applied", "size": "sm", "weight": "medium" } },
       "q1meta": { "type": "Caption", "props": { "text": "Agent: Maria Santos · Customer: Juan dela Cruz" } },
       "q1score": { "type": "Caption", "props": { "text": "91/100 · Strong performance. Verification was thorough." } },
       "q1badge": { "type": "Badge", "props": { "text": "PASS", "tone": "positive", "variant": "soft" } },
 
-      "q2": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["q2left", "q2badge"] },
+      "q2": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["q2left", "q2badge"] },
       "q2left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["q2summary", "q2meta", "q2score"] },
       "q2summary": { "type": "Text", "props": { "text": "Account portal access after forced password reset", "size": "sm", "weight": "medium" } },
       "q2meta": { "type": "Caption", "props": { "text": "Agent: James Reyes · Customer: Sandra Lee" } },
       "q2score": { "type": "Caption", "props": { "text": "78/100 · Knowledge base not consulted before escalating." } },
       "q2badge": { "type": "Badge", "props": { "text": "Coaching", "tone": "warning", "variant": "soft" } },
 
-      "q3": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["q3left", "q3badge"] },
+      "q3": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["q3left", "q3badge"] },
       "q3left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["q3summary", "q3meta", "q3score"] },
       "q3summary": { "type": "Text", "props": { "text": "Delivery delay — shipment tracking and escalation", "size": "sm", "weight": "medium" } },
       "q3meta": { "type": "Caption", "props": { "text": "Agent: Maria Santos · Customer: Pedro Santos" } },
       "q3score": { "type": "Caption", "props": { "text": "85/100 · Empathetic and professional. Escalation followed correctly." } },
       "q3badge": { "type": "Badge", "props": { "text": "PASS", "tone": "positive", "variant": "soft" } },
-
-      "q4": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["q4left", "q4badge"] },
-      "q4left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["q4summary", "q4meta", "q4score"] },
-      "q4summary": { "type": "Text", "props": { "text": "Billing dispute — duplicate charge across two cycles", "size": "sm", "weight": "medium" } },
-      "q4meta": { "type": "Caption", "props": { "text": "Agent: Ana Cruz · Customer: Robert Kim" } },
-      "q4score": { "type": "Caption", "props": { "text": "88/100 · Excellent issue capture. Minor gap at close." } },
-      "q4badge": { "type": "Badge", "props": { "text": "PASS", "tone": "positive", "variant": "soft" } },
 
       "div2": { "type": "Divider" },
 
