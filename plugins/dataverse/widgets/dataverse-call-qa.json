@@ -1,0 +1,77 @@
+{
+  "id": "dataverse-call-qa",
+  "title": "Call QA Scorecard",
+  "description": "Recent call QA scores from Dynamics 365 — agent, customer, call summary, score out of 100, and pass/fail grade.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "call-qa", "scoring", "agent-performance", "customer-service", "support"],
+  "keywords": ["call qa", "quality assurance", "agent score", "call scoring", "transcript", "pass fail", "d365"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 6 },
+    "min":       { "colSpan": 4, "rowSpan": 5 },
+    "max":       { "colSpan": 10, "rowSpan": 12 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "list_call_qa_scores",
+    "params": { "top": 10 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "list"]
+      },
+      "header": {
+        "type": "Header",
+        "props": {
+          "title": "Call QA Scorecard",
+          "subtitle": "Recent scored calls from D365"
+        }
+      },
+      "list": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "repeat": {
+          "statePath": "/dataverse/list_call_qa_scores/qa_scores",
+          "key": "custom_qascoreid"
+        },
+        "children": ["callCard"]
+      },
+      "callCard": {
+        "type": "Stack",
+        "props": { "gap": "xs" },
+        "children": ["callSummary", "callMeta", "callScore"]
+      },
+      "callSummary": {
+        "type": "Text",
+        "props": { "text": { "$item": "custom_callsummary" }, "weight": "bold" }
+      },
+      "callMeta": {
+        "type": "Caption",
+        "props": {
+          "text": { "$item": "custom_agentname" }
+        }
+      },
+      "callCustomer": {
+        "type": "Caption",
+        "props": { "text": { "$item": "custom_customername" } }
+      },
+      "callScore": {
+        "type": "Row",
+        "props": { "gap": "sm" },
+        "children": ["scoreText", "gradeText"]
+      },
+      "scoreText": {
+        "type": "Text",
+        "props": { "text": { "$item": "custom_totalscore" }, "grow": true }
+      },
+      "gradeText": {
+        "type": "Badge",
+        "props": { "label": { "$item": "custom_grade" } }
+      }
+    }
+  }
+}

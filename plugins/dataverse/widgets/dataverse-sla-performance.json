@@ -1,0 +1,69 @@
+{
+  "id": "dataverse-sla-performance",
+  "title": "SLA Performance",
+  "description": "Live SLA KPI status across active Dynamics 365 cases — highlights at-risk and breached SLAs.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "sla", "cases", "performance", "customer-service", "support"],
+  "keywords": ["sla", "service level", "breach", "at risk", "kpi", "performance", "cases", "d365"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "min":       { "colSpan": 4, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "list_sla_kpis",
+    "params": {
+      "status_filter": "active",
+      "top": 10
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "list"]
+      },
+      "header": {
+        "type": "Header",
+        "props": {
+          "title": "SLA Performance",
+          "subtitle": "Active SLA KPIs — ordered by failure time"
+        }
+      },
+      "list": {
+        "type": "Stack",
+        "repeat": {
+          "statePath": "/dataverse/list_sla_kpis/sla_kpis",
+          "key": "slakpiinstanceid"
+        },
+        "children": ["row"]
+      },
+      "row": {
+        "type": "Row",
+        "props": { "gap": "sm" },
+        "children": ["kpiLeft", "kpiStatus"]
+      },
+      "kpiLeft": {
+        "type": "Stack",
+        "props": { "gap": "xs", "grow": true },
+        "children": ["kpiName", "kpiTime"]
+      },
+      "kpiName": {
+        "type": "Text",
+        "props": { "text": { "$item": "name" }, "weight": "bold" }
+      },
+      "kpiTime": {
+        "type": "Caption",
+        "props": { "text": { "$item": "computedfailuretime" } }
+      },
+      "kpiStatus": {
+        "type": "Badge",
+        "props": { "label": { "$item": "status" } }
+      }
+    }
+  }
+}
