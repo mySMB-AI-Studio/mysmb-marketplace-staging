@@ -22,24 +22,28 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "list"]
+        "props": {},
+        "children": ["header", "body"]
       },
       "header": {
         "type": "Header",
-        "props": {
-          "title": "D365 Knowledge Search",
-          "subtitle": "Published articles from Dynamics 365"
-        }
+        "props": { "title": "D365 Knowledge Search", "subtitle": "Published articles from Dynamics 365" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["list"]
       },
       "list": {
         "type": "Stack",
+        "props": { "gap": "sm" },
         "repeat": {
           "statePath": "/dataverse/search_knowledge_articles/articles",
           "key": "knowledgearticleid"
         },
-        "children": ["row"]
+        "children": ["articleRow"]
       },
-      "row": {
+      "articleRow": {
         "type": "Stack",
         "props": { "gap": "xs" },
         "children": ["artTitle", "artDesc"]

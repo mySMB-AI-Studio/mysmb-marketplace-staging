@@ -8,9 +8,9 @@
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 6 },
-    "min":       { "colSpan": 4, "rowSpan": 5 },
-    "max":       { "colSpan": 10, "rowSpan": 12 }
+    "preferred": { "colSpan": 8, "rowSpan": 5 },
+    "min":       { "colSpan": 6, "rowSpan": 4 },
+    "max":       { "colSpan": 12, "rowSpan": 10 }
   },
   "dataProvider": {
     "mcp": "dataverse",
@@ -22,57 +22,63 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "list"]
+        "props": {},
+        "children": ["header", "body"]
       },
       "header": {
         "type": "Header",
+        "props": { "title": "Call QA Scorecard", "subtitle": "Recent scored calls from D365" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["stats", "divider", "table"]
+      },
+      "stats": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["statCount", "statPass"]
+      },
+      "statCount": {
+        "type": "Stat",
         "props": {
-          "title": "Call QA Scorecard",
-          "subtitle": "Recent scored calls from D365"
+          "label": "Calls Scored",
+          "value": {
+            "$computed": "count",
+            "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" } }
+          }
         }
       },
-      "list": {
-        "type": "Stack",
-        "props": { "gap": "sm" },
-        "repeat": {
-          "statePath": "/dataverse/list_call_qa_scores/qa_scores",
-          "key": "custom_qascoreid"
-        },
-        "children": ["callCard"]
+      "statPass": {
+        "type": "Stat",
+        "props": {
+          "label": "Passed",
+          "value": {
+            "$computed": "count_where",
+            "args": {
+              "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
+              "field": "custom_passed",
+              "eq": true
+            }
+          }
+        }
       },
-      "callCard": {
-        "type": "Stack",
-        "props": { "gap": "xs" },
-        "children": ["callSummary", "callMeta", "callCustomer", "callScore", "callComment"]
-      },
-      "callSummary": {
-        "type": "Text",
-        "props": { "text": { "$item": "custom_callsummary" }, "weight": "bold" }
-      },
-      "callMeta": {
-        "type": "Caption",
-        "props": { "text": { "$item": "custom_agentname" } }
-      },
-      "callCustomer": {
-        "type": "Caption",
-        "props": { "text": { "$item": "custom_customername" } }
-      },
-      "callScore": {
-        "type": "Row",
-        "props": { "gap": "sm" },
-        "children": ["scoreText", "gradeText"]
-      },
-      "scoreText": {
-        "type": "Text",
-        "props": { "text": { "$item": "custom_totalscore" }, "grow": true }
-      },
-      "gradeText": {
-        "type": "Badge",
-        "props": { "label": { "$item": "custom_grade" } }
-      },
-      "callComment": {
-        "type": "Caption",
-        "props": { "text": { "$item": "custom_comment" } }
+      "divider": { "type": "Divider", "props": {} },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": { "$state": "/_loading/dataverse.list_call_qa_scores" },
+          "skeletonRows": 5,
+          "rows": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
+          "columns": [
+            { "id": "summary",  "header": "Call",     "field": "custom_callsummary",  "priority": 1 },
+            { "id": "agent",    "header": "Agent",    "field": "custom_agentname",    "width": 140, "priority": 1 },
+            { "id": "customer", "header": "Customer", "field": "custom_customername", "width": 140, "priority": 2 },
+            { "id": "score",    "header": "Score /100", "field": "custom_totalscore", "width": 90,  "priority": 1, "align": "right" },
+            { "id": "grade",    "header": "Grade",    "field": "custom_grade",        "width": 110, "priority": 1, "variant": "badge" },
+            { "id": "comment",  "header": "Comment",  "field": "custom_comment",      "priority": 2 }
+          ]
+        }
       }
     }
   }

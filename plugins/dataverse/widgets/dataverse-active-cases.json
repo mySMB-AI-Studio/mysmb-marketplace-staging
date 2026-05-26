@@ -8,9 +8,9 @@
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 5 },
-    "min":       { "colSpan": 4, "rowSpan": 4 },
-    "max":       { "colSpan": 10, "rowSpan": 10 }
+    "preferred": { "colSpan": 8, "rowSpan": 5 },
+    "min":       { "colSpan": 6, "rowSpan": 4 },
+    "max":       { "colSpan": 12, "rowSpan": 10 }
   },
   "dataProvider": {
     "mcp": "dataverse",
@@ -19,7 +19,7 @@
       "filter": "statecode eq 0",
       "select": "incidentid,title,ticketnumber,prioritycode,statecode,statuscode,createdon",
       "orderby": "createdon desc",
-      "top": 10
+      "top": 25
     }
   },
   "spec": {
@@ -27,44 +27,43 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "list"]
+        "props": {},
+        "children": ["header", "body"]
       },
       "header": {
         "type": "Header",
+        "props": { "title": "Active Cases", "subtitle": "Open D365 Customer Service cases" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["statCount", "divider", "table"]
+      },
+      "statCount": {
+        "type": "Stat",
         "props": {
-          "title": "Active Cases",
-          "subtitle": "Open D365 Customer Service cases"
+          "label": "Open Cases",
+          "value": {
+            "$computed": "count",
+            "args": { "value": { "$state": "/dataverse/list_cases/items" } }
+          }
         }
       },
-      "list": {
-        "type": "Stack",
-        "repeat": {
-          "statePath": "/dataverse/list_cases/items",
-          "key": "incidentid"
-        },
-        "children": ["row"]
-      },
-      "row": {
-        "type": "Row",
-        "props": { "gap": "sm" },
-        "children": ["caseLeft", "casePriority"]
-      },
-      "caseLeft": {
-        "type": "Stack",
-        "props": { "gap": "xs", "grow": true },
-        "children": ["caseTitle", "caseMeta"]
-      },
-      "caseTitle": {
-        "type": "Text",
-        "props": { "text": { "$item": "title" }, "weight": "bold" }
-      },
-      "caseMeta": {
-        "type": "Caption",
-        "props": { "text": { "$item": "ticketnumber" } }
-      },
-      "casePriority": {
-        "type": "Badge",
-        "props": { "label": { "$item": "prioritycode" } }
+      "divider": { "type": "Divider", "props": {} },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": { "$state": "/_loading/dataverse.list_cases" },
+          "skeletonRows": 6,
+          "rows": { "$state": "/dataverse/list_cases/items" },
+          "columns": [
+            { "id": "title",    "header": "Case",      "field": "title",        "priority": 1 },
+            { "id": "ticket",   "header": "Ticket #",  "field": "ticketnumber", "width": 120, "priority": 1 },
+            { "id": "priority", "header": "Priority",  "field": "prioritycode", "width": 90,  "priority": 2 },
+            { "id": "status",   "header": "Status",    "field": "statuscode",   "width": 90,  "priority": 2 },
+            { "id": "created",  "header": "Created",   "field": "createdon",    "width": 120, "priority": 2, "format": "relative" }
+          ]
+        }
       }
     }
   }

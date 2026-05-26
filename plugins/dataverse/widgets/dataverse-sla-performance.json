@@ -8,61 +8,76 @@
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 5 },
-    "min":       { "colSpan": 4, "rowSpan": 4 },
-    "max":       { "colSpan": 10, "rowSpan": 10 }
+    "preferred": { "colSpan": 8, "rowSpan": 5 },
+    "min":       { "colSpan": 6, "rowSpan": 4 },
+    "max":       { "colSpan": 12, "rowSpan": 10 }
   },
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "list_sla_kpis",
-    "params": {
-      "status_filter": "active",
-      "top": 10
-    }
+    "params": { "status_filter": "active", "top": 20 }
   },
   "spec": {
     "root": "card",
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "list"]
+        "props": {},
+        "children": ["header", "body"]
       },
       "header": {
         "type": "Header",
+        "props": { "title": "SLA Performance", "subtitle": "Active SLA KPIs — ordered by failure time" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["stats", "divider", "table"]
+      },
+      "stats": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["statActive", "statBreached"]
+      },
+      "statActive": {
+        "type": "Stat",
         "props": {
-          "title": "SLA Performance",
-          "subtitle": "Active SLA KPIs — ordered by failure time"
+          "label": "Active SLAs",
+          "value": {
+            "$computed": "count",
+            "args": { "value": { "$state": "/dataverse/list_sla_kpis/sla_kpis" } }
+          }
         }
       },
-      "list": {
-        "type": "Stack",
-        "repeat": {
-          "statePath": "/dataverse/list_sla_kpis/sla_kpis",
-          "key": "slakpiinstanceid"
-        },
-        "children": ["row"]
+      "statBreached": {
+        "type": "Stat",
+        "props": {
+          "label": "Breached",
+          "value": {
+            "$computed": "count_where",
+            "args": {
+              "value": { "$state": "/dataverse/list_sla_kpis/sla_kpis" },
+              "field": "status",
+              "eq": 2
+            }
+          },
+          "tone": "destructive"
+        }
       },
-      "row": {
-        "type": "Row",
-        "props": { "gap": "sm" },
-        "children": ["kpiLeft", "kpiStatus"]
-      },
-      "kpiLeft": {
-        "type": "Stack",
-        "props": { "gap": "xs", "grow": true },
-        "children": ["kpiName", "kpiTime"]
-      },
-      "kpiName": {
-        "type": "Text",
-        "props": { "text": { "$item": "name" }, "weight": "bold" }
-      },
-      "kpiTime": {
-        "type": "Caption",
-        "props": { "text": { "$item": "computedfailuretime" } }
-      },
-      "kpiStatus": {
-        "type": "Badge",
-        "props": { "label": { "$item": "status" } }
+      "divider": { "type": "Divider", "props": {} },
+      "table": {
+        "type": "Table",
+        "props": {
+          "loading": { "$state": "/_loading/dataverse.list_sla_kpis" },
+          "skeletonRows": 6,
+          "rows": { "$state": "/dataverse/list_sla_kpis/sla_kpis" },
+          "columns": [
+            { "id": "name",        "header": "SLA",          "field": "name",                   "priority": 1 },
+            { "id": "status",      "header": "Status",       "field": "status",                 "width": 90,  "priority": 1 },
+            { "id": "failuretime", "header": "Breach Time",  "field": "computedfailuretime",    "width": 130, "priority": 1, "format": "relative" },
+            { "id": "warningtime", "header": "Warning Time", "field": "computedwarningtime",    "width": 130, "priority": 2, "format": "relative" }
+          ]
+        }
       }
     }
   }
