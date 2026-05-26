@@ -1,0 +1,68 @@
+{
+  "id": "dataverse-active-cases-demo",
+  "title": "Active Cases (Demo)",
+  "description": "Demo — open Dynamics 365 Customer Service cases with static sample data.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "cases", "customer-service", "support", "demo"],
+  "keywords": ["cases", "open cases", "support queue", "customer service", "d365", "demo"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 6, "rowSpan": 5 },
+    "min":       { "colSpan": 5, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["header", "body"]
+      },
+      "header": {
+        "type": "Header",
+        "props": { "title": "Active Cases", "subtitle": "Open D365 Customer Service cases" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["statCount", "divider", "caseList"]
+      },
+      "statCount": {
+        "type": "Stat",
+        "props": { "label": "Open Cases", "value": 4 }
+      },
+      "divider": { "type": "Divider", "props": {} },
+      "caseList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["c1", "c2", "c3", "c4"]
+      },
+
+      "c1": { "type": "Row", "props": { "gap": "sm" }, "children": ["c1left", "c1badge"] },
+      "c1left": { "type": "Stack", "props": { "gap": "xs", "grow": true }, "children": ["c1title", "c1meta"] },
+      "c1title": { "type": "Text", "props": { "text": "Invoice discrepancy — credit memo not applied", "weight": "bold" } },
+      "c1meta": { "type": "Caption", "props": { "text": "CAS-00814 · 2 hours ago" } },
+      "c1badge": { "type": "Badge", "props": { "label": "High" } },
+
+      "c2": { "type": "Row", "props": { "gap": "sm" }, "children": ["c2left", "c2badge"] },
+      "c2left": { "type": "Stack", "props": { "gap": "xs", "grow": true }, "children": ["c2title", "c2meta"] },
+      "c2title": { "type": "Text", "props": { "text": "Cannot access account portal after password reset", "weight": "bold" } },
+      "c2meta": { "type": "Caption", "props": { "text": "CAS-00821 · 4 hours ago" } },
+      "c2badge": { "type": "Badge", "props": { "label": "Normal" } },
+
+      "c3": { "type": "Row", "props": { "gap": "sm" }, "children": ["c3left", "c3badge"] },
+      "c3left": { "type": "Stack", "props": { "gap": "xs", "grow": true }, "children": ["c3title", "c3meta"] },
+      "c3title": { "type": "Text", "props": { "text": "Product delivery delayed — order #ORD-2025-0219", "weight": "bold" } },
+      "c3meta": { "type": "Caption", "props": { "text": "CAS-00829 · 6 hours ago" } },
+      "c3badge": { "type": "Badge", "props": { "label": "Normal" } },
+
+      "c4": { "type": "Row", "props": { "gap": "sm" }, "children": ["c4left", "c4badge"] },
+      "c4left": { "type": "Stack", "props": { "gap": "xs", "grow": true }, "children": ["c4title", "c4meta"] },
+      "c4title": { "type": "Text", "props": { "text": "Billing cycle incorrect — charged twice in May", "weight": "bold" } },
+      "c4meta": { "type": "Caption", "props": { "text": "CAS-00835 · 1 hour ago" } },
+      "c4badge": { "type": "Badge", "props": { "label": "High" } }
+    }
+  }
+}

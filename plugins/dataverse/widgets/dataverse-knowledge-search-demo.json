@@ -1,0 +1,59 @@
+{
+  "id": "dataverse-knowledge-search-demo",
+  "title": "D365 Knowledge Search (Demo)",
+  "description": "Demo — published Dynamics 365 knowledge articles with static sample data.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "knowledge", "articles", "support", "demo"],
+  "keywords": ["knowledge base", "articles", "faq", "dynamics", "d365", "demo"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 6 },
+    "min":       { "colSpan": 4, "rowSpan": 5 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["header", "body"]
+      },
+      "header": {
+        "type": "Header",
+        "props": { "title": "D365 Knowledge Search", "subtitle": "Published articles from Dynamics 365" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["articleList"]
+      },
+      "articleList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["a1", "a2", "a3", "a4", "a5"]
+      },
+
+      "a1": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a1title", "a1desc"] },
+      "a1title": { "type": "Text", "props": { "text": "How to apply a credit memo to an outstanding invoice", "weight": "bold" } },
+      "a1desc": { "type": "Caption", "props": { "text": "Step-by-step guide for locating a credit memo in the system and manually applying it to reduce the invoice balance." } },
+
+      "a2": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a2title", "a2desc"] },
+      "a2title": { "type": "Text", "props": { "text": "Password reset and account portal access troubleshooting", "weight": "bold" } },
+      "a2desc": { "type": "Caption", "props": { "text": "Covers self-service reset, admin-forced reset, MFA issues, and browser cache clearing for portal login failures." } },
+
+      "a3": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a3title", "a3desc"] },
+      "a3title": { "type": "Text", "props": { "text": "Delivery delay escalation — process and customer communication template", "weight": "bold" } },
+      "a3desc": { "type": "Caption", "props": { "text": "When to escalate a delayed shipment, which team to contact, and approved language for notifying the customer." } },
+
+      "a4": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a4title", "a4desc"] },
+      "a4title": { "type": "Text", "props": { "text": "Billing dispute resolution — identifying duplicate charges", "weight": "bold" } },
+      "a4desc": { "type": "Caption", "props": { "text": "How to pull billing history, identify duplicate billing cycles, and initiate a refund or adjustment through the finance portal." } },
+
+      "a5": { "type": "Stack", "props": { "gap": "xs" }, "children": ["a5title", "a5desc"] },
+      "a5title": { "type": "Text", "props": { "text": "SLA compliance — Tier 1 first-response and resolution timeframes", "weight": "bold" } },
+      "a5desc": { "type": "Caption", "props": { "text": "Defines SLA targets by priority (High: 1hr / Normal: 4hr), breach consequences, and how to request an SLA pause." } }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "dataverse-call-qa-demo",
+  "title": "Call QA Scorecard (Demo)",
+  "description": "Demo — recent call QA scores from Dynamics 365 with static sample data.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "call-qa", "scoring", "agent-performance", "customer-service", "support", "demo"],
+  "keywords": ["call qa", "quality assurance", "agent score", "call scoring", "pass fail", "d365", "demo"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 6, "rowSpan": 6 },
+    "min":       { "colSpan": 5, "rowSpan": 5 },
+    "max":       { "colSpan": 10, "rowSpan": 12 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["header", "body"]
+      },
+      "header": {
+        "type": "Header",
+        "props": { "title": "Call QA Scorecard", "subtitle": "Recent scored calls from D365" }
+      },
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["stats", "divider", "callList"]
+      },
+      "stats": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["statScored", "statPassed"]
+      },
+      "statScored": {
+        "type": "Stat",
+        "props": { "label": "Calls Scored", "value": 4 }
+      },
+      "statPassed": {
+        "type": "Stat",
+        "props": { "label": "Passed", "value": 3 }
+      },
+      "divider": { "type": "Divider", "props": {} },
+      "callList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["q1", "q2", "q3", "q4"]
+      },
+
+      "q1": { "type": "Stack", "props": { "gap": "xs" }, "children": ["q1summary", "q1meta", "q1score", "q1comment"] },
+      "q1summary": { "type": "Text", "props": { "text": "Invoice dispute — credit memo not applied to outstanding balance", "weight": "bold" } },
+      "q1meta": { "type": "Caption", "props": { "text": "Agent: Maria Santos · Customer: Juan dela Cruz" } },
+      "q1score": { "type": "Row", "props": { "gap": "sm" }, "children": ["q1scoreVal", "q1grade"] },
+      "q1scoreVal": { "type": "Text", "props": { "text": "91/100", "grow": true } },
+      "q1grade": { "type": "Badge", "props": { "label": "PASS" } },
+      "q1comment": { "type": "Caption", "props": { "text": "Strong performance. Verification was thorough and resolution was clearly communicated." } },
+
+      "q2": { "type": "Stack", "props": { "gap": "xs" }, "children": ["q2summary", "q2meta", "q2score", "q2comment"] },
+      "q2summary": { "type": "Text", "props": { "text": "Account portal access failure after forced password reset", "weight": "bold" } },
+      "q2meta": { "type": "Caption", "props": { "text": "Agent: James Reyes · Customer: Sandra Lee" } },
+      "q2score": { "type": "Row", "props": { "gap": "sm" }, "children": ["q2scoreVal", "q2grade"] },
+      "q2scoreVal": { "type": "Text", "props": { "text": "78/100", "grow": true } },
+      "q2grade": { "type": "Badge", "props": { "label": "NEEDS COACHING" } },
+      "q2comment": { "type": "Caption", "props": { "text": "Knowledge base was not consulted before escalating. Closing summary was incomplete." } },
+
+      "q3": { "type": "Stack", "props": { "gap": "xs" }, "children": ["q3summary", "q3meta", "q3score", "q3comment"] },
+      "q3summary": { "type": "Text", "props": { "text": "Delivery delay inquiry — shipment tracking and escalation to logistics", "weight": "bold" } },
+      "q3meta": { "type": "Caption", "props": { "text": "Agent: Maria Santos · Customer: Pedro Santos" } },
+      "q3score": { "type": "Row", "props": { "gap": "sm" }, "children": ["q3scoreVal", "q3grade"] },
+      "q3scoreVal": { "type": "Text", "props": { "text": "85/100", "grow": true } },
+      "q3grade": { "type": "Badge", "props": { "label": "PASS" } },
+      "q3comment": { "type": "Caption", "props": { "text": "Empathetic and professional throughout. Escalation process followed correctly." } },
+
+      "q4": { "type": "Stack", "props": { "gap": "xs" }, "children": ["q4summary", "q4meta", "q4score", "q4comment"] },
+      "q4summary": { "type": "Text", "props": { "text": "Billing dispute — duplicate charge identified across two billing cycles", "weight": "bold" } },
+      "q4meta": { "type": "Caption", "props": { "text": "Agent: Ana Cruz · Customer: Robert Kim" } },
+      "q4score": { "type": "Row", "props": { "gap": "sm" }, "children": ["q4scoreVal", "q4grade"] },
+      "q4scoreVal": { "type": "Text", "props": { "text": "88/100", "grow": true } },
+      "q4grade": { "type": "Badge", "props": { "label": "PASS" } },
+      "q4comment": { "type": "Caption", "props": { "text": "Excellent issue capture and resolution. Minor gap in offering further assistance at close." } }
+    }
+  }
+}
