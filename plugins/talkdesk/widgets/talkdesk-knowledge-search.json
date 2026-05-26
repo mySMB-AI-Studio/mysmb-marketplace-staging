@@ -17,7 +17,7 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "body"]
+        "children": ["header", "statTile", "div1", "articleList", "div2", "footer"]
       },
 
       "header": {
@@ -44,13 +44,33 @@
       },
       "eyebrow": {
         "type": "Eyebrow",
-        "props": { "text": "Top articles from mySMB Workspace" }
+        "props": { "text": "Talkdesk AI Agent · mySMB Workspace" }
       },
 
-      "body": {
-        "type": "Body",
-        "children": ["articleList", "footer"]
+      "statTile": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statStack"]
       },
+      "statStack": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["statIco", "statVal", "statLbl"]
+      },
+      "statIco": {
+        "type": "Icon",
+        "props": { "name": "BookOpen", "tone": "accent", "size": "sm" }
+      },
+      "statVal": {
+        "type": "Heading",
+        "props": { "text": "5", "level": "h2" }
+      },
+      "statLbl": {
+        "type": "Caption",
+        "props": { "text": "Articles in knowledge base" }
+      },
+
+      "div1": { "type": "Divider" },
 
       "articleList": {
         "type": "Stack",
@@ -60,7 +80,7 @@
 
       "a1": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
+        "props": { "justify": "between", "align": "start", "gap": "md" },
         "children": ["a1left", "a1cat"]
       },
       "a1left": {
@@ -78,12 +98,12 @@
       },
       "a1cat": {
         "type": "Badge",
-        "props": { "text": "Account & Security", "tone": "neutral", "variant": "soft" }
+        "props": { "text": "Account & Security", "tone": "accent", "variant": "soft" }
       },
 
       "a2": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
+        "props": { "justify": "between", "align": "start", "gap": "md" },
         "children": ["a2left", "a2cat"]
       },
       "a2left": {
@@ -101,12 +121,12 @@
       },
       "a2cat": {
         "type": "Badge",
-        "props": { "text": "Billing & Subscriptions", "tone": "neutral", "variant": "soft" }
+        "props": { "text": "Billing & Subscriptions", "tone": "accent", "variant": "soft" }
       },
 
       "a3": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
+        "props": { "justify": "between", "align": "start", "gap": "md" },
         "children": ["a3left", "a3cat"]
       },
       "a3left": {
@@ -124,12 +144,12 @@
       },
       "a3cat": {
         "type": "Badge",
-        "props": { "text": "Billing & Payments", "tone": "neutral", "variant": "soft" }
+        "props": { "text": "Billing & Payments", "tone": "accent", "variant": "soft" }
       },
 
       "a4": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
+        "props": { "justify": "between", "align": "start", "gap": "md" },
         "children": ["a4left", "a4cat"]
       },
       "a4left": {
@@ -147,12 +167,12 @@
       },
       "a4cat": {
         "type": "Badge",
-        "props": { "text": "Account & Security", "tone": "neutral", "variant": "soft" }
+        "props": { "text": "Account & Security", "tone": "accent", "variant": "soft" }
       },
 
       "a5": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
+        "props": { "justify": "between", "align": "start", "gap": "md" },
         "children": ["a5left", "a5cat"]
       },
       "a5left": {
@@ -170,8 +190,10 @@
       },
       "a5cat": {
         "type": "Badge",
-        "props": { "text": "Billing & Subscriptions", "tone": "neutral", "variant": "soft" }
+        "props": { "text": "Billing & Subscriptions", "tone": "accent", "variant": "soft" }
       },
+
+      "div2": { "type": "Divider" },
 
       "footer": {
         "type": "Row",
@@ -195,5 +217,5 @@
       }
     }
   },
-  "status": "draft"
+  "status": "published"
 }
