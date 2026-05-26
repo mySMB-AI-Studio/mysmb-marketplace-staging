@@ -17,7 +17,7 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "body"]
+        "children": ["header", "statsGrid", "div1", "lookupList", "div2", "footer"]
       },
 
       "header": {
@@ -47,19 +47,9 @@
         "props": { "text": "Talkdesk AI Agent · Today" }
       },
 
-      "body": {
-        "type": "Body",
-        "children": ["statsSection", "div1", "lookupList", "div2", "footer"]
-      },
-
-      "statsSection": {
-        "type": "Section",
-        "props": { "variant": "muted" },
-        "children": ["statsRow"]
-      },
-      "statsRow": {
-        "type": "Row",
-        "props": { "gap": "xl" },
+      "statsGrid": {
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "md" },
         "children": ["statTotal", "statResolved", "statEscalated"]
       },
       "statTotal": {
@@ -75,7 +65,7 @@
         "props": { "label": "Escalated", "value": 4 }
       },
 
-      "div1": { "type": "Divider", "props": {} },
+      "div1": { "type": "Divider" },
 
       "lookupList": {
         "type": "Stack",
@@ -198,7 +188,7 @@
         "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
       },
 
-      "div2": { "type": "Divider", "props": {} },
+      "div2": { "type": "Divider" },
 
       "footer": {
         "type": "Row",
