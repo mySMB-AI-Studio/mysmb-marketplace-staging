@@ -17,7 +17,7 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "body"]
+        "children": ["header", "avgTile", "div1", "callList", "div2", "footer"]
       },
 
       "header": {
@@ -44,36 +44,29 @@
       },
       "eyebrow": {
         "type": "Eyebrow",
-        "props": { "text": "Recent scored calls" }
+        "props": { "text": "Talkdesk AI Agent · Recent calls" }
       },
 
-      "body": {
-        "type": "Body",
-        "children": ["statsSection", "callList", "footer"]
-      },
-
-      "statsSection": {
+      "avgTile": {
         "type": "Section",
         "props": { "variant": "muted" },
-        "children": ["statsRow"]
+        "children": ["avgStack"]
       },
-      "statsRow": {
-        "type": "Row",
-        "props": { "gap": "xl" },
-        "children": ["statAvg", "statScored", "statPass"]
+      "avgStack": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["avgVal", "avgLbl"]
       },
-      "statAvg": {
-        "type": "Stat",
-        "props": { "label": "Avg Score", "value": "83", "suffix": "/100" }
+      "avgVal": {
+        "type": "Heading",
+        "props": { "text": "82", "level": "h2" }
       },
-      "statScored": {
-        "type": "Stat",
-        "props": { "label": "Calls Scored", "value": "5" }
+      "avgLbl": {
+        "type": "Caption",
+        "props": { "text": "Avg Score · 5 calls" }
       },
-      "statPass": {
-        "type": "Stat",
-        "props": { "label": "Pass Rate", "value": "80%"  }
-      },
+
+      "div1": { "type": "Divider" },
 
       "callList": {
         "type": "Stack",
@@ -83,118 +76,165 @@
 
       "c1": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
-        "children": ["c1left", "c1badge"]
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["c1info", "c1badges"]
       },
-      "c1left": {
+      "c1info": {
         "type": "Stack",
-        "props": { "gap": "xxs" },
-        "children": ["c1agent", "c1summary"]
+        "props": { "gap": "none" },
+        "children": ["c1name", "c1sub"]
       },
-      "c1agent": {
+      "c1name": {
         "type": "Text",
-        "props": { "text": "Sarah Chen — 92 / A", "size": "sm", "weight": "medium" }
+        "props": { "text": "Alice M.", "size": "sm", "weight": "medium" }
       },
-      "c1summary": {
+      "c1sub": {
         "type": "Caption",
-        "props": { "text": "Excellent empathy and resolution" }
+        "props": { "text": "Support Agent" }
       },
-      "c1badge": {
+      "c1badges": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["c1score", "c1pass"]
+      },
+      "c1score": {
+        "type": "Badge",
+        "props": { "text": "92 / 100", "tone": "positive", "variant": "soft" }
+      },
+      "c1pass": {
         "type": "Badge",
         "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
       },
 
       "c2": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
-        "children": ["c2left", "c2badge"]
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["c2info", "c2badges"]
       },
-      "c2left": {
+      "c2info": {
         "type": "Stack",
-        "props": { "gap": "xxs" },
-        "children": ["c2agent", "c2summary"]
+        "props": { "gap": "none" },
+        "children": ["c2name", "c2sub"]
       },
-      "c2agent": {
+      "c2name": {
         "type": "Text",
-        "props": { "text": "Mark Williams — 78 / B", "size": "sm", "weight": "medium" }
+        "props": { "text": "Bob K.", "size": "sm", "weight": "medium" }
       },
-      "c2summary": {
+      "c2sub": {
         "type": "Caption",
-        "props": { "text": "Good handling, minor script deviation" }
+        "props": { "text": "Support Agent" }
       },
-      "c2badge": {
+      "c2badges": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["c2score", "c2pass"]
+      },
+      "c2score": {
         "type": "Badge",
-        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+        "props": { "text": "74 / 100", "tone": "warning", "variant": "soft" }
+      },
+      "c2pass": {
+        "type": "Badge",
+        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
       },
 
       "c3": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
-        "children": ["c3left", "c3badge"]
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["c3info", "c3badges"]
       },
-      "c3left": {
+      "c3info": {
         "type": "Stack",
-        "props": { "gap": "xxs" },
-        "children": ["c3agent", "c3summary"]
+        "props": { "gap": "none" },
+        "children": ["c3name", "c3sub"]
       },
-      "c3agent": {
+      "c3name": {
         "type": "Text",
-        "props": { "text": "Jessica Park — 95 / A+", "size": "sm", "weight": "medium" }
+        "props": { "text": "Alice M.", "size": "sm", "weight": "medium" }
       },
-      "c3summary": {
+      "c3sub": {
         "type": "Caption",
-        "props": { "text": "Perfect adherence and fast resolution" }
+        "props": { "text": "Support Agent" }
       },
-      "c3badge": {
+      "c3badges": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["c3score", "c3pass"]
+      },
+      "c3score": {
+        "type": "Badge",
+        "props": { "text": "88 / 100", "tone": "positive", "variant": "soft" }
+      },
+      "c3pass": {
         "type": "Badge",
         "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
       },
 
       "c4": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
-        "children": ["c4left", "c4badge"]
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["c4info", "c4badges"]
       },
-      "c4left": {
+      "c4info": {
         "type": "Stack",
-        "props": { "gap": "xxs" },
-        "children": ["c4agent", "c4summary"]
+        "props": { "gap": "none" },
+        "children": ["c4name", "c4sub"]
       },
-      "c4agent": {
+      "c4name": {
         "type": "Text",
-        "props": { "text": "Tom Bradley — 61 / D", "size": "sm", "weight": "medium" }
+        "props": { "text": "Carol T.", "size": "sm", "weight": "medium" }
       },
-      "c4summary": {
+      "c4sub": {
         "type": "Caption",
-        "props": { "text": "Escalation handled poorly, rework needed" }
+        "props": { "text": "Support Agent" }
       },
-      "c4badge": {
+      "c4badges": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["c4score", "c4pass"]
+      },
+      "c4score": {
         "type": "Badge",
-        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
+        "props": { "text": "95 / 100", "tone": "positive", "variant": "soft" }
+      },
+      "c4pass": {
+        "type": "Badge",
+        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
       },
 
       "c5": {
         "type": "Row",
-        "props": { "align": "start", "gap": "md" },
-        "children": ["c5left", "c5badge"]
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["c5info", "c5badges"]
       },
-      "c5left": {
+      "c5info": {
         "type": "Stack",
-        "props": { "gap": "xxs" },
-        "children": ["c5agent", "c5summary"]
+        "props": { "gap": "none" },
+        "children": ["c5name", "c5sub"]
       },
-      "c5agent": {
+      "c5name": {
         "type": "Text",
-        "props": { "text": "Lisa Monroe — 88 / B+", "size": "sm", "weight": "medium" }
+        "props": { "text": "Bob K.", "size": "sm", "weight": "medium" }
       },
-      "c5summary": {
+      "c5sub": {
         "type": "Caption",
-        "props": { "text": "Strong performance, slight hold time" }
+        "props": { "text": "Support Agent" }
       },
-      "c5badge": {
+      "c5badges": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["c5score", "c5pass"]
+      },
+      "c5score": {
         "type": "Badge",
-        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+        "props": { "text": "61 / 100", "tone": "warning", "variant": "soft" }
       },
+      "c5pass": {
+        "type": "Badge",
+        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
+      },
+
+      "div2": { "type": "Divider" },
 
       "footer": {
         "type": "Row",
@@ -204,7 +244,7 @@
       "footerBtn": {
         "type": "Button",
         "props": {
-          "label": "Open QA Dashboard",
+          "label": "Open in Talkdesk",
           "variant": "ghost",
           "size": "sm",
           "leadingIcon": "ExternalLink"
@@ -218,5 +258,5 @@
       }
     }
   },
-  "status": "draft"
+  "status": "published"
 }
