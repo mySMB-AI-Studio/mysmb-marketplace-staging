@@ -2,9 +2,9 @@
 
 Surface **GitHub issues** and **feature roadmaps** (GitHub Projects) on your dashboard, backed by GitHub's official hosted MCP server.
 
-This plugin points at the **read-only** endpoint — `https://api.githubcopilot.com/mcp/readonly` — so it can list and read issues and Projects but never create, edit, or close anything. That keeps the surface area minimal for what is, by design, a reporting plugin. If you later want write access, switch the URL in `.mcp.json` to `https://api.githubcopilot.com/mcp/` and grant your token the matching scopes.
+This plugin points at the **read-only** endpoint — `https://api.githubcopilot.com/mcp/readonly` — so it can list and read issues and Projects but never create, edit, or close anything. That keeps the surface area minimal for what is, by design, a reporting plugin. If you later want write access, switch the URL in `.mcp.json` to `https://api.githubcopilot.com/mcp/`.
 
-The server acts on your behalf using a personal access token, so it only ever sees repositories and Projects your own GitHub account can access.
+Authentication is **browser OAuth**: each user signs in to GitHub and the server only ever sees repositories and Projects that user can already access.
 
 ## Widgets
 
@@ -17,13 +17,21 @@ Both widgets ship with example defaults (`owner: mySMB-AI-Studio`, `repo: mysmb-
 
 ## Configuration
 
-Connect with a GitHub personal access token. A **fine-grained** token scoped to the repositories you care about is recommended; a classic token works too.
+There are no per-user secrets to enter — users connect through GitHub's OAuth flow. However, **GitHub's OAuth server does not support dynamic client registration**, so an administrator must pre-register an OAuth client once and configure it in myHub before anyone can connect. Without this you will see: *"Dynamic client registration failed … This server may require a pre-registered OAuth app."*
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GITHUB_PAT` | Yes | GitHub personal access token. Create it under **Settings → Developer settings → Personal access tokens**. Fine-grained: grant **Issues → Read-only** and **Projects → Read-only** on the target repositories. Classic: the `repo` and `read:project` scopes. Sent as `Authorization: Bearer <token>`. |
+### One-time admin setup on GitHub
 
-> Prefer OAuth? GitHub's remote server also supports browser OAuth — drop the `Authorization` header from `.mcp.json` and let your MCP host handle the OAuth flow. The PAT path above is the self-contained default that needs no extra host configuration.
+1. Create a **GitHub OAuth App** (*Settings → Developer settings → OAuth Apps → New OAuth App*) or, for least-privilege per-repo access, a **GitHub App**.
+2. Set the **Authorization callback URL** to myHub's OAuth redirect URI for this connection (copy the exact value from myHub's connection/connector setup screen).
+3. Generate a **Client Secret** and note the **Client ID**.
+4. The OAuth endpoints are GitHub's standard ones:
+   - Authorization: `https://github.com/login/oauth/authorize`
+   - Token: `https://github.com/login/oauth/access_token`
+5. Suggested scopes for read-only issues + Projects: `read:project`, `read:org`, and `repo` (or `public_repo` if you only need public repositories).
+
+### Configure in myHub
+
+Register the **Client ID** and **Client Secret** from step 3 as the pre-registered OAuth client for the `github` connection (a myHub deployment secret — **do not commit these to this repo**). This tells myHub to use the static client instead of attempting dynamic registration.
 
 ## Tools used by this plugin
 
@@ -40,5 +48,5 @@ None. This plugin uses the read-only endpoint and ships no write actions.
 
 - [GitHub MCP Server](https://github.com/github/github-mcp-server)
 - [Remote GitHub MCP Server docs](https://github.com/github/github-mcp-server/blob/main/docs/remote-server.md)
-- [Managing your personal access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+- [Creating a GitHub OAuth App](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app)
 - [About GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)

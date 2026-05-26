@@ -1,25 +1,15 @@
 {
   "name": "github",
   "version": "0.1.0",
-  "description": "Read GitHub issues and feature roadmaps (Projects) via GitHub's official hosted MCP server. Read-only endpoint, personal-access-token auth.",
+  "description": "Read GitHub issues and feature roadmaps (Projects) via GitHub's official hosted MCP server. Read-only HTTP endpoint, browser OAuth.",
   "author": { "name": "mySMB AI Studio" },
   "homepage": "https://github.com/mySMB-AI-Studio/mysmb-marketplace/tree/main/plugins/github",
   "license": "MIT",
-  "keywords": ["github", "issues", "projects", "roadmap", "engineering", "dev", "smb"],
+  "keywords": ["github", "issues", "projects", "roadmap", "engineering", "dev", "oauth", "smb"],
   "connection": {
-    "authType": "api_key",
-    "instructions": "Connect with a GitHub **personal access token** — the MCP server only ever sees repositories and Projects your own token can access.\n\n1. On GitHub, open **Settings → Developer settings → Personal access tokens → Fine-grained tokens** (or *Tokens (classic)*).\n2. Click **Generate new token**. Grant read access to the repositories whose issues and Projects you want to surface (fine-grained: *Issues → Read-only* and *Projects → Read-only*; classic: the `repo` and `read:project` scopes).\n3. Copy the token and paste it below.\n\nWe call the read-only GitHub MCP endpoint, so the token is never used to write.",
-    "docUrl": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens",
-    "fields": [
-      {
-        "name": "GITHUB_PAT",
-        "label": "GitHub personal access token",
-        "type": "password",
-        "required": true,
-        "placeholder": "github_pat_xxxxxxxxxxxxxxxxxxxx",
-        "helpText": "Settings → Developer settings → Personal access tokens. Needs read access to Issues and Projects."
-      }
-    ]
+    "authType": "oauth",
+    "instructions": "Connect by signing in to GitHub in your browser, then authorise read access to the repositories and Projects you want to surface.\n\nGitHub does not support dynamic client registration, so a myHub administrator must first register a GitHub OAuth App (or GitHub App) and configure its client ID and secret in myHub — see the plugin README. Once that's in place, each user authorises individually and the server only sees data that user can already access on GitHub.",
+    "docUrl": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
   },
   "widgets": "widgets",
   "widgetElements": "widget-elements/dist/index.js"
