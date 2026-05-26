@@ -64,18 +64,18 @@
       },
       "statTotal": {
         "type": "Stat",
-        "props": { "label": "Lookups", "value": "18" }
+        "props": { "label": "Lookups", "value": 18 }
       },
       "statResolved": {
         "type": "Stat",
-        "props": { "label": "Resolved", "value": "14" }
+        "props": { "label": "Resolved", "value": 14 }
       },
       "statEscalated": {
         "type": "Stat",
-        "props": { "label": "Escalated", "value": "4" }
+        "props": { "label": "Escalated", "value": 4 }
       },
 
-      "div1": { "type": "Divider" },
+      "div1": { "type": "Divider", "props": {} },
 
       "lookupList": {
         "type": "Stack",
@@ -198,7 +198,7 @@
         "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
       },
 
-      "div2": { "type": "Divider" },
+      "div2": { "type": "Divider", "props": {} },
 
       "footer": {
         "type": "Row",
