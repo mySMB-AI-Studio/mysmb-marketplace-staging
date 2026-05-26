@@ -61,7 +61,11 @@
       "stackLookups": {
         "type": "Stack",
         "props": { "gap": "xxs", "align": "center" },
-        "children": ["valLookups", "lblLookups"]
+        "children": ["icoLookups", "valLookups", "lblLookups"]
+      },
+      "icoLookups": {
+        "type": "Icon",
+        "props": { "name": "Search", "tone": "accent", "size": "sm" }
       },
       "valLookups": {
         "type": "Heading",
@@ -80,7 +84,11 @@
       "stackResolved": {
         "type": "Stack",
         "props": { "gap": "xxs", "align": "center" },
-        "children": ["valResolved", "lblResolved"]
+        "children": ["icoResolved", "valResolved", "lblResolved"]
+      },
+      "icoResolved": {
+        "type": "Icon",
+        "props": { "name": "CheckCircle2", "tone": "positive", "size": "sm" }
       },
       "valResolved": {
         "type": "Heading",
@@ -99,7 +107,11 @@
       "stackEscalated": {
         "type": "Stack",
         "props": { "gap": "xxs", "align": "center" },
-        "children": ["valEscalated", "lblEscalated"]
+        "children": ["icoEscalated", "valEscalated", "lblEscalated"]
+      },
+      "icoEscalated": {
+        "type": "Icon",
+        "props": { "name": "AlertTriangle", "tone": "warning", "size": "sm" }
       },
       "valEscalated": {
         "type": "Heading",
@@ -138,7 +150,7 @@
       },
       "r1badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "positive" }
       },
 
       "r2": {
@@ -161,7 +173,7 @@
       },
       "r2badge": {
         "type": "Badge",
-        "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
+        "props": { "text": "Escalated", "tone": "warning" }
       },
 
       "r3": {
@@ -184,7 +196,7 @@
       },
       "r3badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "positive" }
       },
 
       "r4": {
@@ -207,7 +219,7 @@
       },
       "r4badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "positive" }
       },
 
       "r5": {
@@ -230,7 +242,7 @@
       },
       "r5badge": {
         "type": "Badge",
-        "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
+        "props": { "text": "Escalated", "tone": "warning" }
       },
 
       "div2": { "type": "Divider" },

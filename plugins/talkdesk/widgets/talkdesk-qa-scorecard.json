@@ -55,7 +55,11 @@
       "avgStack": {
         "type": "Stack",
         "props": { "gap": "xxs", "align": "center" },
-        "children": ["avgVal", "avgLbl"]
+        "children": ["avgIco", "avgVal", "avgLbl"]
+      },
+      "avgIco": {
+        "type": "Icon",
+        "props": { "name": "BarChart2", "tone": "accent", "size": "sm" }
       },
       "avgVal": {
         "type": "Heading",
@@ -99,11 +103,11 @@
       },
       "c1score": {
         "type": "Badge",
-        "props": { "text": "92 / 100", "tone": "positive", "variant": "soft" }
+        "props": { "text": "92 / 100", "tone": "positive" }
       },
       "c1pass": {
         "type": "Badge",
-        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Pass", "tone": "positive" }
       },
 
       "c2": {
@@ -131,11 +135,11 @@
       },
       "c2score": {
         "type": "Badge",
-        "props": { "text": "74 / 100", "tone": "warning", "variant": "soft" }
+        "props": { "text": "74 / 100", "tone": "destructive" }
       },
       "c2pass": {
         "type": "Badge",
-        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
+        "props": { "text": "Fail", "tone": "destructive" }
       },
 
       "c3": {
@@ -163,11 +167,11 @@
       },
       "c3score": {
         "type": "Badge",
-        "props": { "text": "88 / 100", "tone": "positive", "variant": "soft" }
+        "props": { "text": "88 / 100", "tone": "positive" }
       },
       "c3pass": {
         "type": "Badge",
-        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Pass", "tone": "positive" }
       },
 
       "c4": {
@@ -195,11 +199,11 @@
       },
       "c4score": {
         "type": "Badge",
-        "props": { "text": "95 / 100", "tone": "positive", "variant": "soft" }
+        "props": { "text": "95 / 100", "tone": "positive" }
       },
       "c4pass": {
         "type": "Badge",
-        "props": { "text": "Pass", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Pass", "tone": "positive" }
       },
 
       "c5": {
@@ -227,11 +231,11 @@
       },
       "c5score": {
         "type": "Badge",
-        "props": { "text": "61 / 100", "tone": "warning", "variant": "soft" }
+        "props": { "text": "61 / 100", "tone": "destructive" }
       },
       "c5pass": {
         "type": "Badge",
-        "props": { "text": "Fail", "tone": "warning", "variant": "soft" }
+        "props": { "text": "Fail", "tone": "destructive" }
       },
 
       "div2": { "type": "Divider" },
