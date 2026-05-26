@@ -49,20 +49,65 @@
 
       "statsGrid": {
         "type": "Grid",
-        "props": { "cols": 3, "gap": "md" },
-        "children": ["statTotal", "statResolved", "statEscalated"]
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["tileLookups", "tileResolved", "tileEscalated"]
       },
-      "statTotal": {
-        "type": "Stat",
-        "props": { "label": "Lookups", "value": 18 }
+
+      "tileLookups": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackLookups"]
       },
-      "statResolved": {
-        "type": "Stat",
-        "props": { "label": "Resolved", "value": 14 }
+      "stackLookups": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valLookups", "lblLookups"]
       },
-      "statEscalated": {
-        "type": "Stat",
-        "props": { "label": "Escalated", "value": 4 }
+      "valLookups": {
+        "type": "Heading",
+        "props": { "text": "18", "level": "h2" }
+      },
+      "lblLookups": {
+        "type": "Caption",
+        "props": { "text": "Lookups" }
+      },
+
+      "tileResolved": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackResolved"]
+      },
+      "stackResolved": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valResolved", "lblResolved"]
+      },
+      "valResolved": {
+        "type": "Heading",
+        "props": { "text": "14", "level": "h2" }
+      },
+      "lblResolved": {
+        "type": "Caption",
+        "props": { "text": "Resolved" }
+      },
+
+      "tileEscalated": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackEscalated"]
+      },
+      "stackEscalated": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valEscalated", "lblEscalated"]
+      },
+      "valEscalated": {
+        "type": "Heading",
+        "props": { "text": "4", "level": "h2" }
+      },
+      "lblEscalated": {
+        "type": "Caption",
+        "props": { "text": "Escalated" }
       },
 
       "div1": { "type": "Divider" },
