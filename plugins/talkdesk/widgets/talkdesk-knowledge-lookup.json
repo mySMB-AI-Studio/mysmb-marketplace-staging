@@ -31,7 +31,7 @@
       },
       "titleIcon": {
         "type": "Icon",
-        "props": { "name": "BookOpen", "tone": "accent", "size": "sm" }
+        "props": { "name": "Headphones", "tone": "accent", "size": "sm" }
       },
       "titleStack": {
         "type": "Stack",
