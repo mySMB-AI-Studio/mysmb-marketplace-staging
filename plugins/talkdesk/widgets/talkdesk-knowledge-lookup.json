@@ -44,12 +44,12 @@
       },
       "eyebrow": {
         "type": "Eyebrow",
-        "props": { "text": "5 lookups today" }
+        "props": { "text": "Talkdesk AI Agent · Today" }
       },
 
       "body": {
         "type": "Body",
-        "children": ["statsSection", "lookupList", "footer"]
+        "children": ["statsSection", "div1", "lookupList", "div2", "footer"]
       },
 
       "statsSection": {
@@ -64,16 +64,18 @@
       },
       "statTotal": {
         "type": "Stat",
-        "props": { "label": "Lookups", "value": "5" }
+        "props": { "label": "Lookups", "value": "18" }
       },
       "statResolved": {
         "type": "Stat",
-        "props": { "label": "Resolved", "value": "3" }
+        "props": { "label": "Resolved", "value": "14" }
       },
       "statEscalated": {
         "type": "Stat",
-        "props": { "label": "Escalated", "value": "2" }
+        "props": { "label": "Escalated", "value": "4" }
       },
+
+      "div1": { "type": "Divider" },
 
       "lookupList": {
         "type": "Stack",
@@ -196,6 +198,8 @@
         "props": { "text": "Escalated", "tone": "warning", "variant": "soft" }
       },
 
+      "div2": { "type": "Divider" },
+
       "footer": {
         "type": "Row",
         "props": { "justify": "end", "gap": "xs", "align": "center" },
@@ -218,5 +222,5 @@
       }
     }
   },
-  "status": "draft"
+  "status": "published"
 }
