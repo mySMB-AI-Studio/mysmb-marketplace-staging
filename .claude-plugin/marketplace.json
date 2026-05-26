@@ -33,11 +33,11 @@
     {
       "name": "dataverse",
       "displayName": "Microsoft Dataverse",
-      "description": "Microsoft Dataverse / Dynamics 365 Sales via the myHub-hosted OAuth MCP gateway. 38 tools across accounts, contacts, leads, and opportunities — CRUD plus first-class Sales actions (qualify lead, win/lose opportunity, merge, assign), activities, notes, FetchXML, and metadata. Multi-environment auto-discovered at sign-in.",
+      "description": "Microsoft Dataverse / Dynamics 365 Sales & Customer Service via the myHub-hosted OAuth MCP gateway. 50+ tools across accounts, contacts, leads, opportunities, cases, queues, knowledge articles, entitlements, and SLAs — CRUD, Sales actions, CS actions (resolve/reopen cases, queue management), FetchXML, and metadata. Multi-environment auto-discovered at sign-in.",
       "category": "crm",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "mySMB AI Studio" },
-      "tags": ["dataverse", "dynamics-365", "sales", "crm", "leads", "opportunities", "microsoft", "oauth", "smb"],
+      "tags": ["dataverse", "dynamics-365", "sales", "crm", "leads", "opportunities", "cases", "customer-service", "knowledge", "microsoft", "oauth", "smb"],
       "source": "./plugins/dataverse",
       "widgets": "widgets",
       "widgetElements": "widget-elements/dist/index.js"

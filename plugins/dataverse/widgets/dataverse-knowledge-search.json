@@ -1,0 +1,57 @@
+{
+  "id": "dataverse-knowledge-search",
+  "title": "D365 Knowledge Search",
+  "description": "Search published Dynamics 365 knowledge articles — the same knowledge base agents use to resolve cases.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "knowledge", "articles", "support", "customer-service"],
+  "keywords": ["knowledge base", "articles", "search", "faq", "dynamics", "d365", "customer service"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "min":       { "colSpan": 4, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "search_knowledge_articles",
+    "params": { "query": "common issues", "top": 5 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "list"]
+      },
+      "header": {
+        "type": "Header",
+        "props": {
+          "title": "D365 Knowledge Search",
+          "subtitle": "Published articles from Dynamics 365"
+        }
+      },
+      "list": {
+        "type": "Stack",
+        "repeat": {
+          "statePath": "/dataverse/search_knowledge_articles/articles",
+          "key": "knowledgearticleid"
+        },
+        "children": ["row"]
+      },
+      "row": {
+        "type": "Stack",
+        "props": { "gap": "xs" },
+        "children": ["artTitle", "artDesc"]
+      },
+      "artTitle": {
+        "type": "Text",
+        "props": { "text": { "$item": "title" }, "weight": "bold" }
+      },
+      "artDesc": {
+        "type": "Caption",
+        "props": { "text": { "$item": "description" } }
+      }
+    }
+  }
+}

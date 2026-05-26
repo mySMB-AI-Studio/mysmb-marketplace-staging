@@ -1,0 +1,71 @@
+{
+  "id": "dataverse-active-cases",
+  "title": "Active Cases",
+  "description": "Open Dynamics 365 Customer Service cases — title, priority, status, and time created.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "cases", "incidents", "customer-service", "support"],
+  "keywords": ["cases", "incidents", "open cases", "support queue", "customer service", "d365"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "min":       { "colSpan": 4, "rowSpan": 4 },
+    "max":       { "colSpan": 10, "rowSpan": 10 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "list_cases",
+    "params": {
+      "filter": "statecode eq 0",
+      "select": "incidentid,title,ticketnumber,prioritycode,statecode,statuscode,createdon",
+      "orderby": "createdon desc",
+      "top": 10
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "children": ["header", "list"]
+      },
+      "header": {
+        "type": "Header",
+        "props": {
+          "title": "Active Cases",
+          "subtitle": "Open D365 Customer Service cases"
+        }
+      },
+      "list": {
+        "type": "Stack",
+        "repeat": {
+          "statePath": "/dataverse/list_cases/items",
+          "key": "incidentid"
+        },
+        "children": ["row"]
+      },
+      "row": {
+        "type": "Row",
+        "props": { "gap": "sm" },
+        "children": ["caseLeft", "casePriority"]
+      },
+      "caseLeft": {
+        "type": "Stack",
+        "props": { "gap": "xs", "grow": true },
+        "children": ["caseTitle", "caseMeta"]
+      },
+      "caseTitle": {
+        "type": "Text",
+        "props": { "text": { "$item": "title" }, "weight": "bold" }
+      },
+      "caseMeta": {
+        "type": "Caption",
+        "props": { "text": { "$item": "ticketnumber" } }
+      },
+      "casePriority": {
+        "type": "Badge",
+        "props": { "label": { "$item": "prioritycode" } }
+      }
+    }
+  }
+}
