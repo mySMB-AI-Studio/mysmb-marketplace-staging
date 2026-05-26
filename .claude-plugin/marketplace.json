@@ -9,6 +9,18 @@
   "homepage": "https://github.com/mySMB-AI-Studio/mysmb-marketplace",
   "plugins": [
     {
+      "name": "github",
+      "displayName": "GitHub",
+      "description": "Read GitHub issues and feature roadmaps (Projects) via GitHub's official hosted MCP server. Read-only HTTP endpoint, personal-access-token auth. Ships Issues and Feature Roadmap widgets.",
+      "category": "engineering",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["github", "issues", "projects", "roadmap", "engineering", "dev", "smb"],
+      "source": "./plugins/github",
+      "widgets": "widgets",
+      "widgetElements": "widget-elements/dist/index.js"
+    },
+    {
       "name": "deskcrm",
       "displayName": "deskcrm",
       "description": "Lightweight SMB CRM backed by an Excel workbook. Stores contacts and accounts in Contacts and Accounts sheets and exposes CRUD operations over a stdio MCP server. Primarily used for testing the marketplace and plugin lifecycle.",

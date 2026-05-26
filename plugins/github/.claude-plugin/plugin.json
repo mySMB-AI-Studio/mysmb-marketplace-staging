@@ -1,0 +1,26 @@
+{
+  "name": "github",
+  "version": "0.1.0",
+  "description": "Read GitHub issues and feature roadmaps (Projects) via GitHub's official hosted MCP server. Read-only endpoint, personal-access-token auth.",
+  "author": { "name": "mySMB AI Studio" },
+  "homepage": "https://github.com/mySMB-AI-Studio/mysmb-marketplace/tree/main/plugins/github",
+  "license": "MIT",
+  "keywords": ["github", "issues", "projects", "roadmap", "engineering", "dev", "smb"],
+  "connection": {
+    "authType": "api_key",
+    "instructions": "Connect with a GitHub **personal access token** — the MCP server only ever sees repositories and Projects your own token can access.\n\n1. On GitHub, open **Settings → Developer settings → Personal access tokens → Fine-grained tokens** (or *Tokens (classic)*).\n2. Click **Generate new token**. Grant read access to the repositories whose issues and Projects you want to surface (fine-grained: *Issues → Read-only* and *Projects → Read-only*; classic: the `repo` and `read:project` scopes).\n3. Copy the token and paste it below.\n\nWe call the read-only GitHub MCP endpoint, so the token is never used to write.",
+    "docUrl": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens",
+    "fields": [
+      {
+        "name": "GITHUB_PAT",
+        "label": "GitHub personal access token",
+        "type": "password",
+        "required": true,
+        "placeholder": "github_pat_xxxxxxxxxxxxxxxxxxxx",
+        "helpText": "Settings → Developer settings → Personal access tokens. Needs read access to Issues and Projects."
+      }
+    ]
+  },
+  "widgets": "widgets",
+  "widgetElements": "widget-elements/dist/index.js"
+}
