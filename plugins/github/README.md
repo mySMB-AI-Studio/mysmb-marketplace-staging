@@ -2,7 +2,10 @@
 
 Surface **GitHub issues** and **feature roadmaps** (GitHub Projects) on your dashboard, backed by GitHub's official hosted MCP server.
 
-This plugin points at the **read-only** endpoint — `https://api.githubcopilot.com/mcp/readonly` — so it can list and read issues and Projects but never create, edit, or close anything. That keeps the surface area minimal for what is, by design, a reporting plugin. If you later want write access, switch the URL in `.mcp.json` to `https://api.githubcopilot.com/mcp/`.
+This plugin talks to the base server `https://api.githubcopilot.com/mcp/` and selects exactly the toolsets the widgets need, in read-only mode, via headers in `.mcp.json`:
+
+- `X-MCP-Readonly: true` — only read tools are exposed; the plugin can never create, edit, or close anything (it's a reporting plugin by design).
+- `X-MCP-Toolsets: issues,projects` — enables the `issues` and `projects` toolsets. The default endpoint bundle doesn't include `projects`, so the Feature Roadmap widget's `projects_list` tool is only available once this header opts the toolset in. Add more toolsets (comma-separated) if you extend the plugin; drop `X-MCP-Readonly` if you ever need write tools.
 
 Authentication is **browser OAuth with a bring-your-own client** (`oauth_client`): each user pastes a GitHub OAuth app's Client ID + Secret into the Connect dialog, then signs in to GitHub. The server only ever sees repositories and Projects that user can already access.
 
