@@ -250,6 +250,87 @@
       "tags": ["talkdesk", "call-centre", "qa", "knowledge", "support", "demo", "smb"],
       "source": "./plugins/talkdesk-demo",
       "widgets": "widgets"
+    },
+    {
+      "name": "sprout-employee",
+      "displayName": "Sprout Employee",
+      "description": "Manage Sprout employee 201 records via the myHub-hosted Sprout MCP gateway. List/create/update employees and their work, payroll, contact, government and schedule sections; search; prevalidate; and resolve employee lookups. Machine-to-machine OAuth — paste your Sprout client id/secret, no bearer token.",
+      "category": "hr",
+      "version": "0.1.0",
+      "author": {
+        "name": "mySMB AI Studio"
+      },
+      "tags": [
+        "sprout",
+        "hr",
+        "employees",
+        "201-file",
+        "philippines",
+        "payroll"
+      ],
+      "source": "./plugins/sprout-employee",
+      "widgets": "widgets"
+    },
+    {
+      "name": "sprout-hr-general",
+      "displayName": "Sprout HR General",
+      "description": "Read Sprout HR General reference data and admin configuration via the myHub-hosted Sprout MCP gateway: companies, departments, locations, clients, employee/benefit/visa/asset lookups, company policies, access levels (roles), and notification settings.",
+      "category": "hr",
+      "version": "0.1.0",
+      "author": {
+        "name": "mySMB AI Studio"
+      },
+      "tags": [
+        "sprout",
+        "hr",
+        "companies",
+        "departments",
+        "access-levels",
+        "philippines"
+      ],
+      "source": "./plugins/sprout-hr-general",
+      "widgets": "widgets"
+    },
+    {
+      "name": "sprout-time-attendance",
+      "displayName": "Sprout Time & Attendance",
+      "description": "Manage Sprout time & attendance via the myHub-hosted Sprout MCP gateway: attendance (DTR) logs, leave/overtime/undertime/official-business requests, approvals, leave credits, and schedules. Submit requests with create_requests; push biometric logs in batches.",
+      "category": "hr",
+      "version": "0.1.0",
+      "author": {
+        "name": "mySMB AI Studio"
+      },
+      "tags": [
+        "sprout",
+        "time-and-attendance",
+        "dtr",
+        "timekeeping",
+        "leave",
+        "overtime",
+        "philippines"
+      ],
+      "source": "./plugins/sprout-time-attendance",
+      "widgets": "widgets"
+    },
+    {
+      "name": "sprout-payroll",
+      "displayName": "Sprout Payroll",
+      "description": "Work with Sprout payroll via the myHub-hosted Sprout MCP gateway: one-time external adjustments (earnings/deductions), overtime rates, payroll runs, approved payroll per employee, and report downloads (payroll summary, payslip PDF, BIR Form 2316).",
+      "category": "payroll",
+      "version": "0.1.0",
+      "author": {
+        "name": "mySMB AI Studio"
+      },
+      "tags": [
+        "sprout",
+        "payroll",
+        "adjustments",
+        "payslip",
+        "bir-2316",
+        "philippines"
+      ],
+      "source": "./plugins/sprout-payroll",
+      "widgets": "widgets"
     }
   ]
 }
