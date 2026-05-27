@@ -48,7 +48,7 @@
       },
       "brandBadge": {
         "type": "Badge",
-        "props": { "label": "Dynamics 365", "tone": "info", "variant": "soft" }
+        "props": { "label": "Dynamics 365", "tone": "info" }
       },
 
       "statsGrid": {
