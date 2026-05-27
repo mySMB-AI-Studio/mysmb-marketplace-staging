@@ -40,7 +40,7 @@
       },
       "brandBadge": {
         "type": "Badge",
-        "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" }
+        "props": { "label": "talkdesk", "tone": "success", "variant": "soft" }
       },
 
       "div1": { "type": "Divider" },

@@ -17,12 +17,7 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["header", "avgTile", "div1", "callList", "div2", "footer"]
-      },
-
-      "header": {
-        "type": "Header",
-        "children": ["headerRow"]
+        "children": ["headerRow", "avgTile", "div1", "callList", "div2", "footer"]
       },
       "headerRow": {
         "type": "Row",
@@ -53,7 +48,7 @@
       },
       "brandBadge": {
         "type": "Badge",
-        "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" }
+        "props": { "label": "talkdesk", "tone": "success", "variant": "soft" }
       },
 
       "avgTile": {
