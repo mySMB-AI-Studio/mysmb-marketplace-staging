@@ -221,7 +221,7 @@ function validateConnection(
     return;
   }
   const c = connection;
-  const VALID = new Set(["oauth", "api_key", "none"]);
+  const VALID = new Set(["oauth", "oauth_client", "api_key", "none"]);
   if (!c.authType || !VALID.has(c.authType)) {
     fail(
       `plugins/${pluginDirName}: connection.authType "${c.authType}" must be one of ${[...VALID].join(", ")}`,
@@ -233,13 +233,22 @@ function validateConnection(
   if (c.instructions !== undefined && typeof c.instructions !== "string") {
     fail(`plugins/${pluginDirName}: connection.instructions must be a string`);
   }
-  if (c.authType === "api_key") {
+
+  // Both api_key and oauth_client render a field modal, so they share field
+  // shape + documentation validation. They differ in two ways:
+  //   - api_key fields must map to a ${VAR} placeholder in .mcp.json (the
+  //     value is injected into the server's env/headers). oauth_client values
+  //     are consumed by the OAuth flow, never injected, so no placeholder.
+  //   - oauth_client must mark exactly one field role:"client_id" and one
+  //     role:"client_secret" so the connect flow knows which is which.
+  if (c.authType === "api_key" || c.authType === "oauth_client") {
     if (!Array.isArray(c.fields) || c.fields.length === 0) {
       fail(
-        `plugins/${pluginDirName}: connection.authType "api_key" requires a non-empty "fields" array`,
+        `plugins/${pluginDirName}: connection.authType "${c.authType}" requires a non-empty "fields" array`,
       );
       return;
     }
+    const roleCounts: Record<string, number> = { client_id: 0, client_secret: 0 };
     for (const field of c.fields) {
       if (!field || typeof field !== "object") {
         fail(`plugins/${pluginDirName}: each connection field must be an object`);
@@ -259,10 +268,19 @@ function validateConnection(
           `plugins/${pluginDirName}: connection field "${field.name}" type must be "password" or "text"`,
         );
       }
-      // The field must actually be wired: its name has to appear as a
-      // ${VAR} placeholder in some MCP server env/headers, else the
-      // value the user types never reaches the server.
-      if (!allPlaceholders.has(field.name)) {
+      if (field.role !== undefined && field.role !== "client_id" && field.role !== "client_secret") {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" role must be "client_id" or "client_secret"`,
+        );
+      }
+      if (field.role === "client_id" || field.role === "client_secret") {
+        roleCounts[field.role]++;
+      }
+      // api_key only: the field must actually be wired — its name has to
+      // appear as a ${VAR} placeholder in some MCP server env/headers, else
+      // the value the user types never reaches the server. oauth_client
+      // values flow through the OAuth ceremony, not the server config.
+      if (c.authType === "api_key" && !allPlaceholders.has(field.name)) {
         fail(
           `plugins/${pluginDirName}: connection field "${field.name}" has no matching \${${field.name}} placeholder in .mcp.json env/headers`,
         );
@@ -270,6 +288,20 @@ function validateConnection(
       if (!documentedVars.has(field.name)) {
         fail(
           `plugins/${pluginDirName}: connection field "${field.name}" is not documented under a "Configuration" heading in README.md`,
+        );
+      }
+    }
+    // oauth_client needs exactly one of each role so the connect flow can map
+    // entered values to client_id / client_secret unambiguously.
+    if (c.authType === "oauth_client") {
+      if (roleCounts.client_id !== 1) {
+        fail(
+          `plugins/${pluginDirName}: connection.authType "oauth_client" needs exactly one field with role "client_id" (found ${roleCounts.client_id})`,
+        );
+      }
+      if (roleCounts.client_secret !== 1) {
+        fail(
+          `plugins/${pluginDirName}: connection.authType "oauth_client" needs exactly one field with role "client_secret" (found ${roleCounts.client_secret})`,
         );
       }
     }
