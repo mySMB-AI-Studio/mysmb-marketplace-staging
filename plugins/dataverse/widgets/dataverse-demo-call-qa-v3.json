@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-demo-call-qa-v2",
+  "id": "dataverse-demo-call-qa-v3",
   "title": "Call QA Scorecard (Demo)",
   "description": "Demo — recent call QA scores from Dynamics 365 with static sample data.",
   "category": "support",
@@ -22,7 +22,7 @@
       "headerRow": {
         "type": "Row",
         "props": { "justify": "between", "align": "center" },
-        "children": ["titleGroup", "brandBadge"]
+        "children": ["titleGroup"]
       },
       "titleGroup": {
         "type": "Row",
@@ -33,7 +33,6 @@
       "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
       "title": { "type": "Heading", "props": { "text": "Call QA Scorecard", "level": "h2" } },
       "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service · Demo" } },
-      "brandBadge": { "type": "Badge", "props": { "label": "Dynamics 365", "tone": "info" } },
 
       "statsGrid": {
         "type": "Grid",
