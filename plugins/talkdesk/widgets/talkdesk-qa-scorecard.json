@@ -22,13 +22,12 @@
 
       "header": {
         "type": "Header",
-        "props": { "actions": [{ "type": "Badge", "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" } }] },
         "children": ["titleGroup"]
       },
       "titleGroup": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "start" },
-        "children": ["titleIcon", "titleStack"]
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["titleIcon", "titleStack", "brandBadge"]
       },
       "titleIcon": {
         "type": "Icon",
@@ -36,8 +35,12 @@
       },
       "titleStack": {
         "type": "Stack",
-        "props": { "gap": "none" },
+        "props": { "gap": "none", "grow": true },
         "children": ["title", "eyebrow"]
+      },
+      "brandBadge": {
+        "type": "Badge",
+        "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" }
       },
       "title": {
         "type": "Heading",
