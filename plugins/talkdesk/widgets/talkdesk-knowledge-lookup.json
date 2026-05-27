@@ -26,8 +26,17 @@
       },
       "titleGroup": {
         "type": "Row",
+        "props": { "gap": "sm", "align": "center", "justify": "between" },
+        "children": ["titleLeft", "brandBadge"]
+      },
+      "titleLeft": {
+        "type": "Row",
         "props": { "gap": "sm", "align": "start" },
         "children": ["titleIcon", "titleStack"]
+      },
+      "brandBadge": {
+        "type": "Badge",
+        "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" }
       },
       "titleIcon": {
         "type": "Icon",

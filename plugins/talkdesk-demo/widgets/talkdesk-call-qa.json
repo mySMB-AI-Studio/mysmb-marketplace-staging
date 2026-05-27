@@ -21,7 +21,11 @@
       },
       "header": {
         "type": "Header",
-        "props": { "title": "Call QA Scorecard", "subtitle": "Recent scored calls" }
+        "props": {
+          "title": "Call QA Scorecard",
+          "subtitle": "Recent scored calls",
+          "actions": [{ "type": "Badge", "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" } }]
+        }
       },
       "avg": {
         "type": "Stat",

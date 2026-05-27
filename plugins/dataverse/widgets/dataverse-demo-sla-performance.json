@@ -20,10 +20,13 @@
         "children": ["header", "statsGrid", "div1", "slaList", "div2", "footer"]
       },
 
-      "header": { "type": "Header", "children": ["titleRow"] },
-      "titleRow": {
+      "header": {
+        "type": "Header",
+        "children": ["titleGroup"]
+      },
+      "titleGroup": {
         "type": "Row",
-        "props": { "justify": "between", "align": "center" },
+        "props": { "gap": "sm", "align": "center", "justify": "between" },
         "children": ["titleLeft", "brandBadge"]
       },
       "titleLeft": {
@@ -31,27 +34,70 @@
         "props": { "gap": "sm", "align": "start" },
         "children": ["titleIcon", "titleStack"]
       },
-      "titleIcon": { "type": "Icon", "props": { "name": "Clock", "tone": "accent", "size": "sm" } },
-      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
-      "title": { "type": "Heading", "props": { "text": "SLA Performance", "level": "h2" } },
-      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service · Demo" } },
-      "brandBadge": { "type": "Badge", "props": { "text": "Dynamics 365", "variant": "soft" } },
+      "brandBadge": {
+        "type": "Badge",
+        "props": { "text": "Dynamics 365", "tone": "info", "variant": "soft" }
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": { "name": "Clock", "tone": "accent", "size": "sm" }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["title", "eyebrow"]
+      },
+      "title": {
+        "type": "Heading",
+        "props": { "text": "SLA Performance", "level": "h2" }
+      },
+      "eyebrow": {
+        "type": "Eyebrow",
+        "props": { "text": "Dynamics 365 Customer Service · Demo" }
+      },
 
       "statsGrid": {
         "type": "Grid",
         "props": { "cols": 3, "gap": "sm" },
         "children": ["tileActive", "tileAtRisk", "tileBreached"]
       },
-      "tileActive": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackActive"] },
-      "stackActive": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valActive", "lblActive"] },
+
+      "tileActive": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackActive"]
+      },
+      "stackActive": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valActive", "lblActive"]
+      },
       "valActive": { "type": "Heading", "props": { "text": "5", "level": "h2" } },
       "lblActive": { "type": "Caption", "props": { "text": "Active" } },
-      "tileAtRisk": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackAtRisk"] },
-      "stackAtRisk": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valAtRisk", "lblAtRisk"] },
+
+      "tileAtRisk": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackAtRisk"]
+      },
+      "stackAtRisk": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valAtRisk", "lblAtRisk"]
+      },
       "valAtRisk": { "type": "Heading", "props": { "text": "1", "level": "h2" } },
       "lblAtRisk": { "type": "Caption", "props": { "text": "At Risk" } },
-      "tileBreached": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackBreached"] },
-      "stackBreached": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["valBreached", "lblBreached"] },
+
+      "tileBreached": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["stackBreached"]
+      },
+      "stackBreached": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["valBreached", "lblBreached"]
+      },
       "valBreached": { "type": "Heading", "props": { "text": "1", "level": "h2" } },
       "lblBreached": { "type": "Caption", "props": { "text": "Breached" } },
 
@@ -63,31 +109,31 @@
         "children": ["s1", "s2", "s3", "s4", "s5"]
       },
 
-      "s1": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["s1left", "s1badge"] },
+      "s1": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["s1left", "s1badge"] },
       "s1left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["s1name", "s1time"] },
       "s1name": { "type": "Text", "props": { "text": "Resolution SLA — CAS-00835", "size": "sm", "weight": "medium" } },
       "s1time": { "type": "Caption", "props": { "text": "Breach in 1 hour" } },
       "s1badge": { "type": "Badge", "props": { "text": "At Risk", "tone": "warning", "variant": "soft" } },
 
-      "s2": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["s2left", "s2badge"] },
+      "s2": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["s2left", "s2badge"] },
       "s2left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["s2name", "s2time"] },
       "s2name": { "type": "Text", "props": { "text": "First Response — CAS-00814", "size": "sm", "weight": "medium" } },
       "s2time": { "type": "Caption", "props": { "text": "Breach in 2 hours" } },
       "s2badge": { "type": "Badge", "props": { "text": "In Progress", "variant": "soft" } },
 
-      "s3": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["s3left", "s3badge"] },
+      "s3": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["s3left", "s3badge"] },
       "s3left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["s3name", "s3time"] },
       "s3name": { "type": "Text", "props": { "text": "Resolution SLA — CAS-00821", "size": "sm", "weight": "medium" } },
       "s3time": { "type": "Caption", "props": { "text": "Breach in 4 hours" } },
       "s3badge": { "type": "Badge", "props": { "text": "In Progress", "variant": "soft" } },
 
-      "s4": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["s4left", "s4badge"] },
+      "s4": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["s4left", "s4badge"] },
       "s4left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["s4name", "s4time"] },
       "s4name": { "type": "Text", "props": { "text": "First Response — CAS-00829", "size": "sm", "weight": "medium" } },
       "s4time": { "type": "Caption", "props": { "text": "Breach in 6 hours" } },
       "s4badge": { "type": "Badge", "props": { "text": "In Progress", "variant": "soft" } },
 
-      "s5": { "type": "Row", "props": { "justify": "between", "align": "start", "gap": "md" }, "children": ["s5left", "s5badge"] },
+      "s5": { "type": "Row", "props": { "align": "start", "gap": "md" }, "children": ["s5left", "s5badge"] },
       "s5left": { "type": "Stack", "props": { "gap": "xxs" }, "children": ["s5name", "s5time"] },
       "s5name": { "type": "Text", "props": { "text": "Resolution SLA — CAS-00814", "size": "sm", "weight": "medium" } },
       "s5time": { "type": "Caption", "props": { "text": "Breached 30 minutes ago" } },

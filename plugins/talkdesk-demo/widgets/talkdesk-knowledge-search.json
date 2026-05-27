@@ -21,7 +21,11 @@
       },
       "header": {
         "type": "Header",
-        "props": { "title": "Knowledge Search", "subtitle": "Top articles from mySMB Workspace" }
+        "props": {
+          "title": "Knowledge Search",
+          "subtitle": "Top articles from mySMB Workspace",
+          "actions": [{ "type": "Badge", "props": { "text": "talkdesk", "tone": "accent", "variant": "soft" } }]
+        }
       },
       "list": {
         "type": "Stack",
