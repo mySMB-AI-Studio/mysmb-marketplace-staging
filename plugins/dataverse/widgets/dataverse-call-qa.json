@@ -57,7 +57,7 @@
             "$computed": "count_where",
             "args": {
               "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
-              "field": "custom_passed",
+              "field": "mysmbai_passed",
               "eq": true
             }
           }
@@ -71,12 +71,11 @@
           "skeletonRows": 5,
           "rows": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
           "columns": [
-            { "id": "summary",  "header": "Call",     "field": "custom_callsummary",  "priority": 1 },
-            { "id": "agent",    "header": "Agent",    "field": "custom_agentname",    "width": 140, "priority": 1 },
-            { "id": "customer", "header": "Customer", "field": "custom_customername", "width": 140, "priority": 2 },
-            { "id": "score",    "header": "Score /100", "field": "custom_totalscore", "width": 90,  "priority": 1, "align": "right" },
-            { "id": "grade",    "header": "Grade",    "field": "custom_grade",        "width": 110, "priority": 1, "variant": "badge" },
-            { "id": "comment",  "header": "Comment",  "field": "custom_comment",      "priority": 2 }
+            { "id": "summary", "header": "Call Summary",  "field": "mysmbai_callsummary", "priority": 1 },
+            { "id": "score",   "header": "Score /100",    "field": "mysmbai_totalscore",  "width": 100, "priority": 1, "align": "right" },
+            { "id": "grade",   "header": "Grade",         "field": "mysmbai_grade",       "width": 140, "priority": 1, "variant": "badge" },
+            { "id": "comment", "header": "Comment",       "field": "mysmbai_comments",    "priority": 2 },
+            { "id": "created", "header": "Scored",        "field": "createdon",           "width": 120, "priority": 2, "format": "relative" }
           ]
         }
       }
