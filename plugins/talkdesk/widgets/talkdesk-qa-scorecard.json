@@ -107,7 +107,7 @@
       },
       "c1badge": {
         "type": "Badge",
-        "props": { "label": "Pass", "tone": "success" }
+        "props": { "text": "Pass", "tone": "success" }
       },
 
       "c2": {
@@ -135,7 +135,7 @@
       },
       "c2badge": {
         "type": "Badge",
-        "props": { "label": "Fail", "tone": "destructive" }
+        "props": { "text": "Fail", "tone": "destructive" }
       },
 
       "c3": {
@@ -163,7 +163,7 @@
       },
       "c3badge": {
         "type": "Badge",
-        "props": { "label": "Pass", "tone": "success" }
+        "props": { "text": "Pass", "tone": "success" }
       },
 
       "c4": {
@@ -191,7 +191,7 @@
       },
       "c4badge": {
         "type": "Badge",
-        "props": { "label": "Pass", "tone": "success" }
+        "props": { "text": "Pass", "tone": "success" }
       },
 
       "c5": {
@@ -219,7 +219,7 @@
       },
       "c5badge": {
         "type": "Badge",
-        "props": { "label": "Fail", "tone": "destructive" }
+        "props": { "text": "Fail", "tone": "destructive" }
       },
 
       "div2": { "type": "Divider" },
