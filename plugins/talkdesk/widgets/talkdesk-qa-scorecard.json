@@ -83,161 +83,141 @@
       },
 
       "c1": {
-        "type": "Row",
-        "props": { "align": "center", "gap": "sm" },
-        "children": ["c1name", "c1barWrap", "c1right"]
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["c1name", "c1mid", "c1pass"]
       },
       "c1name": {
         "type": "Text",
         "props": { "text": "Alice M.", "size": "sm", "weight": "medium" }
       },
-      "c1barWrap": {
+      "c1mid": {
         "type": "Stack",
-        "props": { "grow": true },
-        "children": ["c1bar"]
-      },
-      "c1bar": {
-        "type": "ProgressBar",
-        "props": { "value": 0.92, "tone": "success" }
-      },
-      "c1right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["c1score", "c1pass"]
+        "props": { "align": "center" },
+        "children": ["c1score"]
       },
       "c1score": {
         "type": "Text",
-        "props": { "text": "92", "size": "sm", "weight": "medium" }
+        "props": { "text": "92/100", "size": "sm", "weight": "medium" }
       },
       "c1pass": {
+        "type": "Stack",
+        "props": { "align": "end" },
+        "children": ["c1badge"]
+      },
+      "c1badge": {
         "type": "Badge",
         "props": { "label": "Pass", "tone": "success" }
       },
 
       "c2": {
-        "type": "Row",
-        "props": { "align": "center", "gap": "sm" },
-        "children": ["c2name", "c2barWrap", "c2right"]
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["c2name", "c2mid", "c2pass"]
       },
       "c2name": {
         "type": "Text",
         "props": { "text": "Bob K.", "size": "sm", "weight": "medium" }
       },
-      "c2barWrap": {
+      "c2mid": {
         "type": "Stack",
-        "props": { "grow": true },
-        "children": ["c2bar"]
-      },
-      "c2bar": {
-        "type": "ProgressBar",
-        "props": { "value": 0.74, "tone": "destructive" }
-      },
-      "c2right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["c2score", "c2pass"]
+        "props": { "align": "center" },
+        "children": ["c2score"]
       },
       "c2score": {
         "type": "Text",
-        "props": { "text": "74", "size": "sm", "weight": "medium" }
+        "props": { "text": "74/100", "size": "sm", "weight": "medium" }
       },
       "c2pass": {
+        "type": "Stack",
+        "props": { "align": "end" },
+        "children": ["c2badge"]
+      },
+      "c2badge": {
         "type": "Badge",
         "props": { "label": "Fail", "tone": "destructive" }
       },
 
       "c3": {
-        "type": "Row",
-        "props": { "align": "center", "gap": "sm" },
-        "children": ["c3name", "c3barWrap", "c3right"]
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["c3name", "c3mid", "c3pass"]
       },
       "c3name": {
         "type": "Text",
         "props": { "text": "Alice M.", "size": "sm", "weight": "medium" }
       },
-      "c3barWrap": {
+      "c3mid": {
         "type": "Stack",
-        "props": { "grow": true },
-        "children": ["c3bar"]
-      },
-      "c3bar": {
-        "type": "ProgressBar",
-        "props": { "value": 0.88, "tone": "success" }
-      },
-      "c3right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["c3score", "c3pass"]
+        "props": { "align": "center" },
+        "children": ["c3score"]
       },
       "c3score": {
         "type": "Text",
-        "props": { "text": "88", "size": "sm", "weight": "medium" }
+        "props": { "text": "88/100", "size": "sm", "weight": "medium" }
       },
       "c3pass": {
+        "type": "Stack",
+        "props": { "align": "end" },
+        "children": ["c3badge"]
+      },
+      "c3badge": {
         "type": "Badge",
         "props": { "label": "Pass", "tone": "success" }
       },
 
       "c4": {
-        "type": "Row",
-        "props": { "align": "center", "gap": "sm" },
-        "children": ["c4name", "c4barWrap", "c4right"]
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["c4name", "c4mid", "c4pass"]
       },
       "c4name": {
         "type": "Text",
         "props": { "text": "Carol T.", "size": "sm", "weight": "medium" }
       },
-      "c4barWrap": {
+      "c4mid": {
         "type": "Stack",
-        "props": { "grow": true },
-        "children": ["c4bar"]
-      },
-      "c4bar": {
-        "type": "ProgressBar",
-        "props": { "value": 0.95, "tone": "success" }
-      },
-      "c4right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["c4score", "c4pass"]
+        "props": { "align": "center" },
+        "children": ["c4score"]
       },
       "c4score": {
         "type": "Text",
-        "props": { "text": "95", "size": "sm", "weight": "medium" }
+        "props": { "text": "95/100", "size": "sm", "weight": "medium" }
       },
       "c4pass": {
+        "type": "Stack",
+        "props": { "align": "end" },
+        "children": ["c4badge"]
+      },
+      "c4badge": {
         "type": "Badge",
         "props": { "label": "Pass", "tone": "success" }
       },
 
       "c5": {
-        "type": "Row",
-        "props": { "align": "center", "gap": "sm" },
-        "children": ["c5name", "c5barWrap", "c5right"]
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["c5name", "c5mid", "c5pass"]
       },
       "c5name": {
         "type": "Text",
         "props": { "text": "Bob K.", "size": "sm", "weight": "medium" }
       },
-      "c5barWrap": {
+      "c5mid": {
         "type": "Stack",
-        "props": { "grow": true },
-        "children": ["c5bar"]
-      },
-      "c5bar": {
-        "type": "ProgressBar",
-        "props": { "value": 0.61, "tone": "destructive" }
-      },
-      "c5right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["c5score", "c5pass"]
+        "props": { "align": "center" },
+        "children": ["c5score"]
       },
       "c5score": {
         "type": "Text",
-        "props": { "text": "61", "size": "sm", "weight": "medium" }
+        "props": { "text": "61/100", "size": "sm", "weight": "medium" }
       },
       "c5pass": {
+        "type": "Stack",
+        "props": { "align": "end" },
+        "children": ["c5badge"]
+      },
+      "c5badge": {
         "type": "Badge",
         "props": { "label": "Fail", "tone": "destructive" }
       },
