@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "list_sla_kpis",
-    "params": { "status_filter": "active", "top": 20 }
+    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "status_filter": "active", "top": 20 }
   },
   "spec": {
     "root": "card",

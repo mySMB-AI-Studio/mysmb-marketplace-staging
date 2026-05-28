@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "list_call_qa_scores",
-    "params": { "top": 10 }
+    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "top": 10 }
   },
   "spec": {
     "root": "card",

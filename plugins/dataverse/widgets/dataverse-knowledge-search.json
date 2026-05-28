@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "search_knowledge_articles",
-    "params": { "query": "common issues", "top": 5 }
+    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "query": "common issues", "top": 5 }
   },
   "spec": {
     "root": "card",

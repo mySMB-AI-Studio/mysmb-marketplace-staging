@@ -16,6 +16,7 @@
     "mcp": "dataverse",
     "tool": "list_cases",
     "params": {
+      "org_url": "https://mysmb-dev.crm6.dynamics.com",
       "filter": "statecode eq 0",
       "select": "incidentid,title,ticketnumber,prioritycode,statecode,statuscode,createdon",
       "orderby": "createdon desc",
