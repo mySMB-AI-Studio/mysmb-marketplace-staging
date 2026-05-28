@@ -154,7 +154,7 @@
       },
       "r1badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive" }
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
       },
 
       "r2": {
@@ -200,7 +200,7 @@
       },
       "r3badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive" }
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
       },
 
       "r4": {
@@ -223,7 +223,7 @@
       },
       "r4badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive" }
+        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
       },
 
       "r5": {
