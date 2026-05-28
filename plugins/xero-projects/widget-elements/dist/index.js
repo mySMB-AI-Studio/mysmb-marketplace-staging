@@ -1,0 +1,30 @@
+/**
+ * xero-projects — widget-elements module
+ *
+ * Exports:
+ *   - default `PluginElementsModule` (slug only — no functions/components for v1)
+ *   - named `portalContracts` registry (Zod schemas for portal data maps)
+ */
+import { z } from 'zod';
+// ── Portal canonical contracts ───────────────────────────────────────
+// Shape produced by the `staffed-employee-time-entries` data map.
+const TimeEntry = z.object({
+    id: z.string(),
+    userId: z.string(),
+    userName: z.string(),
+    projectId: z.string(),
+    projectName: z.string(),
+    taskId: z.string(),
+    taskName: z.string(),
+    dateUtc: z.string(),
+    durationMinutes: z.number().int().min(0),
+    description: z.string().nullable().optional(),
+});
+export const portalContracts = {
+    TimeEntry,
+};
+const elements = {
+    slug: 'xero-projects',
+    functions: {},
+};
+export default elements;
