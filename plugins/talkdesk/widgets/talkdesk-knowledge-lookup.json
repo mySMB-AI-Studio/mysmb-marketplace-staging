@@ -115,7 +115,7 @@
       },
       "icoEscalated": {
         "type": "Icon",
-        "props": { "name": "AlertTriangle", "tone": "warning", "size": "sm" }
+        "props": { "name": "AlertTriangle", "tone": "destructive", "size": "sm" }
       },
       "valEscalated": {
         "type": "Heading",
@@ -177,7 +177,7 @@
       },
       "r2badge": {
         "type": "Badge",
-        "props": { "text": "Escalated", "tone": "warning" }
+        "props": { "text": "Escalated", "tone": "destructive" }
       },
 
       "r3": {
@@ -246,7 +246,7 @@
       },
       "r5badge": {
         "type": "Badge",
-        "props": { "text": "Escalated", "tone": "warning" }
+        "props": { "text": "Escalated", "tone": "destructive" }
       },
 
       "div2": { "type": "Divider" },
