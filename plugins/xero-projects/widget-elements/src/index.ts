@@ -12,14 +12,14 @@ import type { PluginElementsModule, PortalContracts } from './types';
 // ── Portal canonical contracts ───────────────────────────────────────
 // Shape produced by the `staffed-employee-time-entries` data map.
 const TimeEntry = z.object({
-  id:              z.string(),
-  userId:          z.string(),
+  id:              z.string().uuid(),
+  userId:          z.string().uuid(),
   userName:        z.string(),
-  projectId:       z.string(),
+  projectId:       z.string().uuid(),
   projectName:     z.string(),
-  taskId:          z.string(),
+  taskId:          z.string().uuid(),
   taskName:        z.string(),
-  dateUtc:         z.string(),
+  dateUtc:         z.string().datetime(),
   durationMinutes: z.number().int().min(0),
   description:     z.string().nullable().optional(),
 });
