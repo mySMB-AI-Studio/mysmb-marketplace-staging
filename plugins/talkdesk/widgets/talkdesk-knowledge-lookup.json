@@ -92,7 +92,7 @@
       },
       "icoResolved": {
         "type": "Icon",
-        "props": { "name": "CheckCircle2", "tone": "positive", "size": "sm" }
+        "props": { "name": "CheckCircle2", "tone": "success", "size": "sm" }
       },
       "valResolved": {
         "type": "Heading",
@@ -154,7 +154,7 @@
       },
       "r1badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "success" }
       },
 
       "r2": {
@@ -200,7 +200,7 @@
       },
       "r3badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "success" }
       },
 
       "r4": {
@@ -223,7 +223,7 @@
       },
       "r4badge": {
         "type": "Badge",
-        "props": { "text": "Resolved", "tone": "positive", "variant": "soft" }
+        "props": { "text": "Resolved", "tone": "success" }
       },
 
       "r5": {
