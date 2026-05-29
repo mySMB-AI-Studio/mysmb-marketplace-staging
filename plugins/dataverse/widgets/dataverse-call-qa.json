@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v4",
+  "id": "dataverse-call-qa-v5",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -39,7 +39,7 @@
       "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
       "title": { "type": "Heading", "props": { "text": "Call QA Scorecard", "level": "h2" } },
       "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service" } },
-      "brandBadge": { "type": "Badge", "props": { "label": "Dynamics 365", "tone": "info" } },
+      "brandBadge": { "type": "Badge", "props": { "text": "Dynamics 365", "tone": "info" } },
 
       "statsGrid": {
         "type": "Grid",
@@ -65,7 +65,7 @@
       "valPassed": {
         "type": "Heading",
         "props": {
-          "text": { "$computed": "count_where", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" }, "field": "mysmbai_passed", "eq": true } },
+          "text": { "$computed": "count_where", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" }, "field": "mysmbai_grade", "eq": "PASS" } },
           "level": "h2"
         }
       },
@@ -74,7 +74,7 @@
       "tileRate": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackRate"] },
       "stackRate": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconRate", "valRate", "lblRate"] },
       "iconRate": { "type": "Icon", "props": { "name": "TrendingUp", "size": "sm", "tone": "accent" } },
-      "valRate": { "type": "Heading", "props": { "text": "—", "level": "h2" } },
+      "valRate": { "type": "Heading", "props": { "text": { "$state": "/dataverse/list_call_qa_scores/pass_rate" }, "level": "h2" } },
       "lblRate": { "type": "Caption", "props": { "text": "Pass Rate" } },
 
       "div1": { "type": "Divider" },
@@ -116,7 +116,12 @@
       },
       "callDate": {
         "type": "Caption",
-        "props": { "text": { "$item": "createdon" }, "format": "relative" }
+        "props": {
+          "text": {
+            "$computed": "relative_time",
+            "args": { "value": { "$item": "createdon" } }
+          }
+        }
       },
       "callScore": {
         "type": "Badge",
