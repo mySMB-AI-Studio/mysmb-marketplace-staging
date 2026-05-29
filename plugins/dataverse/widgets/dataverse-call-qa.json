@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa",
+  "id": "dataverse-call-qa-v2",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
