@@ -1,16 +1,16 @@
 {
   "id": "dataverse-call-qa",
   "title": "Call QA Scorecard",
-  "description": "Recent call QA scores from Dynamics 365 — agent, customer, call summary, score out of 100, and pass/fail grade.",
+  "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
   "tags": ["dataverse", "dynamics-365", "call-qa", "scoring", "agent-performance", "customer-service", "support"],
   "keywords": ["call qa", "quality assurance", "agent score", "call scoring", "transcript", "pass fail", "d365"],
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 8, "rowSpan": 5 },
-    "min":       { "colSpan": 6, "rowSpan": 4 },
-    "max":       { "colSpan": 12, "rowSpan": 10 }
+    "preferred": { "colSpan": 5, "rowSpan": 8 },
+    "min":       { "colSpan": 4, "rowSpan": 7 },
+    "max":       { "colSpan": 10, "rowSpan": 12 }
   },
   "dataProvider": {
     "mcp": "dataverse",
@@ -22,63 +22,125 @@
     "elements": {
       "card": {
         "type": "Card",
-        "props": {},
-        "children": ["header", "body"]
+        "children": ["headerRow", "statsGrid", "div1", "callList", "div2", "footer"]
       },
-      "header": {
-        "type": "Header",
-        "props": { "title": "Call QA Scorecard", "subtitle": "Recent scored calls from D365" }
+
+      "headerRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center" },
+        "children": ["titleGroup", "brandBadge"]
       },
-      "body": {
-        "type": "Body",
-        "props": {},
-        "children": ["stats", "divider", "table"]
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["titleIcon", "titleStack"]
       },
-      "stats": {
+      "titleIcon": { "type": "Icon", "props": { "name": "ClipboardCheck", "tone": "accent", "size": "sm" } },
+      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
+      "title": { "type": "Heading", "props": { "text": "Call QA Scorecard", "level": "h2" } },
+      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service" } },
+      "brandBadge": { "type": "Badge", "props": { "label": "Dynamics 365", "tone": "info" } },
+
+      "statsGrid": {
         "type": "Grid",
-        "props": { "cols": 2, "gap": "md" },
-        "children": ["statCount", "statPass"]
+        "props": { "cols": 2, "gap": "sm" },
+        "children": ["tileScored", "tilePassed"]
       },
-      "statCount": {
-        "type": "Stat",
+      "tileScored": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackScored"] },
+      "stackScored": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["iconScored", "valScored", "lblScored"]
+      },
+      "iconScored": { "type": "Icon", "props": { "name": "ClipboardList", "size": "sm", "tone": "accent" } },
+      "valScored": {
+        "type": "Heading",
         "props": {
-          "label": "Calls Scored",
-          "value": {
-            "$computed": "count",
-            "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" } }
-          }
+          "text": { "$computed": "count", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" } } },
+          "level": "h2"
         }
       },
-      "statPass": {
-        "type": "Stat",
+      "lblScored": { "type": "Caption", "props": { "text": "Scored" } },
+
+      "tilePassed": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackPassed"] },
+      "stackPassed": {
+        "type": "Stack",
+        "props": { "gap": "xxs", "align": "center" },
+        "children": ["iconPassed", "valPassed", "lblPassed"]
+      },
+      "iconPassed": { "type": "Icon", "props": { "name": "CheckCircle", "size": "sm", "tone": "positive" } },
+      "valPassed": {
+        "type": "Heading",
         "props": {
-          "label": "Passed",
-          "value": {
+          "text": {
             "$computed": "count_where",
             "args": {
               "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
               "field": "mysmbai_passed",
               "eq": true
             }
-          }
+          },
+          "level": "h2"
         }
       },
-      "divider": { "type": "Divider", "props": {} },
-      "table": {
-        "type": "Table",
-        "props": {
-          "loading": { "$state": "/_loading/dataverse.list_call_qa_scores" },
-          "skeletonRows": 5,
-          "rows": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
-          "columns": [
-            { "id": "summary", "header": "Call Summary",  "field": "mysmbai_callsummary", "priority": 1 },
-            { "id": "score",   "header": "Score /100",    "field": "mysmbai_totalscore",  "width": 100, "priority": 1, "align": "right" },
-            { "id": "grade",   "header": "Grade",         "field": "mysmbai_grade",       "width": 140, "priority": 1, "variant": "badge" },
-            { "id": "comment", "header": "Comment",       "field": "mysmbai_comments",    "priority": 2 },
-            { "id": "created", "header": "Scored",        "field": "createdon",           "width": 120, "priority": 2, "format": "relative" }
-          ]
+      "lblPassed": { "type": "Caption", "props": { "text": "Passed" } },
+
+      "div1": { "type": "Divider" },
+
+      "callList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "repeat": {
+          "statePath": "/dataverse/list_call_qa_scores/qa_scores",
+          "key": "mysmbai_qascoreid"
+        },
+        "children": ["callRow"]
+      },
+      "callRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center", "gap": "sm" },
+        "children": ["callLeft", "callScore", "callGrade"]
+      },
+      "callLeft": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["callSummary", "callDate"]
+      },
+      "callSummary": {
+        "type": "Text",
+        "props": { "text": { "$item": "mysmbai_callsummary" }, "size": "sm", "weight": "medium" }
+      },
+      "callDate": {
+        "type": "Caption",
+        "props": { "text": { "$item": "createdon" } }
+      },
+      "callScore": {
+        "type": "Badge",
+        "props": { "text": { "$item": "mysmbai_totalscore" }, "tone": "accent", "variant": "soft" }
+      },
+      "callGrade": {
+        "type": "Badge",
+        "props": { "text": { "$item": "mysmbai_grade" }, "tone": "info", "variant": "soft" }
+      },
+
+      "div2": { "type": "Divider" },
+
+      "footer": {
+        "type": "Row",
+        "props": { "justify": "end", "gap": "xs", "align": "center" },
+        "children": ["footerBtn"]
+      },
+      "footerBtn": {
+        "type": "Button",
+        "props": { "label": "Open in D365", "variant": "ghost", "size": "sm", "leadingIcon": "ExternalLink" },
+        "on": {
+          "click": {
+            "action": "open_url",
+            "params": { "url": "https://mysmb-dev.crm6.dynamics.com", "target": "_blank" }
+          }
         }
       }
     }
-  }
+  },
+  "status": "published"
 }
