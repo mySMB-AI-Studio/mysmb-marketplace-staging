@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v2",
+  "id": "dataverse-call-qa-v3",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -43,15 +43,12 @@
 
       "statsGrid": {
         "type": "Grid",
-        "props": { "cols": 2, "gap": "sm" },
-        "children": ["tileScored", "tilePassed"]
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["tileScored", "tilePassed", "tileRate"]
       },
+
       "tileScored": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackScored"] },
-      "stackScored": {
-        "type": "Stack",
-        "props": { "gap": "xxs", "align": "center" },
-        "children": ["iconScored", "valScored", "lblScored"]
-      },
+      "stackScored": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconScored", "valScored", "lblScored"] },
       "iconScored": { "type": "Icon", "props": { "name": "ClipboardList", "size": "sm", "tone": "accent" } },
       "valScored": {
         "type": "Heading",
@@ -63,27 +60,22 @@
       "lblScored": { "type": "Caption", "props": { "text": "Scored" } },
 
       "tilePassed": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackPassed"] },
-      "stackPassed": {
-        "type": "Stack",
-        "props": { "gap": "xxs", "align": "center" },
-        "children": ["iconPassed", "valPassed", "lblPassed"]
-      },
+      "stackPassed": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconPassed", "valPassed", "lblPassed"] },
       "iconPassed": { "type": "Icon", "props": { "name": "CheckCircle", "size": "sm", "tone": "positive" } },
       "valPassed": {
         "type": "Heading",
         "props": {
-          "text": {
-            "$computed": "count_where",
-            "args": {
-              "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" },
-              "field": "mysmbai_passed",
-              "eq": true
-            }
-          },
+          "text": { "$computed": "count_where", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" }, "field": "mysmbai_passed", "eq": true } },
           "level": "h2"
         }
       },
       "lblPassed": { "type": "Caption", "props": { "text": "Passed" } },
+
+      "tileRate": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackRate"] },
+      "stackRate": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconRate", "valRate", "lblRate"] },
+      "iconRate": { "type": "Icon", "props": { "name": "TrendingUp", "size": "sm", "tone": "accent" } },
+      "valRate": { "type": "Heading", "props": { "text": "—", "level": "h2" } },
+      "lblRate": { "type": "Caption", "props": { "text": "Pass Rate" } },
 
       "div1": { "type": "Divider" },
 
@@ -108,11 +100,11 @@
       },
       "callSummary": {
         "type": "Text",
-        "props": { "text": { "$item": "mysmbai_callsummary" }, "size": "sm", "weight": "medium" }
+        "props": { "text": { "$item": "mysmbai_callsummary" }, "size": "sm", "weight": "medium", "lines": 2 }
       },
       "callDate": {
         "type": "Caption",
-        "props": { "text": { "$item": "createdon" } }
+        "props": { "text": { "$item": "createdon" }, "format": "relative" }
       },
       "callScore": {
         "type": "Badge",
@@ -120,7 +112,18 @@
       },
       "callGrade": {
         "type": "Badge",
-        "props": { "text": { "$item": "mysmbai_grade" }, "tone": "info", "variant": "soft" }
+        "props": {
+          "text": { "$item": "mysmbai_grade" },
+          "tone": {
+            "$computed": "switch",
+            "args": {
+              "value": { "$item": "mysmbai_grade" },
+              "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
+              "default": "info"
+            }
+          },
+          "variant": "soft"
+        }
       },
 
       "div2": { "type": "Divider" },
