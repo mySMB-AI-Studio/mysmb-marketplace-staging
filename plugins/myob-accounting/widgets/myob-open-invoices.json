@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "myob-accounting",
     "tool": "list_invoices",
-    "params": { "status": "Open", "order_by": "DueDate", "order_desc": false, "page_size": 50 }
+    "params": { "status": "Open", "order_by": "Date", "order_desc": false, "page_size": 50 }
   },
   "spec": {
     "root": "card",
