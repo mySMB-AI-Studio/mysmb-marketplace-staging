@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v5",
+  "id": "dataverse-call-qa-v6",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -53,7 +53,7 @@
       "valScored": {
         "type": "Heading",
         "props": {
-          "text": { "$computed": "count", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" } } },
+          "text": { "$state": "/dataverse/list_call_qa_scores/count" },
           "level": "h2"
         }
       },
@@ -65,7 +65,7 @@
       "valPassed": {
         "type": "Heading",
         "props": {
-          "text": { "$computed": "count_where", "args": { "value": { "$state": "/dataverse/list_call_qa_scores/qa_scores" }, "field": "mysmbai_grade", "eq": "PASS" } },
+          "text": { "$state": "/dataverse/list_call_qa_scores/passed_count" },
           "level": "h2"
         }
       },
