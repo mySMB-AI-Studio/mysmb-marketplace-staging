@@ -118,9 +118,9 @@
         "props": { "text": "Total Due" }
       },
       "statValueStat": {
-        "type": "Stat",
+        "type": "Text",
         "props": {
-          "value": {
+          "text": {
             "$computed": "format_currency",
             "args": {
               "value": {
@@ -132,6 +132,8 @@
               }
             }
           },
+          "size": "lg",
+          "weight": "bold",
           "tone": "warning"
         }
       },
@@ -196,8 +198,8 @@
         }
       },
       "right": {
-        "type": "Stack",
-        "props": { "gap": "xs", "align": "end" },
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
         "children": ["amount", "dueBadge"]
       },
       "amount": {
