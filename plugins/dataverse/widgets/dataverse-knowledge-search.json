@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-knowledge-search-v2",
+  "id": "dataverse-knowledge-search-v3",
   "status": "published",
   "title": "D365 Knowledge Search",
   "description": "Search published Dynamics 365 knowledge articles — the same knowledge base agents use to resolve cases.",
@@ -24,12 +24,7 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["header", "body"]
-      },
-      "header": {
-        "type": "Header",
-        "props": {},
-        "children": ["titleRow"]
+        "children": ["titleRow", "listBody", "footerDivider", "footer"]
       },
       "titleRow": {
         "type": "Row",
@@ -62,10 +57,10 @@
         "type": "Badge",
         "props": { "text": "Dynamics 365", "tone": "info" }
       },
-      "body": {
+      "listBody": {
         "type": "Body",
         "props": {},
-        "children": ["list", "footerDivider", "footer"]
+        "children": ["list"]
       },
       "list": {
         "type": "Stack",
