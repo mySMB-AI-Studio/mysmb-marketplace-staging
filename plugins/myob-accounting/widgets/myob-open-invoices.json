@@ -61,7 +61,7 @@
                 "args": { "value": { "$state": "/myob-accounting/list_invoices/Items" } }
               },
               "total": {
-                "$computed": "format_currency",
+                "$computed": "myob-accounting_format_currency",
                 "args": {
                   "value": {
                     "$computed": "sum",
@@ -137,7 +137,7 @@
         "type": "Stat",
         "props": {
           "value": {
-            "$computed": "format_currency",
+            "$computed": "myob-accounting_format_currency",
             "args": {
               "value": {
                 "$computed": "sum",
@@ -237,7 +237,7 @@
         "type": "Text",
         "props": {
           "text": {
-            "$computed": "format_currency",
+            "$computed": "myob-accounting_format_currency",
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "size": "md",
