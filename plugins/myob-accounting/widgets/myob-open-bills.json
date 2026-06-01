@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "myob-accounting",
     "tool": "list_bills",
-    "params": { "status": "Open", "order_by": "DueDate", "order_desc": false, "page_size": 50 }
+    "params": { "status": "Open", "page_size": 50 }
   },
   "spec": {
     "root": "card",
@@ -69,8 +69,7 @@
                       "value": { "$state": "/myob-accounting/list_bills/Items" },
                       "field": "BalanceDueAmount"
                     }
-                  },
-                  "currency": "AUD"
+                  }
                 }
               }
             }
@@ -146,8 +145,7 @@
                   "value": { "$state": "/myob-accounting/list_bills/Items" },
                   "field": "BalanceDueAmount"
                 }
-              },
-              "currency": "AUD"
+              }
             }
           },
           "tone": "destructive"
@@ -226,7 +224,7 @@
             "args": {
               "pattern": "Due {d}",
               "d": {
-                "$computed": "format_date_au",
+                "$computed": "format_date",
                 "args": { "value": { "$item": "DueDate" } }
               }
             }
@@ -240,7 +238,7 @@
         "props": {
           "text": {
             "$computed": "format_currency",
-            "args": { "value": { "$item": "BalanceDueAmount" }, "currency": "AUD" }
+            "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "size": "md",
           "weight": "bold",
