@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v14",
+  "id": "dataverse-call-qa-v15",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -22,16 +22,12 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["cardHeader", "cardBody"]
+        "children": ["headerRow", "statsGrid", "div1", "callBody", "div2", "footer"]
       },
-      "cardHeader": {
-        "type": "Header",
-        "children": ["headerRow"]
-      },
-      "cardBody": {
+      "callBody": {
         "type": "Body",
         "props": {},
-        "children": ["statsGrid", "div1", "callList", "div2", "footer"]
+        "children": ["callList"]
       },
 
       "headerRow": {
