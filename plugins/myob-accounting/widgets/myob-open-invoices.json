@@ -118,9 +118,9 @@
         "props": { "text": "Total Due" }
       },
       "statValueStat": {
-        "type": "Text",
+        "type": "Stat",
         "props": {
-          "text": {
+          "value": {
             "$computed": "format_currency",
             "args": {
               "value": {
@@ -132,9 +132,7 @@
               }
             }
           },
-          "size": "lg",
-          "weight": "bold",
-          "tone": "warning"
+          "tone": "accent"
         }
       },
 
@@ -145,7 +143,7 @@
 
       "empty": {
         "type": "Empty",
-        "props": { "message": "No open invoices — you're all caught up." },
+        "props": { "message": "No open invoices — you're all caught up.", "icon": "Trophy" },
         "visible": { "$state": "/myob-accounting/list_invoices/Items/0", "not": true }
       },
 
@@ -167,24 +165,28 @@
       "row": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "hover": true },
-        "children": ["label", "right"]
+        "children": ["dot", "label", "dueBadge", "amount"]
+      },
+      "dot": {
+        "type": "Dot",
+        "props": { "tone": "warning", "size": "sm" }
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "none" },
+        "props": { "gap": "none", "grow": true },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
         "type": "Text",
         "props": {
           "text": { "$item": "Customer/Name" },
-          "size": "md",
+          "size": "sm",
           "weight": "medium",
           "truncate": true
         }
       },
       "labelBottom": {
-        "type": "Text",
+        "type": "Caption",
         "props": {
           "text": {
             "$computed": "fmt",
@@ -192,25 +194,7 @@
               "pattern": "#{num}",
               "num": { "$item": "Number" }
             }
-          },
-          "size": "sm",
-          "tone": "muted"
-        }
-      },
-      "right": {
-        "type": "Row",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["amount", "dueBadge"]
-      },
-      "amount": {
-        "type": "Text",
-        "props": {
-          "text": {
-            "$computed": "format_currency",
-            "args": { "value": { "$item": "BalanceDueAmount" } }
-          },
-          "weight": "semibold",
-          "size": "md"
+          }
         }
       },
       "dueBadge": {
@@ -228,6 +212,17 @@
           },
           "tone": "warning",
           "variant": "soft"
+        }
+      },
+      "amount": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$computed": "format_currency",
+            "args": { "value": { "$item": "BalanceDueAmount" } }
+          },
+          "weight": "semibold",
+          "size": "sm"
         }
       },
       "rowDivider": {
