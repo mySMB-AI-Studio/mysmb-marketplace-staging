@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v10",
+  "id": "dataverse-call-qa-v11",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -8,14 +8,14 @@
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 8 },
-    "min":       { "colSpan": 4, "rowSpan": 7 },
-    "max":       { "colSpan": 10, "rowSpan": 12 }
+    "preferred": { "colSpan": 5, "rowSpan": 10 },
+    "min":       { "colSpan": 4, "rowSpan": 9 },
+    "max":       { "colSpan": 10, "rowSpan": 14 }
   },
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "list_call_qa_scores",
-    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "top": 10 }
+    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "top": 5 }
   },
   "spec": {
     "root": "card",
@@ -125,14 +125,7 @@
           "text": { "$item": "mysmbai_grade" },
           "size": "sm",
           "weight": "semibold",
-          "tone": {
-            "$computed": "switch",
-            "args": {
-              "value": { "$item": "mysmbai_grade" },
-              "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
-              "default": "muted"
-            }
-          }
+          "tone": { "$item": "grade_tone" }
         }
       },
       "callDate": {
@@ -154,7 +147,7 @@
         }
       },
       "callScore": {
-        "type": "Text",
+        "type": "Badge",
         "props": {
           "text": {
             "$computed": "fmt",
@@ -163,16 +156,8 @@
               "n": { "$item": "mysmbai_totalscore" }
             }
           },
-          "size": "sm",
-          "weight": "semibold",
-          "tone": {
-            "$computed": "switch",
-            "args": {
-              "value": { "$item": "mysmbai_grade" },
-              "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
-              "default": "muted"
-            }
-          }
+          "tone": { "$item": "grade_tone" },
+          "variant": "soft"
         }
       },
 
