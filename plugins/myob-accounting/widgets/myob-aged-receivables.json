@@ -157,7 +157,7 @@
         "props": {
           "text": {
             "$computed": "format_currency",
-            "args": { "value": { "$item": "AmountDue" } }
+            "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "weight": "semibold",
           "size": "sm"
