@@ -8,7 +8,7 @@
   "connectorsUsed": ["myob-accounting"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 5, "rowSpan": 5 },
+    "preferred": { "colSpan": 4, "rowSpan": 4 },
     "min": { "colSpan": 4, "rowSpan": 4 },
     "max": { "colSpan": 10, "rowSpan": 12 }
   },
@@ -22,13 +22,10 @@
     "elements": {
       "card": {
         "type": "Card",
-        "props": {},
         "children": ["header", "body"]
       },
-
       "header": {
         "type": "Header",
-        "props": {},
         "children": ["titleGroup"]
       },
       "titleGroup": {
@@ -43,34 +40,22 @@
       "titleStack": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["title", "subtitle"]
+        "children": ["title", "count"]
       },
       "title": {
         "type": "Heading",
         "props": { "text": "Open Invoices", "level": "h2" }
       },
-      "subtitle": {
+      "count": {
         "type": "Eyebrow",
         "props": {
           "text": {
             "$computed": "fmt",
             "args": {
-              "pattern": "{n} open · {total} outstanding",
+              "pattern": "{n} open",
               "n": {
                 "$computed": "count",
                 "args": { "value": { "$state": "/myob-accounting/list_invoices/Items" } }
-              },
-              "total": {
-                "$computed": "myob-accounting_format_currency",
-                "args": {
-                  "value": {
-                    "$computed": "sum",
-                    "args": {
-                      "value": { "$state": "/myob-accounting/list_invoices/Items" },
-                      "field": "BalanceDueAmount"
-                    }
-                  }
-                }
               }
             }
           }
@@ -79,92 +64,23 @@
 
       "body": {
         "type": "Body",
-        "props": {},
-        "children": ["loading", "statGrid", "divider0", "empty", "list"]
+        "children": ["loading", "empty", "list"]
       },
 
       "loading": {
         "type": "Stack",
         "props": { "gap": "sm" },
-        "children": ["skel1", "skel2", "skel3", "skel4"],
+        "children": ["sk1", "sk2", "sk3", "sk4"],
         "visible": { "$state": "/_loading/myob-accounting.list_invoices" }
       },
-      "skel1": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
-      "skel2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
-      "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
-      "skel4": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
-
-      "statGrid": {
-        "type": "Grid",
-        "props": { "cols": 2, "gap": "md" },
-        "children": ["statOpen", "statValue"],
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/myob-accounting/list_invoices/Items/0" }
-          ]
-        }
-      },
-      "statOpen": {
-        "type": "Stack",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["statOpenLabel", "statOpenValue"]
-      },
-      "statOpenLabel": {
-        "type": "Eyebrow",
-        "props": { "text": "Open Invoices" }
-      },
-      "statOpenValue": {
-        "type": "Stat",
-        "props": {
-          "value": {
-            "$computed": "count",
-            "args": { "value": { "$state": "/myob-accounting/list_invoices/Items" } }
-          },
-          "tone": "accent"
-        }
-      },
-      "statValue": {
-        "type": "Stack",
-        "props": { "gap": "xs", "align": "center" },
-        "children": ["statValueLabel", "statValueStat"]
-      },
-      "statValueLabel": {
-        "type": "Eyebrow",
-        "props": { "text": "Total Due" }
-      },
-      "statValueStat": {
-        "type": "Stat",
-        "props": {
-          "value": {
-            "$computed": "myob-accounting_format_currency",
-            "args": {
-              "value": {
-                "$computed": "sum",
-                "args": {
-                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
-                  "field": "BalanceDueAmount"
-                }
-              }
-            }
-          },
-          "tone": "accent"
-        }
-      },
-
-      "divider0": {
-        "type": "Divider",
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/myob-accounting/list_invoices/Items/0" }
-          ]
-        }
-      },
+      "sk1": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "sk2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "sk3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "sk4": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
 
       "empty": {
         "type": "Empty",
-        "props": { "message": "No open invoices — you're all caught up.", "icon": "Trophy" },
+        "props": { "message": "No open invoices — you're all caught up." },
         "visible": {
           "$and": [
             { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
@@ -175,63 +91,45 @@
 
       "list": {
         "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["rowWrapper"],
+        "props": { "gap": "xs" },
+        "children": ["row"],
         "repeat": {
           "statePath": "/myob-accounting/list_invoices/Items",
           "key": "UID"
         },
         "visible": { "$state": "/_loading/myob-accounting.list_invoices", "not": true }
       },
-      "rowWrapper": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["row", "rowDivider"]
-      },
       "row": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true },
-        "children": ["label", "dueBadge", "amount"]
+        "props": {
+          "gap": "sm",
+          "align": "center",
+          "hover": true,
+          "template": "auto minmax(0, 1fr) 6rem 7rem"
+        },
+        "children": ["dot", "identity", "amount", "due"]
       },
-      "label": {
+      "dot": {
+        "type": "Dot",
+        "props": { "tone": "accent", "size": "sm" }
+      },
+      "identity": {
         "type": "Stack",
-        "props": { "gap": "none", "grow": true },
-        "children": ["labelTop", "labelBottom"]
+        "props": { "gap": "xs" },
+        "children": ["idTop", "idBottom"]
       },
-      "labelTop": {
+      "idTop": {
         "type": "Text",
         "props": {
           "text": { "$item": "Customer/Name" },
           "size": "sm",
-          "weight": "semibold",
+          "weight": "medium",
           "truncate": true
         }
       },
-      "labelBottom": {
+      "idBottom": {
         "type": "Caption",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": { "pattern": "#{num}", "num": { "$item": "Number" } }
-          }
-        }
-      },
-      "dueBadge": {
-        "type": "Badge",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "Due {d}",
-              "d": {
-                "$computed": "format_date",
-                "args": { "value": { "$item": "DueDate" } }
-              }
-            }
-          },
-          "tone": "warning",
-          "variant": "soft"
-        }
+        "props": { "text": { "$item": "Number" } }
       },
       "amount": {
         "type": "Text",
@@ -240,13 +138,20 @@
             "$computed": "myob-accounting_format_currency",
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
-          "size": "md",
-          "weight": "bold",
-          "tone": "accent"
+          "weight": "semibold",
+          "size": "sm"
         }
       },
-      "rowDivider": {
-        "type": "Divider"
+      "due": {
+        "type": "Badge",
+        "props": {
+          "text": {
+            "$computed": "format_date",
+            "args": { "value": { "$item": "DueDate" } }
+          },
+          "tone": "warning",
+          "variant": "soft"
+        }
       }
     }
   },
