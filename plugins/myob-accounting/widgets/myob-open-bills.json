@@ -190,12 +190,12 @@
       },
       "row": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true },
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
         "children": ["label", "dueBadge", "amount"]
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "none", "grow": true },
+        "props": { "gap": "xs", "grow": true },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
@@ -240,9 +240,10 @@
             "$computed": "myob-accounting_format_currency",
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
-          "size": "md",
-          "weight": "bold",
-          "tone": "destructive"
+          "size": "sm",
+          "weight": "semibold",
+          "tone": "destructive",
+          "align": "end"
         }
       },
       "rowDivider": {
