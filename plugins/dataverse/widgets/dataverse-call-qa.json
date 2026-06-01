@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v9",
+  "id": "dataverse-call-qa-v10",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -120,18 +120,19 @@
         }
       },
       "callGrade": {
-        "type": "Badge",
+        "type": "Text",
         "props": {
           "text": { "$item": "mysmbai_grade" },
+          "size": "sm",
+          "weight": "semibold",
           "tone": {
             "$computed": "switch",
             "args": {
               "value": { "$item": "mysmbai_grade" },
               "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
-              "default": "info"
+              "default": "muted"
             }
-          },
-          "variant": "filled"
+          }
         }
       },
       "callDate": {
@@ -153,7 +154,7 @@
         }
       },
       "callScore": {
-        "type": "Badge",
+        "type": "Text",
         "props": {
           "text": {
             "$computed": "fmt",
@@ -162,15 +163,16 @@
               "n": { "$item": "mysmbai_totalscore" }
             }
           },
+          "size": "sm",
+          "weight": "semibold",
           "tone": {
             "$computed": "switch",
             "args": {
               "value": { "$item": "mysmbai_grade" },
               "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
-              "default": "info"
+              "default": "muted"
             }
-          },
-          "variant": "filled"
+          }
         }
       },
 
