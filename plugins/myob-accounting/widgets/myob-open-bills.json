@@ -97,13 +97,23 @@
       "statGrid": {
         "type": "Grid",
         "props": { "cols": 2, "gap": "md" },
-        "children": ["statCount", "statTotal"],
+        "children": ["statCountSection", "statTotalSection"],
         "visible": {
           "$and": [
             { "$state": "/_loading/myob-accounting.list_bills", "not": true },
             { "$state": "/myob-accounting/list_bills/Items/0" }
           ]
         }
+      },
+      "statCountSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statCount"]
+      },
+      "statTotalSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statTotal"]
       },
       "statCount": {
         "type": "Stack",
@@ -191,11 +201,11 @@
       "row": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
-        "children": ["label", "dueBadge", "amount"]
+        "children": ["label", "dueBadgeWrap", "amount"]
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "xs", "grow": true },
+        "props": { "gap": "xs" },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
@@ -215,6 +225,11 @@
             "args": { "pattern": "#{num}", "num": { "$item": "Number" } }
           }
         }
+      },
+      "dueBadgeWrap": {
+        "type": "Row",
+        "props": { "justify": "center" },
+        "children": ["dueBadge"]
       },
       "dueBadge": {
         "type": "Badge",
