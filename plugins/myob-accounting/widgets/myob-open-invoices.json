@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "myob-accounting",
     "tool": "list_invoices",
-    "params": { "status": "Open", "order_by": "Date", "order_desc": true, "page_size": 50 }
+    "params": { "status": "Open", "order_by": "DueDate", "order_desc": false, "page_size": 50 }
   },
   "spec": {
     "root": "card",
@@ -67,9 +67,10 @@
                     "$computed": "sum",
                     "args": {
                       "value": { "$state": "/myob-accounting/list_invoices/Items" },
-                      "field": "AmountDue"
+                      "field": "BalanceDueAmount"
                     }
-                  }
+                  },
+                  "currency": "AUD"
                 }
               }
             }
@@ -112,7 +113,7 @@
       },
       "statOpenLabel": {
         "type": "Eyebrow",
-        "props": { "text": "Open" }
+        "props": { "text": "Open Invoices" }
       },
       "statOpenValue": {
         "type": "Stat",
@@ -143,9 +144,10 @@
                 "$computed": "sum",
                 "args": {
                   "value": { "$state": "/myob-accounting/list_invoices/Items" },
-                  "field": "AmountDue"
+                  "field": "BalanceDueAmount"
                 }
-              }
+              },
+              "currency": "AUD"
             }
           },
           "tone": "accent"
@@ -191,11 +193,7 @@
       "row": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "hover": true },
-        "children": ["dot", "label", "dueBadge", "amount"]
-      },
-      "dot": {
-        "type": "Dot",
-        "props": { "tone": "warning", "size": "sm" }
+        "children": ["label", "dueBadge", "amount"]
       },
       "label": {
         "type": "Stack",
@@ -207,7 +205,7 @@
         "props": {
           "text": { "$item": "Customer/Name" },
           "size": "sm",
-          "weight": "medium",
+          "weight": "semibold",
           "truncate": true
         }
       },
@@ -216,10 +214,7 @@
         "props": {
           "text": {
             "$computed": "fmt",
-            "args": {
-              "pattern": "#{num}",
-              "num": { "$item": "Number" }
-            }
+            "args": { "pattern": "#{num}", "num": { "$item": "Number" } }
           }
         }
       },
@@ -245,10 +240,11 @@
         "props": {
           "text": {
             "$computed": "format_currency",
-            "args": { "value": { "$item": "AmountDue" } }
+            "args": { "value": { "$item": "BalanceDueAmount" }, "currency": "AUD" }
           },
-          "weight": "semibold",
-          "size": "sm"
+          "size": "md",
+          "weight": "bold",
+          "tone": "accent"
         }
       },
       "rowDivider": {
