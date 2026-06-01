@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v11",
+  "id": "dataverse-call-qa-v12",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -22,7 +22,21 @@
     "elements": {
       "card": {
         "type": "Card",
-        "children": ["headerRow", "statsGrid", "div1", "callList", "div2", "footer"]
+        "children": ["cardHeader", "cardBody"]
+      },
+      "cardHeader": {
+        "type": "Header",
+        "children": ["headerContent"]
+      },
+      "headerContent": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["headerRow", "statsGrid", "div1"]
+      },
+      "cardBody": {
+        "type": "Body",
+        "props": {},
+        "children": ["callList", "div2", "footer"]
       },
 
       "headerRow": {
@@ -166,7 +180,17 @@
       "footer": {
         "type": "Row",
         "props": { "justify": "end", "gap": "xs", "align": "center" },
-        "children": ["footerBtn"]
+        "children": ["refreshBtn", "footerBtn"]
+      },
+      "refreshBtn": {
+        "type": "Button",
+        "props": { "label": "Refresh", "variant": "ghost", "size": "sm", "leadingIcon": "RefreshCw" },
+        "on": {
+          "click": {
+            "action": "bust_tool_cache",
+            "params": { "mcp": "dataverse", "tool": "list_call_qa_scores" }
+          }
+        }
       },
       "footerBtn": {
         "type": "Button",
