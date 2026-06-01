@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v15",
+  "id": "dataverse-call-qa-v16",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -125,12 +125,11 @@
         }
       },
       "callGrade": {
-        "type": "Text",
+        "type": "Badge",
         "props": {
           "text": { "$item": "mysmbai_grade" },
-          "size": "sm",
-          "weight": "semibold",
-          "tone": { "$item": "grade_tone" }
+          "tone": { "$item": "grade_tone" },
+          "variant": "soft"
         }
       },
       "callDate": {
