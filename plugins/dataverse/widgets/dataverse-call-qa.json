@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-call-qa-v7",
+  "id": "dataverse-call-qa-v8",
   "title": "Call QA Scorecard",
   "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade.",
   "category": "support",
@@ -91,12 +91,12 @@
       "callRow": {
         "type": "Row",
         "props": { "justify": "between", "align": "center", "gap": "sm" },
-        "children": ["callLeft", "callGrade"]
+        "children": ["callLeft", "callScore"]
       },
       "callLeft": {
         "type": "Stack",
         "props": { "gap": "xxs" },
-        "children": ["callSummary", "callMeta", "callScore", "callDate"]
+        "children": ["callSummary", "callMeta", "callGrade", "callDate", "callTime"]
       },
       "callSummary": {
         "type": "Text",
@@ -114,11 +114,35 @@
           }
         }
       },
+      "callGrade": {
+        "type": "Badge",
+        "props": {
+          "text": { "$item": "mysmbai_grade" },
+          "tone": {
+            "$computed": "switch",
+            "args": {
+              "value": { "$item": "mysmbai_grade" },
+              "cases": { "PASS": "positive", "FAIL": "destructive", "NEEDS COACHING": "warning" },
+              "default": "info"
+            }
+          },
+          "variant": "soft"
+        }
+      },
       "callDate": {
         "type": "Caption",
         "props": {
           "text": {
-            "$computed": "relative_time",
+            "$computed": "format_date",
+            "args": { "value": { "$item": "createdon" }, "format": "long" }
+          }
+        }
+      },
+      "callTime": {
+        "type": "Caption",
+        "props": {
+          "text": {
+            "$computed": "format_time",
             "args": { "value": { "$item": "createdon" } }
           }
         }
@@ -133,14 +157,6 @@
               "n": { "$item": "mysmbai_totalscore" }
             }
           },
-          "tone": "accent",
-          "variant": "soft"
-        }
-      },
-      "callGrade": {
-        "type": "Badge",
-        "props": {
-          "text": { "$item": "mysmbai_grade" },
           "tone": {
             "$computed": "switch",
             "args": {
