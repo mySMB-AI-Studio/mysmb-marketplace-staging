@@ -16,7 +16,8 @@ import type { ComputedFunction, PluginElementsModule } from './types';
 const format_currency: ComputedFunction = (args) => {
   const n = Number(args.value);
   if (!Number.isFinite(n)) return '';
-  return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(n);
+  const fmt = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' });
+  return fmt.formatToParts(n).map(p => p.type === 'currency' ? p.value + ' ' : p.value).join('');
 };
 
 // ── overdue_buckets ──────────────────────────────────────────────────

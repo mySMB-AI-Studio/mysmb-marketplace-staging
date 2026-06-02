@@ -257,7 +257,6 @@
           },
           "size": "sm",
           "weight": "semibold",
-          "tone": "warning",
           "align": "end"
         }
       },
