@@ -200,12 +200,12 @@
       },
       "row": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
+        "props": { "gap": "sm", "align": "center", "hover": true },
         "children": ["label", "dueBadgeWrap", "amount"]
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "xs" },
+        "props": { "gap": "xs", "grow": true },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
