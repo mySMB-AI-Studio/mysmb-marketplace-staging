@@ -61,7 +61,7 @@
       "headerRow": {
         "type": "Row",
         "props": { "justify": "between", "align": "center" },
-        "children": ["titleGroup", "brandBadge"]
+        "children": ["titleGroup"]
       },
       "titleGroup": {
         "type": "Row",
@@ -72,7 +72,6 @@
       "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
       "title": { "type": "Heading", "props": { "text": "Opportunity Pipeline", "level": "h2" } },
       "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Sales" } },
-      "brandBadge": { "type": "Badge", "props": { "text": "Dynamics 365", "tone": "info" } },
 
       "statsGrid": {
         "type": "Grid",
