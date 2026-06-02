@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-knowledge-search-v3",
+  "id": "dataverse-knowledge-search-v3-test",
   "status": "published",
   "title": "D365 Knowledge Search",
   "description": "Search published Dynamics 365 knowledge articles — the same knowledge base agents use to resolve cases.",
@@ -24,7 +24,11 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["titleRow", "listBody", "footerDivider", "footer"]
+        "children": ["header", "listBody", "footerDivider", "footer"]
+      },
+      "header": {
+        "type": "Header",
+        "children": ["titleRow"]
       },
       "titleRow": {
         "type": "Row",
