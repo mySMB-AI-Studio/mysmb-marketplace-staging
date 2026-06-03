@@ -194,13 +194,17 @@
         "children": ["label", "ageBadgeWrap", "amount"]
       },
       "label": {
+        "type": "Stack",
+        "props": { "gap": "xs", "grow": true },
+        "children": ["labelTop"]
+      },
+      "labelTop": {
         "type": "Text",
         "props": {
           "text": { "$item": "name" },
           "size": "sm",
           "weight": "semibold",
-          "truncate": true,
-          "grow": true
+          "truncate": true
         }
       },
       "ageBadgeWrap": {
@@ -211,7 +215,10 @@
       "ageBadge": {
         "type": "Badge",
         "props": {
-          "text": { "$item": "badgeText" },
+          "text": {
+            "$computed": "fmt",
+            "args": { "pattern": "{n} inv", "n": { "$item": "invoiceCount" } }
+          },
           "tone": { "$item": "badgeTone" },
           "variant": "soft"
         }
