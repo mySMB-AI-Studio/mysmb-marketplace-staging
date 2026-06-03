@@ -209,6 +209,105 @@ function validateWidgetElements(
   }
 }
 
+function validateConnection(
+  pluginDirName,
+  connection,
+  allPlaceholders,
+  documentedVars,
+) {
+  if (connection === undefined || connection === null) return;
+  if (typeof connection !== "object") {
+    fail(`plugins/${pluginDirName}: plugin.json "connection" must be an object`);
+    return;
+  }
+  const c = connection;
+  const VALID = new Set(["oauth", "oauth_client", "api_key", "none"]);
+  if (!c.authType || !VALID.has(c.authType)) {
+    fail(
+      `plugins/${pluginDirName}: connection.authType "${c.authType}" must be one of ${[...VALID].join(", ")}`,
+    );
+  }
+  if (c.docUrl !== undefined && typeof c.docUrl !== "string") {
+    fail(`plugins/${pluginDirName}: connection.docUrl must be a string`);
+  }
+  if (c.instructions !== undefined && typeof c.instructions !== "string") {
+    fail(`plugins/${pluginDirName}: connection.instructions must be a string`);
+  }
+
+  // Both api_key and oauth_client render a field modal, so they share field
+  // shape + documentation validation. They differ in two ways:
+  //   - api_key fields must map to a ${VAR} placeholder in .mcp.json (the
+  //     value is injected into the server's env/headers). oauth_client values
+  //     are consumed by the OAuth flow, never injected, so no placeholder.
+  //   - oauth_client must mark exactly one field role:"client_id" and one
+  //     role:"client_secret" so the connect flow knows which is which.
+  if (c.authType === "api_key" || c.authType === "oauth_client") {
+    if (!Array.isArray(c.fields) || c.fields.length === 0) {
+      fail(
+        `plugins/${pluginDirName}: connection.authType "${c.authType}" requires a non-empty "fields" array`,
+      );
+      return;
+    }
+    const roleCounts: Record<string, number> = { client_id: 0, client_secret: 0 };
+    for (const field of c.fields) {
+      if (!field || typeof field !== "object") {
+        fail(`plugins/${pluginDirName}: each connection field must be an object`);
+        continue;
+      }
+      if (typeof field.name !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field name "${field.name}" must be UPPER_SNAKE_CASE`,
+        );
+        continue;
+      }
+      if (typeof field.label !== "string" || field.label.trim() === "") {
+        fail(`plugins/${pluginDirName}: connection field "${field.name}" needs a non-empty label`);
+      }
+      if (field.type !== undefined && field.type !== "password" && field.type !== "text") {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" type must be "password" or "text"`,
+        );
+      }
+      if (field.role !== undefined && field.role !== "client_id" && field.role !== "client_secret") {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" role must be "client_id" or "client_secret"`,
+        );
+      }
+      if (field.role === "client_id" || field.role === "client_secret") {
+        roleCounts[field.role]++;
+      }
+      // api_key only: the field must actually be wired — its name has to
+      // appear as a ${VAR} placeholder in some MCP server env/headers, else
+      // the value the user types never reaches the server. oauth_client
+      // values flow through the OAuth ceremony, not the server config.
+      if (c.authType === "api_key" && !allPlaceholders.has(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" has no matching \${${field.name}} placeholder in .mcp.json env/headers`,
+        );
+      }
+      if (!documentedVars.has(field.name)) {
+        fail(
+          `plugins/${pluginDirName}: connection field "${field.name}" is not documented under a "Configuration" heading in README.md`,
+        );
+      }
+    }
+    // oauth_client needs exactly one of each role so the connect flow can map
+    // entered values to client_id / client_secret unambiguously.
+    if (c.authType === "oauth_client") {
+      if (roleCounts.client_id !== 1) {
+        fail(
+          `plugins/${pluginDirName}: connection.authType "oauth_client" needs exactly one field with role "client_id" (found ${roleCounts.client_id})`,
+        );
+      }
+      if (roleCounts.client_secret !== 1) {
+        fail(
+          `plugins/${pluginDirName}: connection.authType "oauth_client" needs exactly one field with role "client_secret" (found ${roleCounts.client_secret})`,
+        );
+      }
+    }
+  }
+}
+
 function validatePlugin(pluginDirName: string, expectedName: string) {
   const pluginDir = join(repoRoot, "plugins", pluginDirName);
   if (!existsSync(pluginDir) || !statSync(pluginDir).isDirectory()) {
@@ -233,6 +332,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
     name?: string;
     widgetElements?: string;
     widgets?: string;
+    connection?: unknown;
   }>(manifestPath);
   if (manifest && manifest.name && manifest.name !== expectedName) {
     fail(
@@ -258,6 +358,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
   const documentedVars = extractConfigVars(readme);
 
   const ALLOWED_TRANSPORTS = new Set(["stdio", "sse", "http"]);
+  const allPlaceholders = new Set<string>();
 
   for (const [serverName, server] of Object.entries(mcp.mcpServers)) {
     if (!server.type || !ALLOWED_TRANSPORTS.has(server.type)) {
@@ -275,6 +376,7 @@ function validatePlugin(pluginDirName: string, expectedName: string) {
       if (typeof raw !== "string") continue;
       for (const placeholder of extractPlaceholders(raw)) {
         if (RESERVED_VARS.has(placeholder)) continue;
+        allPlaceholders.add(placeholder);
         if (!documentedVars.has(placeholder)) {
           fail(
             `plugins/${pluginDirName}: ${key} uses \${${placeholder}} but it is not documented under a "Configuration" heading in README.md`,

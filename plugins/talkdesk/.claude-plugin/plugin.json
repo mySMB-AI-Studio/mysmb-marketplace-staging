@@ -6,5 +6,6 @@
   "homepage": "https://github.com/mySMB-AI-Studio/mysmb-marketplace/tree/main/plugins/talkdesk",
   "license": "MIT",
   "keywords": ["talkdesk", "call-centre", "qa", "knowledge", "support", "smb"],
-  "widgets": "widgets"
+  "widgets": "widgets",
+  "icon": "icon.png"
 }

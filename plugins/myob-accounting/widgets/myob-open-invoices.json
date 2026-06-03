@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "myob-accounting",
     "tool": "list_invoices",
-    "params": { "status": "Open", "order_by": "Date", "order_desc": false, "page_size": 50 }
+    "params": { "status": "Open", "page_size": 50 }
   },
   "spec": {
     "root": "card",
@@ -61,7 +61,7 @@
                 "args": { "value": { "$state": "/myob-accounting/list_invoices/Items" } }
               },
               "total": {
-                "$computed": "format_currency",
+                "$computed": "myob-accounting_format_currency",
                 "args": {
                   "value": {
                     "$computed": "sum",
@@ -80,14 +80,40 @@
       "body": {
         "type": "Body",
         "props": {},
-        "children": ["statGrid", "divider0", "empty", "list"]
+        "children": ["loading", "statGrid", "divider0", "empty", "list"]
       },
+
+      "loading": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["skel1", "skel2", "skel3", "skel4"],
+        "visible": { "$state": "/_loading/myob-accounting.list_invoices" }
+      },
+      "skel1": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "skel2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "skel4": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
 
       "statGrid": {
         "type": "Grid",
         "props": { "cols": 2, "gap": "md" },
-        "children": ["statOpen", "statValue"],
-        "visible": { "$state": "/myob-accounting/list_invoices/Items/0" }
+        "children": ["statOpenSection", "statValueSection"],
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/myob-accounting/list_invoices/Items/0" }
+          ]
+        }
+      },
+      "statOpenSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statOpen"]
+      },
+      "statValueSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["statValue"]
       },
       "statOpen": {
         "type": "Stack",
@@ -96,7 +122,7 @@
       },
       "statOpenLabel": {
         "type": "Eyebrow",
-        "props": { "text": "Open" }
+        "props": { "text": "Open Invoices" }
       },
       "statOpenValue": {
         "type": "Stat",
@@ -121,7 +147,7 @@
         "type": "Stat",
         "props": {
           "value": {
-            "$computed": "format_currency",
+            "$computed": "myob-accounting_format_currency",
             "args": {
               "value": {
                 "$computed": "sum",
@@ -138,13 +164,23 @@
 
       "divider0": {
         "type": "Divider",
-        "visible": { "$state": "/myob-accounting/list_invoices/Items/0" }
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/myob-accounting/list_invoices/Items/0" }
+          ]
+        }
       },
 
       "empty": {
         "type": "Empty",
         "props": { "message": "No open invoices — you're all caught up.", "icon": "Trophy" },
-        "visible": { "$state": "/myob-accounting/list_invoices/Items/0", "not": true }
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/myob-accounting/list_invoices/Items/0", "not": true }
+          ]
+        }
       },
 
       "list": {
@@ -155,7 +191,7 @@
           "statePath": "/myob-accounting/list_invoices/Items",
           "key": "UID"
         },
-        "visible": { "$state": "/myob-accounting/list_invoices/Items/0" }
+        "visible": { "$state": "/_loading/myob-accounting.list_invoices", "not": true }
       },
       "rowWrapper": {
         "type": "Stack",
@@ -165,15 +201,11 @@
       "row": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "hover": true },
-        "children": ["dot", "label", "dueBadge", "amount"]
-      },
-      "dot": {
-        "type": "Dot",
-        "props": { "tone": "warning", "size": "sm" }
+        "children": ["label", "dueBadgeWrap", "amount"]
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "none", "grow": true },
+        "props": { "gap": "xs", "grow": true },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
@@ -181,7 +213,7 @@
         "props": {
           "text": { "$item": "Customer/Name" },
           "size": "sm",
-          "weight": "medium",
+          "weight": "semibold",
           "truncate": true
         }
       },
@@ -190,12 +222,14 @@
         "props": {
           "text": {
             "$computed": "fmt",
-            "args": {
-              "pattern": "#{num}",
-              "num": { "$item": "Number" }
-            }
+            "args": { "pattern": "#{num}", "num": { "$item": "Number" } }
           }
         }
+      },
+      "dueBadgeWrap": {
+        "type": "Row",
+        "props": { "justify": "center" },
+        "children": ["dueBadge"]
       },
       "dueBadge": {
         "type": "Badge",
@@ -205,7 +239,7 @@
             "args": {
               "pattern": "Due {d}",
               "d": {
-                "$computed": "format_date_au",
+                "$computed": "format_date",
                 "args": { "value": { "$item": "DueDate" } }
               }
             }
@@ -218,11 +252,13 @@
         "type": "Text",
         "props": {
           "text": {
-            "$computed": "format_currency",
+            "$computed": "myob-accounting_format_currency",
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
+          "size": "sm",
           "weight": "semibold",
-          "size": "sm"
+          "tone": "accent",
+          "align": "end"
         }
       },
       "rowDivider": {
