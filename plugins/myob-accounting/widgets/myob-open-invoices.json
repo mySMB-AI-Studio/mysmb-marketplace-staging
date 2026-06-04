@@ -216,8 +216,8 @@
         }
       },
       "hdrNameWrap": {
-        "type": "Stack",
-        "props": {},
+        "type": "Row",
+        "props": { "justify": "start" },
         "children": ["hdrName"]
       },
       "hdrName": {
