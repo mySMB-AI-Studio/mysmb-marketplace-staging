@@ -31,7 +31,39 @@
               "statePath": "/ui/arData",
               "value": {
                 "$computed": "myob-accounting_ar_by_customer",
-                "args": { "value": { "$state": "/myob-accounting/list_invoices/Items" } }
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "sortCol": { "$state": "/ui/sort/col" },
+                  "sortDir": { "$state": "/ui/sort/dir" }
+                }
+              }
+            }
+          },
+          "/ui/sort/col": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/arData",
+              "value": {
+                "$computed": "myob-accounting_ar_by_customer",
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "sortCol": { "$state": "/ui/sort/col" },
+                  "sortDir": { "$state": "/ui/sort/dir" }
+                }
+              }
+            }
+          },
+          "/ui/sort/dir": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/arData",
+              "value": {
+                "$computed": "myob-accounting_ar_by_customer",
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "sortCol": { "$state": "/ui/sort/col" },
+                  "sortDir": { "$state": "/ui/sort/dir" }
+                }
               }
             }
           }
@@ -69,7 +101,7 @@
       "body": {
         "type": "Body",
         "props": {},
-        "children": ["loading", "statGrid", "divider0", "empty", "list"]
+        "children": ["loading", "statGrid", "divider0", "empty", "colHeaders", "colHeaderDivider", "list"]
       },
 
       "loading": {
@@ -157,6 +189,93 @@
           "$and": [
             { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
             { "$state": "/ui/arData/customerCount", "not": true }
+          ]
+        }
+      },
+
+      "colHeaders": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["hdrNameWrap", "hdrInvWrap", "hdrAmtWrap"],
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/ui/arData/customerCount" }
+          ]
+        }
+      },
+      "hdrNameWrap": {
+        "type": "Stack",
+        "props": { "grow": true },
+        "children": ["hdrName"]
+      },
+      "hdrName": {
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": { "label": "Customer", "col": "name", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+          },
+          "variant": "ghost",
+          "size": "xs"
+        },
+        "on": {
+          "click": [
+            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "name", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
+            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "name" } }
+          ]
+        }
+      },
+      "hdrInvWrap": {
+        "type": "Row",
+        "props": { "justify": "center" },
+        "children": ["hdrInv"]
+      },
+      "hdrInv": {
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": { "label": "Invoices", "col": "invoiceCount", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+          },
+          "variant": "ghost",
+          "size": "xs"
+        },
+        "on": {
+          "click": [
+            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "invoiceCount", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
+            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "invoiceCount" } }
+          ]
+        }
+      },
+      "hdrAmtWrap": {
+        "type": "Row",
+        "props": { "justify": "end" },
+        "children": ["hdrAmt"]
+      },
+      "hdrAmt": {
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": { "label": "Amount", "col": "total", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+          },
+          "variant": "ghost",
+          "size": "xs"
+        },
+        "on": {
+          "click": [
+            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "total", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
+            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "total" } }
+          ]
+        }
+      },
+      "colHeaderDivider": {
+        "type": "Divider",
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/ui/arData/customerCount" }
           ]
         }
       },

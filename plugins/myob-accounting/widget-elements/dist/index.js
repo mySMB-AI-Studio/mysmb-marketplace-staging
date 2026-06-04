@@ -56,16 +56,17 @@ const overdue_buckets = (args) => {
 };
 // ── ar_by_customer ───────────────────────────────────────────────────
 // Aggregates open invoices by customer to produce a per-customer AR summary.
-// Entries are sorted worst-first: most-overdue customers at top, then by
-// total balance descending. Each entry carries pre-computed badgeText and
-// badgeTone so the widget renders without additional $computed calls.
+// Accepts optional sortCol ("name" | "invoiceCount" | "total") and
+// sortDir ("asc" | "desc") to drive column-header sorting.
 // Returns { entries: [{ uid, name, total, invoiceCount, overdueCount,
 //   maxDaysOverdue, badgeText, badgeTone }], grandTotal, customerCount }
-// Args: { value: Invoice[] }
+// Args: { value: Invoice[], sortCol?: string, sortDir?: string }
 const ar_by_customer = (args) => {
     const items = Array.isArray(args.value) ? args.value : [];
     const now = Date.now();
     const MS_PER_DAY = 86_400_000;
+    const sortCol = String(args.sortCol ?? 'name');
+    const sortDir = String(args.sortDir ?? 'asc');
     const map = new Map();
     for (const item of items) {
         const customer = item['Customer'];
@@ -87,7 +88,13 @@ const ar_by_customer = (args) => {
     }
     let grandTotal = 0;
     const entries = Array.from(map.values())
-        .sort((a, b) => a.name.localeCompare(b.name))
+        .sort((a, b) => {
+            let cmp = 0;
+            if (sortCol === 'invoiceCount') cmp = a.invoiceCount - b.invoiceCount;
+            else if (sortCol === 'total') cmp = a.total - b.total;
+            else cmp = a.name.localeCompare(b.name);
+            return sortDir === 'desc' ? -cmp : cmp;
+        })
         .map((e) => {
             grandTotal += e.total;
             const badgeTone = e.maxDaysOverdue > 30 ? 'destructive'
@@ -99,12 +106,67 @@ const ar_by_customer = (args) => {
         });
     return { entries, grandTotal, customerCount: entries.length };
 };
+// ── sort_items ───────────────────────────────────────────────────────
+// Sorts an array of objects by a dot/slash-delimited field path.
+// Numeric fields are compared numerically; others use localeCompare.
+// Returns a new sorted array; does not mutate the input.
+// Args: { value: object[], field: string, dir: "asc" | "desc" }
+const sort_items = (args) => {
+    const items = Array.isArray(args.value) ? args.value : [];
+    const field = String(args.field ?? '');
+    const dir = String(args.dir ?? 'asc');
+    if (!field || items.length === 0) return items;
+    const getVal = (item) => {
+        const parts = field.split('/');
+        let val = item;
+        for (const part of parts) {
+            if (val != null && typeof val === 'object') {
+                val = val[part];
+            } else { return undefined; }
+        }
+        return val;
+    };
+    return [...items].sort((a, b) => {
+        const av = getVal(a), bv = getVal(b);
+        let cmp;
+        if (typeof av === 'number' && typeof bv === 'number') cmp = av - bv;
+        else cmp = String(av ?? '').localeCompare(String(bv ?? ''));
+        return dir === 'desc' ? -cmp : cmp;
+    });
+};
+// ── sort_toggle_dir ──────────────────────────────────────────────────
+// Returns the next sort direction when a column header is clicked.
+// Toggles asc→desc when clicking the already-active column; resets to
+// "asc" when switching to a different column.
+// Args: { col: string, currentCol: string, currentDir: string }
+const sort_toggle_dir = (args) => {
+    const col = String(args.col ?? '');
+    const currentCol = String(args.currentCol ?? '');
+    const currentDir = String(args.currentDir ?? 'asc');
+    if (col === currentCol && currentDir === 'asc') return 'desc';
+    return 'asc';
+};
+// ── sort_label ───────────────────────────────────────────────────────
+// Appends a ↑ or ↓ arrow to a column header label when it is the active
+// sort column, so users can see which column is sorted and in what direction.
+// Args: { label: string, col: string, currentCol: string, currentDir: string }
+const sort_label = (args) => {
+    const label = String(args.label ?? '');
+    const col = String(args.col ?? '');
+    const currentCol = String(args.currentCol ?? '');
+    const currentDir = String(args.currentDir ?? 'asc');
+    if (col !== currentCol) return label;
+    return label + (currentDir === 'asc' ? ' ↑' : ' ↓');
+};
 const elements = {
     slug: 'myob-accounting',
     functions: {
         format_currency,
         overdue_buckets,
         ar_by_customer,
+        sort_items,
+        sort_toggle_dir,
+        sort_label,
     },
 };
 export default elements;
