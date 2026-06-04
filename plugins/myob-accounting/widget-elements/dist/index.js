@@ -159,7 +159,7 @@ const format_date = (args) => {
     }
     const d = new Date(raw);
     if (isNaN(d.getTime())) return raw;
-    return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
 };
 // ── sort_label ───────────────────────────────────────────────────────
 // Appends a ↑ or ↓ arrow to a column header label when it is the active

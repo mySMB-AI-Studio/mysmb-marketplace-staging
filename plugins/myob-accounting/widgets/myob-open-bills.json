@@ -247,7 +247,7 @@
         "props": {
           "label": {
             "$computed": "myob-accounting_sort_label",
-            "args": { "label": "Status", "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+            "args": { "label": "Due Date", "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
           "size": "xs"
@@ -343,14 +343,8 @@
         "type": "Badge",
         "props": {
           "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "Due {d}",
-              "d": {
-                "$computed": "myob-accounting_format_date",
-                "args": { "value": { "$item": "DueDate" } }
-              }
-            }
+            "$computed": "myob-accounting_format_date",
+            "args": { "value": { "$item": "DueDate" } }
           },
           "tone": "warning",
           "variant": "soft"

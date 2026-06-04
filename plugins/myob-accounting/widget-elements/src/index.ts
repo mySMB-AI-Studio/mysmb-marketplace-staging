@@ -180,7 +180,7 @@ const format_date: ComputedFunction = (args) => {
   }
   const d = new Date(raw);
   if (isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
 };
 
 // ── sort_label ───────────────────────────────────────────────────────
