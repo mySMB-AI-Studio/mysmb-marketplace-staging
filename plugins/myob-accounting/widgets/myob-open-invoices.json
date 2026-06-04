@@ -260,8 +260,8 @@
         }
       },
       "hdrAmtWrap": {
-        "type": "Row",
-        "props": { "justify": "end" },
+        "type": "Stack",
+        "props": {},
         "children": ["hdrAmt"]
       },
       "hdrAmt": {
@@ -272,7 +272,8 @@
             "args": { "label": "Amount", "col": "BalanceDueAmount", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
-          "size": "xs"
+          "size": "xs",
+          "align": "end"
         },
         "on": {
           "click": [
