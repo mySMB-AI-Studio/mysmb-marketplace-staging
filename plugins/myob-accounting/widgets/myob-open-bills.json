@@ -260,8 +260,8 @@
         }
       },
       "hdrAmtWrap": {
-        "type": "Stack",
-        "props": {},
+        "type": "Row",
+        "props": { "justify": "end" },
         "children": ["hdrAmt"]
       },
       "hdrAmt": {
@@ -272,8 +272,7 @@
             "args": { "label": "Amount", "col": "BalanceDueAmount", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
-          "size": "xs",
-          "align": "end"
+          "size": "xs"
         },
         "on": {
           "click": [
@@ -310,7 +309,7 @@
       "row": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 7rem" },
-        "children": ["label", "dueBadgeWrap", "amount"]
+        "children": ["label", "dueBadgeWrap", "amountWrap"]
       },
       "label": {
         "type": "Stack",
@@ -357,6 +356,11 @@
           "variant": "soft"
         }
       },
+      "amountWrap": {
+        "type": "Row",
+        "props": { "justify": "end" },
+        "children": ["amount"]
+      },
       "amount": {
         "type": "Text",
         "props": {
@@ -365,8 +369,7 @@
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "size": "sm",
-          "weight": "semibold",
-          "align": "end"
+          "weight": "semibold"
         }
       },
       "rowDivider": {
