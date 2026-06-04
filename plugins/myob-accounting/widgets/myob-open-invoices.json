@@ -250,7 +250,8 @@
             "args": { "label": "Due Date", "col": "Terms/DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
-          "size": "xs"
+          "size": "xs",
+          "align": "center"
         },
         "on": {
           "click": [
@@ -347,7 +348,8 @@
             "args": { "value": { "$item": "Terms/DueDate" } }
           },
           "tone": "warning",
-          "variant": "soft"
+          "variant": "soft",
+          "align": "center"
         }
       },
       "amountWrap": {
