@@ -217,7 +217,7 @@
       },
       "hdrNameWrap": {
         "type": "Stack",
-        "props": { "grow": true },
+        "props": {},
         "children": ["hdrName"]
       },
       "hdrName": {
