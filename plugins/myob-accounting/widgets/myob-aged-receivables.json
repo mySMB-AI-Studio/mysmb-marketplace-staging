@@ -217,7 +217,8 @@
             "args": { "label": "Customer", "col": "name", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
-          "size": "xs"
+          "size": "xs",
+          "align": "start"
         },
         "on": {
           "click": [
