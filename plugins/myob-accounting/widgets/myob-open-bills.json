@@ -343,8 +343,12 @@
         "type": "Badge",
         "props": {
           "text": {
-            "$computed": "myob-accounting_format_date",
-            "args": { "value": { "$item": "DueDate" } }
+            "$computed": "fmt",
+            "args": {
+              "pattern": "D:{dueDate} / Dt:{date}",
+              "dueDate": { "$item": "DueDate" },
+              "date": { "$item": "Date" }
+            }
           },
           "tone": "warning",
           "variant": "soft"
