@@ -347,7 +347,7 @@
             "args": {
               "pattern": "Due {d}",
               "d": {
-                "$computed": "format_date",
+                "$computed": "myob-accounting_format_date",
                 "args": { "value": { "$item": "DueDate" } }
               }
             }
