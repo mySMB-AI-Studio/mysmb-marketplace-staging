@@ -344,7 +344,7 @@
         "props": {
           "text": {
             "$computed": "myob-accounting_format_date",
-            "args": { "value": { "$item": "Date" } }
+            "args": { "value": { "$item": "Terms/DueDate" } }
           },
           "tone": "warning",
           "variant": "soft"
