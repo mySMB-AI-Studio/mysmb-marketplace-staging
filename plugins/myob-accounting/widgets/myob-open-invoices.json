@@ -247,15 +247,15 @@
         "props": {
           "label": {
             "$computed": "myob-accounting_sort_label",
-            "args": { "label": "Due Date", "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+            "args": { "label": "Due Date", "col": "Terms/DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
           "size": "xs"
         },
         "on": {
           "click": [
-            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
-            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "DueDate" } }
+            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "Terms/DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
+            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "Terms/DueDate" } }
           ]
         }
       },
