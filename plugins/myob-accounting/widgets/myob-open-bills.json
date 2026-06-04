@@ -247,15 +247,15 @@
         "props": {
           "label": {
             "$computed": "myob-accounting_sort_label",
-            "args": { "label": "Bill #", "col": "Number", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
+            "args": { "label": "Status", "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } }
           },
           "variant": "ghost",
           "size": "xs"
         },
         "on": {
           "click": [
-            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "Number", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
-            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "Number" } }
+            { "action": "setState", "params": { "statePath": "/ui/sort/dir", "value": { "$computed": "myob-accounting_sort_toggle_dir", "args": { "col": "DueDate", "currentCol": { "$state": "/ui/sort/col" }, "currentDir": { "$state": "/ui/sort/dir" } } } } },
+            { "action": "setState", "params": { "statePath": "/ui/sort/col", "value": "DueDate" } }
           ]
         }
       },

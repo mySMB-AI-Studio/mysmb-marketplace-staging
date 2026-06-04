@@ -17,7 +17,7 @@ const format_currency: ComputedFunction = (args) => {
   const n = Number(args.value);
   if (!Number.isFinite(n)) return '';
   const fmt = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' });
-  return fmt.formatToParts(n).map(p => p.type === 'currency' ? p.value + ' ' : p.value).join('');
+  return fmt.formatToParts(n).map(p => p.value).join('');
 };
 
 // ── overdue_buckets ──────────────────────────────────────────────────
