@@ -273,7 +273,7 @@
           },
           "variant": "ghost",
           "size": "xs",
-          "align": "end"
+          "align": "start"
         },
         "on": {
           "click": [
