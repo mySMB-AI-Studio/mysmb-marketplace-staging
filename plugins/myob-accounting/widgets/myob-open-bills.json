@@ -338,7 +338,7 @@
       },
       "dueBadgeWrap": {
         "type": "Row",
-        "props": { "justify": "center" },
+        "props": { "justify": "center", "align": "center" },
         "children": ["dueBadge"]
       },
       "dueBadge": {
