@@ -127,8 +127,8 @@
         "type": "Badge",
         "props": {
           "text": { "$item": "mysmbai_grade" },
-          "tone": { "$item": "grade_tone" },
-          "variant": "filled"
+          "tone": "accent",
+          "variant": "soft"
         }
       },
       "callDate": {
@@ -159,7 +159,7 @@
               "n": { "$item": "mysmbai_totalscore" }
             }
           },
-          "tone": { "$item": "grade_tone" },
+          "tone": "accent",
           "variant": "soft"
         }
       },
