@@ -63,19 +63,7 @@
       },
       "subtitle": {
         "type": "Eyebrow",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "{n} customers · {total} outstanding",
-              "n": { "$state": "/ui/arData/customerCount" },
-              "total": {
-                "$computed": "myob-accounting_format_currency",
-                "args": { "value": { "$state": "/ui/arData/grandTotal" } }
-              }
-            }
-          }
-        }
+        "props": { "text": "MYOB Accounting" }
       },
 
       "body": {

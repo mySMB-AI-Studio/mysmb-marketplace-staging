@@ -101,7 +101,7 @@ const ar_by_customer: ComputedFunction = (args) => {
 
   let grandTotal = 0;
   const entries = Array.from(map.values())
-    .sort((a, b) => b.maxDaysOverdue - a.maxDaysOverdue || b.total - a.total)
+    .sort((a, b) => a.name.localeCompare(b.name))
     .map((e) => {
       grandTotal += e.total;
       const badgeTone = e.maxDaysOverdue > 30 ? 'destructive'

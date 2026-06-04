@@ -51,30 +51,7 @@
       },
       "subtitle": {
         "type": "Eyebrow",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "{n} to pay · {total} outstanding",
-              "n": {
-                "$computed": "count",
-                "args": { "value": { "$state": "/myob-accounting/list_bills/Items" } }
-              },
-              "total": {
-                "$computed": "myob-accounting_format_currency",
-                "args": {
-                  "value": {
-                    "$computed": "sum",
-                    "args": {
-                      "value": { "$state": "/myob-accounting/list_bills/Items" },
-                      "field": "BalanceDueAmount"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+        "props": { "text": "MYOB Accounting" }
       },
 
       "body": {
