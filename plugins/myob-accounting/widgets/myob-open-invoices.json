@@ -206,7 +206,7 @@
 
       "colHeaders": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center" },
+        "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 7rem 8rem" },
         "children": ["hdrNameWrap", "hdrNumWrap", "hdrAmtWrap"],
         "visible": {
           "$and": [
@@ -308,12 +308,12 @@
       },
       "row": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true },
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
         "children": ["label", "dueBadgeWrap", "amount"]
       },
       "label": {
         "type": "Stack",
-        "props": { "gap": "xs", "grow": true },
+        "props": { "gap": "xs" },
         "children": ["labelTop", "labelBottom"]
       },
       "labelTop": {
