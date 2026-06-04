@@ -1,5 +1,5 @@
 {
-  "id": "dataverse-opportunity-pipeline-v3",
+  "id": "dataverse-opportunity-pipeline-v4",
   "title": "Opportunity Pipeline",
   "description": "Open opportunities grouped by sales stage — click a stage to see the deals inside it.",
   "category": "sales",
@@ -82,10 +82,9 @@
       "stackOpen": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconOpen", "valOpen", "lblOpen"] },
       "iconOpen": { "type": "Icon", "props": { "name": "TrendingUp", "size": "sm", "tone": "accent" } },
       "valOpen": {
-        "type": "Heading",
+        "type": "Stat",
         "props": {
-          "text": { "$computed": "count", "args": { "value": { "$state": "/dataverse/list_opportunities/items" } } },
-          "level": "h2"
+          "value": { "$computed": "count", "args": { "value": { "$state": "/dataverse/list_opportunities/items" } } }
         }
       },
       "lblOpen": { "type": "Caption", "props": { "text": "Open" } },
@@ -94,9 +93,9 @@
       "stackValue": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconValue", "valValue", "lblValue"] },
       "iconValue": { "type": "Icon", "props": { "name": "Banknote", "size": "sm", "tone": "positive" } },
       "valValue": {
-        "type": "Heading",
+        "type": "Stat",
         "props": {
-          "text": {
+          "value": {
             "$computed": "format_currency",
             "args": {
               "value": {
@@ -107,8 +106,7 @@
                 }
               }
             }
-          },
-          "level": "h2"
+          }
         }
       },
       "lblValue": { "type": "Caption", "props": { "text": "Pipeline Value" } },
