@@ -195,7 +195,7 @@
 
       "colHeaders": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "template": "1fr auto auto" },
+        "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 6rem 7rem" },
         "children": ["hdrNameWrap", "hdrInvWrap", "hdrAmtWrap"],
         "visible": {
           "$and": [
@@ -297,7 +297,7 @@
       },
       "row": {
         "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true, "template": "1fr auto auto" },
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 7rem" },
         "children": ["label", "ageBadgeWrap", "amount"]
       },
       "label": {
