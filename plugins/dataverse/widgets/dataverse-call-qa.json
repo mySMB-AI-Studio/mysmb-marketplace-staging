@@ -128,7 +128,7 @@
         "props": {
           "text": { "$item": "mysmbai_grade" },
           "tone": { "$item": "grade_tone" },
-          "variant": "soft"
+          "variant": "filled"
         }
       },
       "callDate": {
