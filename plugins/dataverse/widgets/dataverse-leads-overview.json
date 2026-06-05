@@ -174,7 +174,7 @@
       "leadRight": {
         "type": "Stack",
         "props": { "gap": "xs", "align": "end" },
-        "children": ["leadStatusBadge"]
+        "children": ["leadStatusBadge", "leadOpenBtn"]
       },
       "leadStatusBadge": {
         "type": "Badge",
@@ -182,6 +182,30 @@
           "text": { "$item": "status_code_label" },
           "tone": "accent",
           "variant": "soft"
+        }
+      },
+      "leadOpenBtn": {
+        "type": "Button",
+        "props": {
+          "label": "Open",
+          "variant": "ghost",
+          "size": "sm",
+          "leadingIcon": "ExternalLink"
+        },
+        "on": {
+          "click": {
+            "action": "open_url",
+            "params": {
+              "url": {
+                "$computed": "fmt",
+                "args": {
+                  "pattern": "https://mysmb-dev.crm6.dynamics.com/main.aspx?etn=lead&pagetype=entityrecord&id={id}",
+                  "id": { "$item": "leadid" }
+                }
+              },
+              "target": "_blank"
+            }
+          }
         }
       },
 
