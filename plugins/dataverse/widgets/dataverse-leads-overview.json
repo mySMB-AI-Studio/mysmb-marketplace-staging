@@ -132,7 +132,7 @@
       "leadInfo": {
         "type": "Stack",
         "props": { "gap": "none", "grow": true },
-        "children": ["leadName", "leadCompany", "leadEmail", "leadPhone", "leadMeta", "leadRemarks"]
+        "children": ["leadName", "leadCompany", "leadEmail", "leadPhone", "leadSource", "leadMeta", "leadRemarks"]
       },
       "leadName": {
         "type": "Text",
@@ -150,16 +150,16 @@
         "type": "Caption",
         "props": { "text": { "$item": "phone" } }
       },
+      "leadSource": {
+        "type": "Caption",
+        "props": { "text": { "$item": "source_label" }, "tone": "muted" }
+      },
       "leadMeta": {
         "type": "Caption",
         "props": {
           "text": {
-            "$computed": "fmt",
-            "args": {
-              "pattern": "{source} · {date}",
-              "source": { "$item": "source_label" },
-              "date": { "$computed": "format_date", "args": { "value": { "$item": "createdon" }, "format": "long" } }
-            }
+            "$computed": "format_date",
+            "args": { "value": { "$item": "createdon" }, "format": "long" }
           },
           "tone": "muted"
         }
