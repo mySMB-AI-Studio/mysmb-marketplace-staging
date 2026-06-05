@@ -62,7 +62,7 @@
       "body": {
         "type": "Body",
         "props": {},
-        "children": ["loading", "heroSection", "divider1", "statsGrid", "divider2", "expenseChartLabel", "expensesChart"]
+        "children": ["loading", "debugCaption", "heroSection", "divider1", "statsGrid", "divider2", "expenseChartLabel", "expensesChart"]
       },
 
       "loading": {
@@ -75,6 +75,17 @@
       "skel2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
       "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
       "skel4": { "type": "Skeleton", "props": { "height": "6rem",   "rounded": "md" } },
+
+      "debugCaption": {
+        "type": "Caption",
+        "props": {
+          "text": {
+            "$computed": "myob-accounting_pnl_debug",
+            "args": { "value": { "$state": "/myob-accounting/get_profit_and_loss" } }
+          }
+        },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
 
       "heroSection": {
         "type": "Section",

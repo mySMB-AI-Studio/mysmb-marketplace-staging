@@ -175,7 +175,8 @@ const sort_label = (args) => {
 };
 // ── pnl_get ──────────────────────────────────────────────────────────────────
 // Extracts a summary amount from a MYOB ProfitAndLoss report object.
-// Tries known top-level fields first, falls back to scanning Sections by title.
+// Tries top-level fields, then DisplayID matching, then title matching.
+// For income/expenses sums all matching sections (handles split sections).
 // Args: { value: PnLReport, key: "income" | "expenses" | "netProfit" | "grossProfit" }
 const pnl_get = (args) => {
     const r = args.value;
@@ -189,23 +190,44 @@ const pnl_get = (args) => {
     };
     for (const field of (candidates[key] ?? [])) {
         const v = r[field];
-        if (v?.Amount !== undefined) return Number(v.Amount);
+        if (typeof v === 'number') return v;
+        if (v && typeof v === 'object' && v.Amount !== undefined) return Number(v.Amount);
     }
     const sections = Array.isArray(r.Sections) ? r.Sections : [];
-    const terms = {
+    const displayIds = {
+        income:      ['income', 'trading_income', 'other_income', 'tradingincome'],
+        expenses:    ['expense', 'expenses', 'operating_expense', 'cost_of_sales', 'costofsal'],
+        netProfit:   ['net_profit', 'netprofit'],
+        grossProfit: ['gross_profit', 'grossprofit'],
+    };
+    const titleTerms = {
         income: 'income', expenses: 'expens',
         netProfit: 'net profit', grossProfit: 'gross profit',
     };
-    const term = terms[key] ?? '';
-    for (const s of sections) {
-        if (String(s.Title ?? '').toLowerCase().includes(term)) {
-            return Number(s.Total?.Amount ?? 0);
+    const term = titleTerms[key] ?? '';
+    if (key === 'income' || key === 'expenses') {
+        let total = 0;
+        for (const s of sections) {
+            const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+            const title = String(s.Title ?? '').toLowerCase();
+            const byId = (displayIds[key] ?? []).some(id => did.includes(id));
+            const byTitle = title.includes(term) && !title.includes('net') && !title.includes('gross') && !title.includes('total');
+            if (byId || byTitle) total += Number(s.Total?.Amount ?? 0);
         }
+        if (total !== 0) return total;
+    }
+    for (const s of sections) {
+        const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+        const title = String(s.Title ?? '').toLowerCase();
+        const byId = (displayIds[key] ?? []).some(id => did.includes(id));
+        const byTitle = term && title.includes(term);
+        if (byId || byTitle) return Number(s.Total?.Amount ?? 0);
     }
     return 0;
 };
 // ── pnl_entries ──────────────────────────────────────────────────────────────
-// Returns account-level entries from a named P&L section shaped for BarChart.
+// Returns account-level entries from matching P&L sections shaped for BarChart.
+// Handles split sections (e.g. Trading Income + Other Income both contribute).
 // Returns [{ name: string, amount: number }] filtered to non-zero amounts.
 // Args: { value: PnLReport, section: "income" | "expenses" }
 const pnl_entries = (args) => {
@@ -213,10 +235,17 @@ const pnl_entries = (args) => {
     const section = String(args.section ?? 'income');
     if (!r) return [];
     const sections = Array.isArray(r.Sections) ? r.Sections : [];
+    const incomeIds = ['income', 'trading_income', 'other_income', 'tradingincome'];
+    const expenseIds = ['expense', 'expenses', 'operating_expense', 'cost_of_sales', 'other_expense'];
+    const targetIds = section === 'income' ? incomeIds : expenseIds;
     const term = section === 'income' ? 'income' : 'expens';
     const results = [];
     for (const s of sections) {
-        if (!String(s.Title ?? '').toLowerCase().includes(term)) continue;
+        const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+        const title = String(s.Title ?? '').toLowerCase();
+        const byId = targetIds.some(id => did.includes(id));
+        const byTitle = title.includes(term) && !title.includes('net') && !title.includes('gross') && !title.includes('total');
+        if (!byId && !byTitle) continue;
         const entries = Array.isArray(s.Entries) ? s.Entries : [];
         for (const e of entries) {
             const name = String(e.Account?.Name ?? e.Title ?? 'Other');
@@ -225,6 +254,19 @@ const pnl_entries = (args) => {
         }
     }
     return results;
+};
+// ── pnl_debug ────────────────────────────────────────────────────────────────
+// Returns a diagnostic string showing P&L section titles, DisplayIDs, and totals.
+// Used to verify the actual MYOB API response structure.
+// Args: { value: PnLReport }
+const pnl_debug = (args) => {
+    const r = args.value;
+    if (!r) return 'no data';
+    const sections = Array.isArray(r.Sections) ? r.Sections : [];
+    if (sections.length === 0) {
+        return `no sections — keys: ${Object.keys(r).join(', ')}`;
+    }
+    return sections.map(s => `[${s.DisplayID ?? '?'}] ${s.Title}: ${s.Total?.Amount ?? '?'}`).join(' | ');
 };
 // ── pnl_summary_bars ─────────────────────────────────────────────────────────
 // Builds [{label, amount}] for Income, Expenses, and Net Profit totals.
@@ -252,6 +294,7 @@ const elements = {
         sort_label,
         pnl_get,
         pnl_entries,
+        pnl_debug,
         pnl_summary_bars,
     },
 };

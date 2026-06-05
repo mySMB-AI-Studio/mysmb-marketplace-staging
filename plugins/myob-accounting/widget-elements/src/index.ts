@@ -198,12 +198,14 @@ const sort_label: ComputedFunction = (args) => {
 
 // ── pnl_get ──────────────────────────────────────────────────────────
 // Extracts a summary amount from a MYOB ProfitAndLoss report object.
-// Tries known top-level fields first, falls back to scanning Sections by title.
+// Tries top-level fields, then DisplayID matching, then title matching.
+// For income/expenses sums all matching sections (handles split sections).
 // Args: { value: PnLReport, key: "income" | "expenses" | "netProfit" | "grossProfit" }
 const pnl_get: ComputedFunction = (args) => {
   const r = args.value as Record<string, unknown>;
   const key = String(args.key ?? '');
   if (!r) return 0;
+  // Try known top-level summary fields
   const candidates: Record<string, string[]> = {
     income:      ['IncomeTotal', 'TotalIncome'],
     expenses:    ['ExpenseTotal', 'TotalExpenses', 'OperatingExpensesTotal'],
@@ -211,19 +213,50 @@ const pnl_get: ComputedFunction = (args) => {
     grossProfit: ['GrossProfit'],
   };
   for (const field of (candidates[key] ?? [])) {
-    const v = r[field] as Record<string, unknown> | undefined;
-    if (v?.Amount !== undefined) return Number(v.Amount);
+    const v = r[field] as Record<string, unknown> | number | undefined;
+    if (typeof v === 'number') return v;
+    if (v && typeof v === 'object' && (v as Record<string, unknown>).Amount !== undefined)
+      return Number((v as Record<string, unknown>).Amount);
   }
   const sections = Array.isArray(r.Sections)
     ? (r.Sections as Record<string, unknown>[])
     : [];
-  const terms: Record<string, string> = {
+  // DisplayID matching (MYOB AccountRight uses camelCase/snake_case DisplayIDs)
+  const displayIds: Record<string, string[]> = {
+    income:      ['income', 'trading_income', 'other_income', 'tradingincome'],
+    expenses:    ['expense', 'expenses', 'operating_expense', 'cost_of_sales', 'costofsal'],
+    netProfit:   ['net_profit', 'netprofit'],
+    grossProfit: ['gross_profit', 'grossprofit'],
+  };
+  const titleTerms: Record<string, string> = {
     income: 'income', expenses: 'expens',
     netProfit: 'net profit', grossProfit: 'gross profit',
   };
-  const term = terms[key] ?? '';
+  const term = titleTerms[key] ?? '';
+  // For income/expenses: sum all matching sections (handles split Trading + Other sections)
+  if (key === 'income' || key === 'expenses') {
+    let total = 0;
+    for (const s of sections) {
+      const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+      const title = String(s.Title ?? '').toLowerCase();
+      const byId = (displayIds[key] ?? []).some(id => did.includes(id));
+      const byTitle = title.includes(term)
+        && !title.includes('net')
+        && !title.includes('gross')
+        && !title.includes('total');
+      if (byId || byTitle) {
+        total += Number((s.Total as Record<string, unknown>)?.Amount ?? 0);
+      }
+    }
+    if (total !== 0) return total;
+  }
+  // For netProfit / grossProfit: return first match
   for (const s of sections) {
-    if (String(s.Title ?? '').toLowerCase().includes(term)) {
+    const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+    const title = String(s.Title ?? '').toLowerCase();
+    const byId = (displayIds[key] ?? []).some(id => did.includes(id));
+    const byTitle = term && title.includes(term);
+    if (byId || byTitle) {
       return Number((s.Total as Record<string, unknown>)?.Amount ?? 0);
     }
   }
@@ -231,7 +264,8 @@ const pnl_get: ComputedFunction = (args) => {
 };
 
 // ── pnl_entries ──────────────────────────────────────────────────────
-// Returns account-level entries from a named P&L section shaped for BarChart.
+// Returns account-level entries from matching P&L sections shaped for BarChart.
+// Handles split sections (e.g. Trading Income + Other Income both contribute).
 // Returns [{ name: string, amount: number }] filtered to non-zero amounts.
 // Args: { value: PnLReport, section: "income" | "expenses" }
 const pnl_entries: ComputedFunction = (args) => {
@@ -241,10 +275,20 @@ const pnl_entries: ComputedFunction = (args) => {
   const sections = Array.isArray(r.Sections)
     ? (r.Sections as Record<string, unknown>[])
     : [];
+  const incomeIds = ['income', 'trading_income', 'other_income', 'tradingincome'];
+  const expenseIds = ['expense', 'expenses', 'operating_expense', 'cost_of_sales', 'other_expense'];
+  const targetIds = section === 'income' ? incomeIds : expenseIds;
   const term = section === 'income' ? 'income' : 'expens';
   const results: { name: string; amount: number }[] = [];
   for (const s of sections) {
-    if (!String(s.Title ?? '').toLowerCase().includes(term)) continue;
+    const did = String(s.DisplayID ?? '').toLowerCase().replace(/[-\s]/g, '_');
+    const title = String(s.Title ?? '').toLowerCase();
+    const byId = targetIds.some(id => did.includes(id));
+    const byTitle = title.includes(term)
+      && !title.includes('net')
+      && !title.includes('gross')
+      && !title.includes('total');
+    if (!byId && !byTitle) continue;
     const entries = Array.isArray(s.Entries)
       ? (s.Entries as Record<string, unknown>[])
       : [];
@@ -256,6 +300,25 @@ const pnl_entries: ComputedFunction = (args) => {
     }
   }
   return results;
+};
+
+// ── pnl_debug ────────────────────────────────────────────────────────
+// Returns a diagnostic string showing the P&L section titles and their totals.
+// Used to verify the actual MYOB API response structure.
+// Args: { value: PnLReport }
+const pnl_debug: ComputedFunction = (args) => {
+  const r = args.value as Record<string, unknown>;
+  if (!r) return 'no data';
+  const sections = Array.isArray(r.Sections) ? (r.Sections as Record<string, unknown>[]) : [];
+  if (sections.length === 0) {
+    const keys = Object.keys(r).join(', ');
+    return `no sections — top-level keys: ${keys}`;
+  }
+  return sections.map((s) => {
+    const did = s.DisplayID ?? '';
+    const total = (s.Total as Record<string, unknown>)?.Amount ?? '?';
+    return `[${did}] ${s.Title}: ${total}`;
+  }).join(' | ');
 };
 
 // ── pnl_summary_bars ─────────────────────────────────────────────────
@@ -285,6 +348,7 @@ const elements: PluginElementsModule = {
     sort_label,
     pnl_get,
     pnl_entries,
+    pnl_debug,
     pnl_summary_bars,
   },
 };
