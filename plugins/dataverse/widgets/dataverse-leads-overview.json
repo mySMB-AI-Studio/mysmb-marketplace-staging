@@ -1,17 +1,17 @@
 {
-  "id": "dataverse-leads-overview-v1",
+  "id": "dataverse-leads-overview-v2",
   "status": "published",
   "title": "Leads Overview",
-  "description": "Active Dynamics 365 leads with qualification stats — active count, qualified this month, and conversion rate.",
+  "description": "Active Dynamics 365 leads with contact details — name, company, email, phone, status, and source.",
   "category": "sales",
   "tags": ["dataverse", "dynamics-365", "sales", "leads", "crm", "pipeline", "conversion"],
   "keywords": ["leads", "lead pipeline", "qualified", "conversion rate", "top of funnel", "crm", "d365"],
   "connectorsUsed": ["dataverse"],
   "popularity": 0,
   "sizing": {
-    "preferred": { "colSpan": 8, "rowSpan": 5 },
-    "min":       { "colSpan": 6, "rowSpan": 4 },
-    "max":       { "colSpan": 12, "rowSpan": 10 }
+    "preferred": { "colSpan": 5, "rowSpan": 8 },
+    "min":       { "colSpan": 4, "rowSpan": 6 },
+    "max":       { "colSpan": 10, "rowSpan": 14 }
   },
   "dataProvider": {
     "mcp": "dataverse",
@@ -24,7 +24,7 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["titleRow", "statGrid", "divider", "tableBody", "footerDivider", "footer"]
+        "children": ["titleRow", "statGrid", "divider", "leadsBody", "footerDivider", "footer"]
       },
 
       "titleRow": {
@@ -47,7 +47,6 @@
         "props": { "cols": 3 },
         "children": ["tileActive", "tileQualified", "tileRate"]
       },
-
       "tileActive": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackActive"] },
       "stackActive": {
         "type": "Stack",
@@ -89,19 +88,100 @@
 
       "divider": { "type": "Divider", "props": {} },
 
-      "tableBody": { "type": "Body", "props": {}, "children": ["table"] },
-      "table": {
-        "type": "Table",
-        "props": {
-          "loading": { "$state": "/_loading/dataverse.list_leads_overview" },
-          "skeletonRows": 5,
-          "rows": { "$state": "/dataverse/list_leads_overview/leads" },
-          "columns": [
-            { "id": "name",    "header": "Name",      "field": "fullname",    "priority": 1 },
-            { "id": "company", "header": "Company",   "field": "companyname", "width": 140, "priority": 1 },
-            { "id": "source",  "header": "Source",    "field": "source_label","width": 130, "priority": 2 },
-            { "id": "created", "header": "Created",   "field": "createdon",  "width": 110, "priority": 2, "format": "relative" }
+      "leadsBody": { "type": "Body", "props": {}, "children": ["leadList"] },
+      "leadList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "repeat": {
+          "statePath": "/dataverse/list_leads_overview/leads",
+          "key": "leadid"
+        },
+        "children": ["leadCard"],
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_leads_overview", "not": true },
+            { "$state": "/dataverse/list_leads_overview/leads/0" }
           ]
+        }
+      },
+      "loadingSkeleton": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["sk1", "sk2", "sk3"],
+        "visible": { "$state": "/_loading/dataverse.list_leads_overview" }
+      },
+      "sk1": { "type": "Skeleton", "props": { "height": "3.5rem", "rounded": "md" } },
+      "sk2": { "type": "Skeleton", "props": { "height": "3.5rem", "rounded": "md" } },
+      "sk3": { "type": "Skeleton", "props": { "height": "3.5rem", "rounded": "md" } },
+      "emptyState": {
+        "type": "Empty",
+        "props": { "message": "No active leads found." },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_leads_overview", "not": true },
+            { "$state": "/dataverse/list_leads_overview/leads/0", "not": true }
+          ]
+        }
+      },
+
+      "leadCard": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "start", "gap": "sm" },
+        "children": ["leadInfo", "leadRight"]
+      },
+      "leadInfo": {
+        "type": "Stack",
+        "props": { "gap": "none", "grow": true },
+        "children": ["leadName", "leadCompany", "leadEmail", "leadPhone", "leadMeta", "leadRemarks"]
+      },
+      "leadName": {
+        "type": "Text",
+        "props": { "text": { "$item": "fullname" }, "size": "sm", "weight": "medium" }
+      },
+      "leadCompany": {
+        "type": "Caption",
+        "props": { "text": { "$item": "companyname" } }
+      },
+      "leadEmail": {
+        "type": "Caption",
+        "props": { "text": { "$item": "email" } }
+      },
+      "leadPhone": {
+        "type": "Caption",
+        "props": { "text": { "$item": "phone" } }
+      },
+      "leadMeta": {
+        "type": "Caption",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{source} · {date}",
+              "source": { "$item": "source_label" },
+              "date": { "$computed": "format_date", "args": { "value": { "$item": "createdon" }, "format": "long" } }
+            }
+          },
+          "tone": "muted"
+        }
+      },
+      "leadRemarks": {
+        "type": "Caption",
+        "props": {
+          "text": { "$item": "remarks" },
+          "tone": "muted"
+        }
+      },
+      "leadRight": {
+        "type": "Stack",
+        "props": { "gap": "xs", "align": "end" },
+        "children": ["leadStatusBadge"]
+      },
+      "leadStatusBadge": {
+        "type": "Badge",
+        "props": {
+          "text": { "$item": "status_code_label" },
+          "tone": "accent",
+          "variant": "soft"
         }
       },
 
@@ -117,7 +197,7 @@
         "on": {
           "click": {
             "action": "open_url",
-            "params": { "url": "https://mysmb-dev.crm6.dynamics.com", "target": "_blank" }
+            "params": { "url": "https://mysmb-dev.crm6.dynamics.com/main.aspx?etn=lead&pagetype=entitylist", "target": "_blank" }
           }
         }
       }
