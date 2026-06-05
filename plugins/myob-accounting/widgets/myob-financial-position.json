@@ -1,0 +1,255 @@
+{
+  "id": "myob-financial-position",
+  "title": "MYOB — Financial Position",
+  "description": "Year-to-date income, expenses, and net profit from MYOB AccountRight with an expense breakdown chart.",
+  "category": "finance",
+  "tags": ["myob", "finance", "pnl", "profit", "income", "expenses", "accounting", "report", "ytd"],
+  "keywords": ["financial position", "pnl", "profit", "loss", "income", "expenses", "net profit", "ytd", "myob", "report"],
+  "connectorsUsed": ["myob-accounting"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 6, "rowSpan": 6 },
+    "min": { "colSpan": 5, "rowSpan": 5 },
+    "max": { "colSpan": 12, "rowSpan": 10 }
+  },
+  "dataProvider": {
+    "mcp": "myob-accounting",
+    "tool": "get_profit_and_loss",
+    "params": {
+      "from_date": "2025-07-01",
+      "to_date": "2026-06-30",
+      "reporting_basis": "Accrual"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["header", "body"]
+      },
+
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": ["titleGroup"]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "start" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": { "name": "TrendingUp", "tone": "success", "size": "sm" }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["title", "subtitle"]
+      },
+      "title": {
+        "type": "Heading",
+        "props": { "text": "Financial Position", "level": "h2" }
+      },
+      "subtitle": {
+        "type": "Eyebrow",
+        "props": { "text": "MYOB Accounting · This financial year" }
+      },
+
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["loading", "heroSection", "divider1", "statsGrid", "divider2", "expenseChartLabel", "expensesChart"]
+      },
+
+      "loading": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["skel1", "skel2", "skel3", "skel4"],
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss" }
+      },
+      "skel1": { "type": "Skeleton", "props": { "height": "4rem", "rounded": "md" } },
+      "skel2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "skel4": { "type": "Skeleton", "props": { "height": "6rem",   "rounded": "md" } },
+
+      "heroSection": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["hero"],
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+      "hero": {
+        "type": "Stack",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["heroLabel", "heroValue"]
+      },
+      "heroLabel": {
+        "type": "Eyebrow",
+        "props": { "text": "Net Profit · This financial year" }
+      },
+      "heroValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "netProfit"
+                }
+              }
+            }
+          },
+          "tone": "accent"
+        }
+      },
+
+      "divider1": {
+        "type": "Divider",
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "statsGrid": {
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "md" },
+        "children": ["incomeCell", "expenseCell", "profitCell"],
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "incomeCell": {
+        "type": "Stack",
+        "props": { "gap": "xs" },
+        "children": ["incomeLabelRow", "incomeValue"]
+      },
+      "incomeLabelRow": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["incomeIcon", "incomeLabel"]
+      },
+      "incomeIcon": { "type": "Icon", "props": { "name": "ArrowUpRight", "tone": "success", "size": "xs" } },
+      "incomeLabel": { "type": "Eyebrow", "props": { "text": "Total Income" } },
+      "incomeValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "income"
+                }
+              }
+            }
+          },
+          "tone": "success",
+          "size": "sm"
+        }
+      },
+
+      "expenseCell": {
+        "type": "Stack",
+        "props": { "gap": "xs" },
+        "children": ["expenseLabelRow", "expenseValue"]
+      },
+      "expenseLabelRow": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["expenseIcon", "expenseLabel"]
+      },
+      "expenseIcon": { "type": "Icon", "props": { "name": "ArrowDownRight", "tone": "destructive", "size": "xs" } },
+      "expenseLabel": { "type": "Eyebrow", "props": { "text": "Total Expenses" } },
+      "expenseValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "expenses"
+                }
+              }
+            }
+          },
+          "tone": "destructive",
+          "size": "sm"
+        }
+      },
+
+      "profitCell": {
+        "type": "Stack",
+        "props": { "gap": "xs" },
+        "children": ["profitLabelRow", "profitValue"]
+      },
+      "profitLabelRow": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["profitIcon", "profitLabel"]
+      },
+      "profitIcon": { "type": "Icon", "props": { "name": "Target", "tone": "accent", "size": "xs" } },
+      "profitLabel": { "type": "Eyebrow", "props": { "text": "Net Profit" } },
+      "profitValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "netProfit"
+                }
+              }
+            }
+          },
+          "tone": "accent",
+          "size": "sm"
+        }
+      },
+
+      "divider2": {
+        "type": "Divider",
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "expenseChartLabel": {
+        "type": "Eyebrow",
+        "props": { "text": "Top expense accounts" },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "expensesChart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$computed": "myob-accounting_pnl_entries",
+            "args": {
+              "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+              "section": "expenses"
+            }
+          },
+          "labelField": "name",
+          "valueField": "amount",
+          "valueFormat": "currency",
+          "limit": 6,
+          "tone": "destructive",
+          "sort": "desc"
+        },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      }
+
+    }
+  },
+  "status": "published"
+}

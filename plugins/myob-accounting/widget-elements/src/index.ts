@@ -196,6 +196,83 @@ const sort_label: ComputedFunction = (args) => {
   return label + (currentDir === 'asc' ? ' ↑' : ' ↓');
 };
 
+// ── pnl_get ──────────────────────────────────────────────────────────
+// Extracts a summary amount from a MYOB ProfitAndLoss report object.
+// Tries known top-level fields first, falls back to scanning Sections by title.
+// Args: { value: PnLReport, key: "income" | "expenses" | "netProfit" | "grossProfit" }
+const pnl_get: ComputedFunction = (args) => {
+  const r = args.value as Record<string, unknown>;
+  const key = String(args.key ?? '');
+  if (!r) return 0;
+  const candidates: Record<string, string[]> = {
+    income:      ['IncomeTotal', 'TotalIncome'],
+    expenses:    ['ExpenseTotal', 'TotalExpenses', 'OperatingExpensesTotal'],
+    netProfit:   ['NetProfit', 'NetIncome'],
+    grossProfit: ['GrossProfit'],
+  };
+  for (const field of (candidates[key] ?? [])) {
+    const v = r[field] as Record<string, unknown> | undefined;
+    if (v?.Amount !== undefined) return Number(v.Amount);
+  }
+  const sections = Array.isArray(r.Sections)
+    ? (r.Sections as Record<string, unknown>[])
+    : [];
+  const terms: Record<string, string> = {
+    income: 'income', expenses: 'expens',
+    netProfit: 'net profit', grossProfit: 'gross profit',
+  };
+  const term = terms[key] ?? '';
+  for (const s of sections) {
+    if (String(s.Title ?? '').toLowerCase().includes(term)) {
+      return Number((s.Total as Record<string, unknown>)?.Amount ?? 0);
+    }
+  }
+  return 0;
+};
+
+// ── pnl_entries ──────────────────────────────────────────────────────
+// Returns account-level entries from a named P&L section shaped for BarChart.
+// Returns [{ name: string, amount: number }] filtered to non-zero amounts.
+// Args: { value: PnLReport, section: "income" | "expenses" }
+const pnl_entries: ComputedFunction = (args) => {
+  const r = args.value as Record<string, unknown>;
+  const section = String(args.section ?? 'income');
+  if (!r) return [];
+  const sections = Array.isArray(r.Sections)
+    ? (r.Sections as Record<string, unknown>[])
+    : [];
+  const term = section === 'income' ? 'income' : 'expens';
+  const results: { name: string; amount: number }[] = [];
+  for (const s of sections) {
+    if (!String(s.Title ?? '').toLowerCase().includes(term)) continue;
+    const entries = Array.isArray(s.Entries)
+      ? (s.Entries as Record<string, unknown>[])
+      : [];
+    for (const e of entries) {
+      const acct = e.Account as Record<string, unknown> | undefined;
+      const name = String(acct?.Name ?? e.Title ?? 'Other');
+      const amount = Math.abs(Number(e.Amount ?? 0));
+      if (amount > 0) results.push({ name, amount });
+    }
+  }
+  return results;
+};
+
+// ── pnl_summary_bars ─────────────────────────────────────────────────
+// Builds [{label, amount}] for Income, Expenses, and Net Profit totals.
+// Suitable for use as BarChart data for a top-level P&L overview.
+// Args: { value: PnLReport }
+const pnl_summary_bars: ComputedFunction = (args) => {
+  const r = args.value as Record<string, unknown>;
+  if (!r) return [];
+  const get = (key: string) => Number(pnl_get({ value: r, key }) ?? 0);
+  return [
+    { label: 'Income',     amount: get('income')    },
+    { label: 'Expenses',   amount: get('expenses')  },
+    { label: 'Net Profit', amount: get('netProfit') },
+  ];
+};
+
 const elements: PluginElementsModule = {
   slug: 'myob-accounting',
   functions: {
@@ -206,6 +283,9 @@ const elements: PluginElementsModule = {
     sort_items,
     sort_toggle_dir,
     sort_label,
+    pnl_get,
+    pnl_entries,
+    pnl_summary_bars,
   },
 };
 

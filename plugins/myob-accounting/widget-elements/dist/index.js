@@ -173,6 +173,73 @@ const sort_label = (args) => {
     if (col !== currentCol) return label;
     return label + (currentDir === 'asc' ? ' ↑' : ' ↓');
 };
+// ── pnl_get ──────────────────────────────────────────────────────────────────
+// Extracts a summary amount from a MYOB ProfitAndLoss report object.
+// Tries known top-level fields first, falls back to scanning Sections by title.
+// Args: { value: PnLReport, key: "income" | "expenses" | "netProfit" | "grossProfit" }
+const pnl_get = (args) => {
+    const r = args.value;
+    const key = String(args.key ?? '');
+    if (!r) return 0;
+    const candidates = {
+        income:      ['IncomeTotal', 'TotalIncome'],
+        expenses:    ['ExpenseTotal', 'TotalExpenses', 'OperatingExpensesTotal'],
+        netProfit:   ['NetProfit', 'NetIncome'],
+        grossProfit: ['GrossProfit'],
+    };
+    for (const field of (candidates[key] ?? [])) {
+        const v = r[field];
+        if (v?.Amount !== undefined) return Number(v.Amount);
+    }
+    const sections = Array.isArray(r.Sections) ? r.Sections : [];
+    const terms = {
+        income: 'income', expenses: 'expens',
+        netProfit: 'net profit', grossProfit: 'gross profit',
+    };
+    const term = terms[key] ?? '';
+    for (const s of sections) {
+        if (String(s.Title ?? '').toLowerCase().includes(term)) {
+            return Number(s.Total?.Amount ?? 0);
+        }
+    }
+    return 0;
+};
+// ── pnl_entries ──────────────────────────────────────────────────────────────
+// Returns account-level entries from a named P&L section shaped for BarChart.
+// Returns [{ name: string, amount: number }] filtered to non-zero amounts.
+// Args: { value: PnLReport, section: "income" | "expenses" }
+const pnl_entries = (args) => {
+    const r = args.value;
+    const section = String(args.section ?? 'income');
+    if (!r) return [];
+    const sections = Array.isArray(r.Sections) ? r.Sections : [];
+    const term = section === 'income' ? 'income' : 'expens';
+    const results = [];
+    for (const s of sections) {
+        if (!String(s.Title ?? '').toLowerCase().includes(term)) continue;
+        const entries = Array.isArray(s.Entries) ? s.Entries : [];
+        for (const e of entries) {
+            const name = String(e.Account?.Name ?? e.Title ?? 'Other');
+            const amount = Math.abs(Number(e.Amount ?? 0));
+            if (amount > 0) results.push({ name, amount });
+        }
+    }
+    return results;
+};
+// ── pnl_summary_bars ─────────────────────────────────────────────────────────
+// Builds [{label, amount}] for Income, Expenses, and Net Profit totals.
+// Suitable for use as BarChart data for a top-level P&L overview.
+// Args: { value: PnLReport }
+const pnl_summary_bars = (args) => {
+    const r = args.value;
+    if (!r) return [];
+    const get = (key) => Number(pnl_get({ value: r, key }) ?? 0);
+    return [
+        { label: 'Income',     amount: get('income')    },
+        { label: 'Expenses',   amount: get('expenses')  },
+        { label: 'Net Profit', amount: get('netProfit') },
+    ];
+};
 const elements = {
     slug: 'myob-accounting',
     functions: {
@@ -183,6 +250,9 @@ const elements = {
         sort_items,
         sort_toggle_dir,
         sort_label,
+        pnl_get,
+        pnl_entries,
+        pnl_summary_bars,
     },
 };
 export default elements;

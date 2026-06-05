@@ -1,0 +1,223 @@
+{
+  "id": "myob-income-vs-expenses",
+  "title": "MYOB — Income vs Expenses",
+  "description": "Income and expenses breakdown for the last 3 months from MYOB AccountRight — compare what came in versus what went out.",
+  "category": "finance",
+  "tags": ["myob", "finance", "income", "expenses", "comparison", "accounting", "report"],
+  "keywords": ["income", "expenses", "comparison", "pnl", "profit", "loss", "myob", "report", "3 months"],
+  "connectorsUsed": ["myob-accounting"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 6, "rowSpan": 7 },
+    "min": { "colSpan": 5, "rowSpan": 6 },
+    "max": { "colSpan": 12, "rowSpan": 12 }
+  },
+  "dataProvider": {
+    "mcp": "myob-accounting",
+    "tool": "get_profit_and_loss",
+    "params": {
+      "from_date": "2026-03-01",
+      "to_date": "2026-06-30",
+      "reporting_basis": "Accrual"
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["header", "body"]
+      },
+
+      "header": {
+        "type": "Header",
+        "props": {},
+        "children": ["titleGroup"]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "start" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": {
+        "type": "Icon",
+        "props": { "name": "BarChart2", "tone": "accent", "size": "sm" }
+      },
+      "titleStack": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["title", "subtitle"]
+      },
+      "title": {
+        "type": "Heading",
+        "props": { "text": "Income vs Expenses", "level": "h2" }
+      },
+      "subtitle": {
+        "type": "Eyebrow",
+        "props": { "text": "MYOB Accounting · Last 3 months" }
+      },
+
+      "body": {
+        "type": "Body",
+        "props": {},
+        "children": ["loading", "statsGrid", "divider1", "incomeChartLabel", "incomeChart", "divider2", "expensesChartLabel", "expensesChart"]
+      },
+
+      "loading": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["lSkel1", "lSkel2", "lSkel3", "lSkel4"],
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss" }
+      },
+      "lSkel1": { "type": "Skeleton", "props": { "height": "3rem",   "rounded": "md" } },
+      "lSkel2": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
+      "lSkel3": { "type": "Skeleton", "props": { "height": "6rem",   "rounded": "md" } },
+      "lSkel4": { "type": "Skeleton", "props": { "height": "6rem",   "rounded": "md" } },
+
+      "statsGrid": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["incomeStat", "expensesStat"],
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "incomeStat": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["incomeStatInner"]
+      },
+      "incomeStatInner": {
+        "type": "Stack",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["incomeStatLabelRow", "incomeStatValue"]
+      },
+      "incomeStatLabelRow": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["incomeStatIcon", "incomeStatLabel"]
+      },
+      "incomeStatIcon": { "type": "Icon", "props": { "name": "ArrowUpRight", "tone": "success", "size": "xs" } },
+      "incomeStatLabel": { "type": "Eyebrow", "props": { "text": "Total Income" } },
+      "incomeStatValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "income"
+                }
+              }
+            }
+          },
+          "tone": "success"
+        }
+      },
+
+      "expensesStat": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["expensesStatInner"]
+      },
+      "expensesStatInner": {
+        "type": "Stack",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["expensesStatLabelRow", "expensesStatValue"]
+      },
+      "expensesStatLabelRow": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["expensesStatIcon", "expensesStatLabel"]
+      },
+      "expensesStatIcon": { "type": "Icon", "props": { "name": "ArrowDownRight", "tone": "destructive", "size": "xs" } },
+      "expensesStatLabel": { "type": "Eyebrow", "props": { "text": "Total Expenses" } },
+      "expensesStatValue": {
+        "type": "Stat",
+        "props": {
+          "value": {
+            "$computed": "myob-accounting_format_currency",
+            "args": {
+              "value": {
+                "$computed": "myob-accounting_pnl_get",
+                "args": {
+                  "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+                  "key": "expenses"
+                }
+              }
+            }
+          },
+          "tone": "destructive"
+        }
+      },
+
+      "divider1": {
+        "type": "Divider",
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "incomeChartLabel": {
+        "type": "Eyebrow",
+        "props": { "text": "Income by account" },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "incomeChart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$computed": "myob-accounting_pnl_entries",
+            "args": {
+              "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+              "section": "income"
+            }
+          },
+          "labelField": "name",
+          "valueField": "amount",
+          "valueFormat": "currency",
+          "limit": 5,
+          "tone": "success",
+          "sort": "desc"
+        },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "divider2": {
+        "type": "Divider",
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "expensesChartLabel": {
+        "type": "Eyebrow",
+        "props": { "text": "Expenses by account" },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      },
+
+      "expensesChart": {
+        "type": "BarChart",
+        "props": {
+          "data": {
+            "$computed": "myob-accounting_pnl_entries",
+            "args": {
+              "value": { "$state": "/myob-accounting/get_profit_and_loss" },
+              "section": "expenses"
+            }
+          },
+          "labelField": "name",
+          "valueField": "amount",
+          "valueFormat": "currency",
+          "limit": 5,
+          "tone": "destructive",
+          "sort": "desc"
+        },
+        "visible": { "$state": "/_loading/myob-accounting.get_profit_and_loss", "not": true }
+      }
+
+    }
+  },
+  "status": "published"
+}
