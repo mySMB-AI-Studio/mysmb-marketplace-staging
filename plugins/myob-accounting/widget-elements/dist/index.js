@@ -14,8 +14,8 @@ const format_currency = (args) => {
     const n = Number(args.value);
     if (!Number.isFinite(n))
         return '';
-    const fmt = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' });
-    return fmt.formatToParts(n).map(p => p.value).join('');
+    const fmt = new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return 'A$' + fmt.format(n);
 };
 // ── overdue_buckets ──────────────────────────────────────────────────
 // Groups open invoices into overdue age buckets based on DueDate.
