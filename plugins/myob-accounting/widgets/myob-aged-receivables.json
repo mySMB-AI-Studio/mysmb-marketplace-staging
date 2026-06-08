@@ -163,51 +163,46 @@
       "tableArea": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["headerWrapper", "colHeaderDivider", "list"]
+        "children": ["staticHeader", "list"]
       },
-      "headerWrapper": {
+      "staticHeader": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["headerRowWrapper"]
+        "children": ["staticRow", "staticDivider"]
       },
-      "headerRowWrapper": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["colHeaders"]
-      },
-      "colHeaders": {
+      "staticRow": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 6rem 8rem" },
-        "children": ["hdrNameCol", "hdrInvWrap", "hdrAmtWrap"]
+        "children": ["hdrCol1", "hdrCol2", "hdrCol3"]
       },
-      "hdrNameCol": {
+      "hdrCol1": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["hdrName"]
+        "children": ["hdrLabel1"]
       },
-      "hdrName": {
+      "hdrLabel1": {
         "type": "Eyebrow",
         "props": { "text": "Customer" }
       },
-      "hdrInvWrap": {
+      "hdrCol2": {
         "type": "Row",
         "props": { "justify": "center" },
-        "children": ["hdrInv"]
+        "children": ["hdrLabel2"]
       },
-      "hdrInv": {
+      "hdrLabel2": {
         "type": "Eyebrow",
         "props": { "text": "Invoices" }
       },
-      "hdrAmtWrap": {
+      "hdrCol3": {
         "type": "Row",
         "props": { "justify": "end" },
-        "children": ["hdrAmt"]
+        "children": ["hdrLabel3"]
       },
-      "hdrAmt": {
+      "hdrLabel3": {
         "type": "Eyebrow",
         "props": { "text": "Amount" }
       },
-      "colHeaderDivider": {
+      "staticDivider": {
         "type": "Divider"
       },
 
