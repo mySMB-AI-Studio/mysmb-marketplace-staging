@@ -168,7 +168,12 @@
       "colHeaders": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 6rem 8rem" },
-        "children": ["hdrName", "hdrInvWrap", "hdrAmtWrap"]
+        "children": ["hdrNameCol", "hdrInvWrap", "hdrAmtWrap"]
+      },
+      "hdrNameCol": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["hdrName"]
       },
       "hdrName": {
         "type": "Eyebrow",
