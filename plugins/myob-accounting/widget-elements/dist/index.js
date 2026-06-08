@@ -98,13 +98,28 @@ const ar_by_customer = (args) => {
         .map((e) => {
             grandTotal += e.total;
             const badgeTone = e.maxDaysOverdue > 30 ? 'destructive'
-                : e.maxDaysOverdue > 0 ? 'warning' : 'info';
+                : e.maxDaysOverdue > 0 ? 'warning' : '';
             const badgeText = e.overdueCount > 0
                 ? `${e.overdueCount} overdue`
                 : `${e.invoiceCount} invoice${e.invoiceCount !== 1 ? 's' : ''}`;
             return { ...e, badgeText, badgeTone };
         });
     return { entries, grandTotal, customerCount: entries.length };
+};
+// ── due_tone ─────────────────────────────────────────────────────────
+// Returns a tone string based on how overdue a due date is.
+// "destructive" if past due, "warning" if due within 7 days, "" otherwise.
+// Args: { value: string }
+const due_tone = (args) => {
+    const raw = String(args.value ?? '');
+    if (!raw) return '';
+    const msMatch = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    const due = msMatch ? Number(msMatch[1]) : new Date(raw).getTime();
+    if (!Number.isFinite(due)) return '';
+    const days = Math.floor((due - Date.now()) / 86_400_000);
+    if (days < 0) return 'destructive';
+    if (days <= 7) return 'warning';
+    return '';
 };
 // ── sort_items ───────────────────────────────────────────────────────
 // Sorts an array of objects by a dot/slash-delimited field path.
@@ -287,6 +302,7 @@ const elements = {
     functions: {
         format_currency,
         format_date,
+        due_tone,
         overdue_buckets,
         ar_by_customer,
         sort_items,

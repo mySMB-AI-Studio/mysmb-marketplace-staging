@@ -71,8 +71,8 @@
 
       "body": {
         "type": "Body",
-        "props": { "gap": "md" },
-        "children": ["loading", "statGrid", "divider0", "empty", "colHeaders", "colHeaderDivider", "list"]
+        "props": {},
+        "children": ["loading", "empty", "contentArea"]
       },
 
       "loading": {
@@ -86,16 +86,33 @@
       "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
       "skel4": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
 
-      "statGrid": {
-        "type": "Grid",
-        "props": { "cols": 2, "gap": "md" },
-        "children": ["statCountSection", "statTotalSection"],
+      "empty": {
+        "type": "Empty",
+        "props": { "message": "No outstanding receivables.", "icon": "Trophy" },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
+            { "$state": "/ui/arData/customerCount", "not": true }
+          ]
+        }
+      },
+
+      "contentArea": {
+        "type": "Stack",
+        "props": { "gap": "lg" },
+        "children": ["statGrid", "tableArea"],
         "visible": {
           "$and": [
             { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
             { "$state": "/ui/arData/customerCount" }
           ]
         }
+      },
+
+      "statGrid": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["statCountSection", "statTotalSection"]
       },
       "statCountSection": {
         "type": "Section",
@@ -143,37 +160,15 @@
         }
       },
 
-      "divider0": {
-        "type": "Divider",
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/ui/arData/customerCount" }
-          ]
-        }
+      "tableArea": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["colHeaders", "colHeaderDivider", "list"]
       },
-
-      "empty": {
-        "type": "Empty",
-        "props": { "message": "No outstanding receivables.", "icon": "Trophy" },
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/ui/arData/customerCount", "not": true }
-          ]
-        }
-      },
-
       "colHeaders": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 6rem 8rem" },
-        "children": ["hdrName", "hdrInvWrap", "hdrAmtWrap"],
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/ui/arData/customerCount" }
-          ]
-        }
+        "children": ["hdrName", "hdrInvWrap", "hdrAmtWrap"]
       },
       "hdrName": {
         "type": "Eyebrow",
@@ -198,13 +193,7 @@
         "props": { "text": "Amount" }
       },
       "colHeaderDivider": {
-        "type": "Divider",
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_invoices", "not": true },
-            { "$state": "/ui/arData/customerCount" }
-          ]
-        }
+        "type": "Divider"
       },
 
       "list": {
@@ -214,8 +203,7 @@
         "repeat": {
           "statePath": "/ui/arData/entries",
           "key": "uid"
-        },
-        "visible": { "$state": "/_loading/myob-accounting.list_invoices", "not": true }
+        }
       },
       "rowWrapper": {
         "type": "Stack",
@@ -229,7 +217,7 @@
       },
       "nameCol": {
         "type": "Stack",
-        "props": { "gap": "xs" },
+        "props": { "gap": "none" },
         "children": ["nameText"]
       },
       "nameText": {

@@ -57,8 +57,8 @@
 
       "body": {
         "type": "Body",
-        "props": { "gap": "md" },
-        "children": ["loading", "statGrid", "divider0", "empty", "colHeaders", "colHeaderDivider", "list"]
+        "props": {},
+        "children": ["loading", "empty", "contentArea"]
       },
 
       "loading": {
@@ -72,16 +72,33 @@
       "skel3": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
       "skel4": { "type": "Skeleton", "props": { "height": "2.25rem", "rounded": "md" } },
 
-      "statGrid": {
-        "type": "Grid",
-        "props": { "cols": 2, "gap": "md" },
-        "children": ["statCountSection", "statTotalSection"],
+      "empty": {
+        "type": "Empty",
+        "props": { "message": "No open bills — nothing to pay right now.", "icon": "CheckCircle" },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/myob-accounting.list_bills", "not": true },
+            { "$state": "/myob-accounting/list_bills/Items/0", "not": true }
+          ]
+        }
+      },
+
+      "contentArea": {
+        "type": "Stack",
+        "props": { "gap": "lg" },
+        "children": ["statGrid", "tableArea"],
         "visible": {
           "$and": [
             { "$state": "/_loading/myob-accounting.list_bills", "not": true },
             { "$state": "/myob-accounting/list_bills/Items/0" }
           ]
         }
+      },
+
+      "statGrid": {
+        "type": "Grid",
+        "props": { "cols": 2, "gap": "md" },
+        "children": ["statCountSection", "statTotalSection"]
       },
       "statCountSection": {
         "type": "Section",
@@ -140,37 +157,15 @@
         }
       },
 
-      "divider0": {
-        "type": "Divider",
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_bills", "not": true },
-            { "$state": "/myob-accounting/list_bills/Items/0" }
-          ]
-        }
+      "tableArea": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["colHeaders", "colHeaderDivider", "list"]
       },
-
-      "empty": {
-        "type": "Empty",
-        "props": { "message": "No open bills — nothing to pay right now.", "icon": "CheckCircle" },
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_bills", "not": true },
-            { "$state": "/myob-accounting/list_bills/Items/0", "not": true }
-          ]
-        }
-      },
-
       "colHeaders": {
         "type": "Row",
         "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 7rem 8rem" },
-        "children": ["hdrName", "hdrDateWrap", "hdrAmtWrap"],
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_bills", "not": true },
-            { "$state": "/myob-accounting/list_bills/Items/0" }
-          ]
-        }
+        "children": ["hdrName", "hdrDateWrap", "hdrAmtWrap"]
       },
       "hdrName": {
         "type": "Eyebrow",
@@ -195,13 +190,7 @@
         "props": { "text": "Amount" }
       },
       "colHeaderDivider": {
-        "type": "Divider",
-        "visible": {
-          "$and": [
-            { "$state": "/_loading/myob-accounting.list_bills", "not": true },
-            { "$state": "/myob-accounting/list_bills/Items/0" }
-          ]
-        }
+        "type": "Divider"
       },
 
       "list": {
@@ -211,8 +200,7 @@
         "repeat": {
           "statePath": "/myob-accounting/list_bills/Items",
           "key": "UID"
-        },
-        "visible": { "$state": "/_loading/myob-accounting.list_bills", "not": true }
+        }
       },
       "rowWrapper": {
         "type": "Stack",
@@ -259,7 +247,11 @@
             "$computed": "myob-accounting_format_date",
             "args": { "value": { "$item": "Terms/DueDate" } }
           },
-          "size": "sm"
+          "size": "sm",
+          "tone": {
+            "$computed": "myob-accounting_due_tone",
+            "args": { "value": { "$item": "Terms/DueDate" } }
+          }
         }
       },
       "amtCol": {
@@ -275,7 +267,11 @@
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "size": "sm",
-          "weight": "semibold"
+          "weight": "semibold",
+          "tone": {
+            "$computed": "myob-accounting_due_tone",
+            "args": { "value": { "$item": "Terms/DueDate" } }
+          }
         }
       },
       "rowDivider": {
