@@ -163,7 +163,7 @@
       "tableArea": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["colHeaders", "colHeaderDivider", "list"]
+        "children": ["colHeaders", "colHeaderDivider", "dataRow"]
       },
       "colHeaders": {
         "type": "Row",
@@ -201,24 +201,14 @@
         "type": "Divider"
       },
 
-      "list": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["rowWrapper"],
+      "dataRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 8rem" },
+        "children": ["nameCol", "invCol", "amtCol"],
         "repeat": {
           "statePath": "/ui/arData/entries",
           "key": "uid"
         }
-      },
-      "rowWrapper": {
-        "type": "Stack",
-        "props": { "gap": "none" },
-        "children": ["row", "rowDivider"]
-      },
-      "row": {
-        "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 8rem" },
-        "children": ["nameCol", "invCol", "amtCol"]
       },
       "nameCol": {
         "type": "Stack",
@@ -263,9 +253,6 @@
           "tone": { "$item": "badgeTone" }
         }
       },
-      "rowDivider": {
-        "type": "Divider"
-      }
 
     }
   },
