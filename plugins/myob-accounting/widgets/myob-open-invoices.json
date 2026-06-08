@@ -24,7 +24,51 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["header", "body"]
+        "children": ["header", "body"],
+        "watch": {
+          "/myob-accounting/list_invoices/Items": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/sortedItems",
+              "value": {
+                "$computed": "myob-accounting_sort_items",
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "field": { "$state": "/ui/sort/col" },
+                  "dir": { "$state": "/ui/sort/dir" }
+                }
+              }
+            }
+          },
+          "/ui/sort/col": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/sortedItems",
+              "value": {
+                "$computed": "myob-accounting_sort_items",
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "field": { "$state": "/ui/sort/col" },
+                  "dir": { "$state": "/ui/sort/dir" }
+                }
+              }
+            }
+          },
+          "/ui/sort/dir": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/sortedItems",
+              "value": {
+                "$computed": "myob-accounting_sort_items",
+                "args": {
+                  "value": { "$state": "/myob-accounting/list_invoices/Items" },
+                  "field": { "$state": "/ui/sort/col" },
+                  "dir": { "$state": "/ui/sort/dir" }
+                }
+              }
+            }
+          }
+        }
       },
 
       "header": {
@@ -174,12 +218,50 @@
       },
       "hdrCol1": {
         "type": "Stack",
-        "props": { "gap": "xs" },
+        "props": { "gap": "none" },
         "children": ["hdrLabel1"]
       },
       "hdrLabel1": {
-        "type": "Eyebrow",
-        "props": { "text": "Customer" }
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": {
+              "label": "Customer",
+              "col": "Customer/Name",
+              "currentCol": { "$state": "/ui/sort/col" },
+              "currentDir": { "$state": "/ui/sort/dir" }
+            }
+          },
+          "variant": "ghost",
+          "size": "xs",
+          "align": "start"
+        },
+        "on": {
+          "click": [
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/dir",
+                "value": {
+                  "$computed": "myob-accounting_sort_toggle_dir",
+                  "args": {
+                    "col": "Customer/Name",
+                    "currentCol": { "$state": "/ui/sort/col" },
+                    "currentDir": { "$state": "/ui/sort/dir" }
+                  }
+                }
+              }
+            },
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/col",
+                "value": "Customer/Name"
+              }
+            }
+          ]
+        }
       },
       "hdrCol2": {
         "type": "Row",
@@ -187,8 +269,45 @@
         "children": ["hdrLabel2"]
       },
       "hdrLabel2": {
-        "type": "Eyebrow",
-        "props": { "text": "Due Date" }
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": {
+              "label": "Due Date",
+              "col": "Terms/DueDate",
+              "currentCol": { "$state": "/ui/sort/col" },
+              "currentDir": { "$state": "/ui/sort/dir" }
+            }
+          },
+          "variant": "ghost",
+          "size": "xs"
+        },
+        "on": {
+          "click": [
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/dir",
+                "value": {
+                  "$computed": "myob-accounting_sort_toggle_dir",
+                  "args": {
+                    "col": "Terms/DueDate",
+                    "currentCol": { "$state": "/ui/sort/col" },
+                    "currentDir": { "$state": "/ui/sort/dir" }
+                  }
+                }
+              }
+            },
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/col",
+                "value": "Terms/DueDate"
+              }
+            }
+          ]
+        }
       },
       "hdrCol3": {
         "type": "Row",
@@ -196,8 +315,46 @@
         "children": ["hdrLabel3"]
       },
       "hdrLabel3": {
-        "type": "Eyebrow",
-        "props": { "text": "Amount" }
+        "type": "Button",
+        "props": {
+          "label": {
+            "$computed": "myob-accounting_sort_label",
+            "args": {
+              "label": "Amount",
+              "col": "BalanceDueAmount",
+              "currentCol": { "$state": "/ui/sort/col" },
+              "currentDir": { "$state": "/ui/sort/dir" }
+            }
+          },
+          "variant": "ghost",
+          "size": "xs",
+          "align": "end"
+        },
+        "on": {
+          "click": [
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/dir",
+                "value": {
+                  "$computed": "myob-accounting_sort_toggle_dir",
+                  "args": {
+                    "col": "BalanceDueAmount",
+                    "currentCol": { "$state": "/ui/sort/col" },
+                    "currentDir": { "$state": "/ui/sort/dir" }
+                  }
+                }
+              }
+            },
+            {
+              "action": "setState",
+              "params": {
+                "statePath": "/ui/sort/col",
+                "value": "BalanceDueAmount"
+              }
+            }
+          ]
+        }
       },
       "staticDivider": {
         "type": "Divider"
@@ -208,7 +365,7 @@
         "props": { "gap": "none" },
         "children": ["rowWrapper"],
         "repeat": {
-          "statePath": "/myob-accounting/list_invoices/Items",
+          "statePath": "/ui/sortedItems",
           "key": "UID"
         }
       },
