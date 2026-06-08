@@ -1,0 +1,196 @@
+{
+  "id": "dataverse-call-qa-scorecard",
+  "title": "Call QA Scorecard",
+  "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade with dynamic colour coding.",
+  "category": "support",
+  "tags": ["dataverse", "dynamics-365", "call-qa", "scoring", "agent-performance", "customer-service", "support"],
+  "keywords": ["call qa", "quality assurance", "agent score", "call scoring", "transcript", "pass fail", "d365"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 5, "rowSpan": 9 },
+    "min":       { "colSpan": 4, "rowSpan": 7 },
+    "max":       { "colSpan": 10, "rowSpan": 14 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "list_call_qa_scores",
+    "params": { "org_url": "mySMB.com Prod", "top": 5 }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": { "type": "Card", "props": {}, "children": ["headerRow", "div0", "statsGrid", "div1", "loadingBody", "callList", "emptyState", "div2", "footer"] },
+
+      "headerRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center" },
+        "children": ["titleGroup"]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": { "type": "Icon", "props": { "name": "ClipboardCheck", "tone": "accent", "size": "sm" } },
+      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
+      "title": { "type": "Heading", "props": { "text": "Call QA Scorecard", "level": "h2" } },
+      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Customer Service" } },
+
+      "div0": { "type": "Divider", "props": {} },
+
+      "statsGrid": {
+        "type": "Grid",
+        "props": { "cols": 3, "gap": "sm" },
+        "children": ["tileScored", "tilePassed", "tileRate"]
+      },
+
+      "tileScored": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackScored"] },
+      "stackScored": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconScored", "valScored", "lblScored"] },
+      "iconScored": { "type": "Icon", "props": { "name": "ClipboardList", "size": "sm", "tone": "accent" } },
+      "valScored": { "type": "Stat", "props": { "value": { "$state": "/dataverse/list_call_qa_scores/count" } } },
+      "lblScored": { "type": "Caption", "props": { "text": "Scored" } },
+
+      "tilePassed": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackPassed"] },
+      "stackPassed": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconPassed", "valPassed", "lblPassed"] },
+      "iconPassed": { "type": "Icon", "props": { "name": "CheckCircle", "size": "sm", "tone": "positive" } },
+      "valPassed": { "type": "Stat", "props": { "value": { "$state": "/dataverse/list_call_qa_scores/passed_count" } } },
+      "lblPassed": { "type": "Caption", "props": { "text": "Passed" } },
+
+      "tileRate": { "type": "Section", "props": { "variant": "muted" }, "children": ["stackRate"] },
+      "stackRate": { "type": "Stack", "props": { "gap": "xxs", "align": "center" }, "children": ["iconRate", "valRate", "lblRate"] },
+      "iconRate": { "type": "Icon", "props": { "name": "TrendingUp", "size": "sm", "tone": "accent" } },
+      "valRate": { "type": "Stat", "props": { "value": { "$state": "/dataverse/list_call_qa_scores/pass_rate" } } },
+      "lblRate": { "type": "Caption", "props": { "text": "Pass Rate" } },
+
+      "div1": { "type": "Divider", "props": {} },
+
+      "loadingBody": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["sk1", "sk2", "sk3"],
+        "visible": { "$state": "/_loading/dataverse.list_call_qa_scores" }
+      },
+      "sk1": { "type": "Skeleton", "props": { "height": "4rem", "rounded": "md" } },
+      "sk2": { "type": "Skeleton", "props": { "height": "4rem", "rounded": "md" } },
+      "sk3": { "type": "Skeleton", "props": { "height": "4rem", "rounded": "md" } },
+
+      "callList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "repeat": {
+          "statePath": "/dataverse/list_call_qa_scores/qa_scores",
+          "key": "mysmbai_qascoreid"
+        },
+        "children": ["callRow"],
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_call_qa_scores", "not": true },
+            { "$state": "/dataverse/list_call_qa_scores/qa_scores/0" }
+          ]
+        }
+      },
+
+      "callRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "start", "gap": "sm", "hover": true },
+        "children": ["callLeft", "callScore"]
+      },
+      "callLeft": {
+        "type": "Stack",
+        "props": { "gap": "xxs" },
+        "children": ["callSummary", "callMeta", "callGradeRow", "callDate"]
+      },
+      "callSummary": {
+        "type": "Text",
+        "props": { "text": { "$item": "mysmbai_callsummary" }, "size": "sm", "weight": "medium", "lines": 2 }
+      },
+      "callMeta": {
+        "type": "Caption",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "Agent: {n}",
+              "n": { "$item": "agentname" }
+            }
+          },
+          "tone": "muted"
+        }
+      },
+      "callGradeRow": {
+        "type": "Row",
+        "props": { "align": "center", "gap": "xs" },
+        "children": ["callGrade"]
+      },
+      "callGrade": {
+        "type": "Badge",
+        "props": {
+          "text": { "$item": "mysmbai_grade" },
+          "tone": {
+            "$computed": "dataverse_qa_grade_tone",
+            "args": { "value": { "$item": "mysmbai_grade" } }
+          },
+          "variant": "soft"
+        }
+      },
+      "callDate": {
+        "type": "Caption",
+        "props": {
+          "text": {
+            "$computed": "relative_time",
+            "args": { "value": { "$item": "createdon" } }
+          },
+          "tone": "muted"
+        }
+      },
+      "callScore": {
+        "type": "Badge",
+        "props": {
+          "text": {
+            "$computed": "fmt",
+            "args": {
+              "pattern": "{n}/100",
+              "n": { "$item": "mysmbai_totalscore" }
+            }
+          },
+          "tone": {
+            "$computed": "dataverse_qa_score_tone",
+            "args": { "value": { "$item": "mysmbai_totalscore" } }
+          },
+          "variant": "soft"
+        }
+      },
+
+      "emptyState": {
+        "type": "Empty",
+        "props": { "message": "No QA scores found." },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_call_qa_scores", "not": true },
+            { "$state": "/dataverse/list_call_qa_scores/qa_scores/0", "not": true }
+          ]
+        }
+      },
+
+      "div2": { "type": "Divider", "props": {} },
+
+      "footer": {
+        "type": "Row",
+        "props": { "justify": "end", "gap": "xs", "align": "center" },
+        "children": ["footerBtn"]
+      },
+      "footerBtn": {
+        "type": "Button",
+        "props": { "label": "Open in D365", "variant": "ghost", "size": "sm", "leadingIcon": "ExternalLink" },
+        "on": {
+          "click": {
+            "action": "open_url",
+            "params": { "url": "https://mysmb-dev.crm6.dynamics.com", "target": "_blank" }
+          }
+        }
+      }
+    }
+  },
+  "status": "published"
+}

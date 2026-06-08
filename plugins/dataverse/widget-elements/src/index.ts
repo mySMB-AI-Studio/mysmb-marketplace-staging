@@ -273,6 +273,35 @@ const activity_type_icon: ComputedFunction = (args) => {
   }
 };
 
+// ── qa_grade_tone ────────────────────────────────────────────────────
+//
+// Tone for a QA grade badge.
+// PASS → success, NEEDS COACHING → warning, FAIL → destructive.
+//
+// Args: { value: string | undefined }
+
+const qa_grade_tone: ComputedFunction = (args) => {
+  const grade = String(args.value ?? '').toUpperCase();
+  if (grade === 'PASS') return 'success';
+  if (grade === 'NEEDS COACHING') return 'warning';
+  if (grade === 'FAIL') return 'destructive';
+  return 'muted';
+};
+
+// ── qa_score_tone ────────────────────────────────────────────────────
+//
+// Tone for a QA numeric score badge.
+// ≥80 → success, ≥60 → warning, <60 → destructive.
+//
+// Args: { value: number | undefined }
+
+const qa_score_tone: ComputedFunction = (args) => {
+  const score = Number(args.value ?? 0);
+  if (score >= 80) return 'success';
+  if (score >= 60) return 'warning';
+  return 'destructive';
+};
+
 const elements: PluginElementsModule = {
   slug: 'dataverse',
   functions: {
@@ -287,6 +316,8 @@ const elements: PluginElementsModule = {
     account_risk_label,
     account_risk_tone,
     activity_type_icon,
+    qa_grade_tone,
+    qa_score_tone,
   },
 };
 
