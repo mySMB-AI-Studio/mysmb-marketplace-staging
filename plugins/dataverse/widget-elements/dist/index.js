@@ -154,6 +154,111 @@ const close_tone = (args) => {
         return 'warning';
     return 'muted';
 };
+// ── task_overdue_count ───────────────────────────────────────────────
+//
+// Count tasks where scheduledend is in the past (overdue).
+//
+// Args: { value: unknown[] }
+const task_overdue_count = (args) => {
+    const tasks = Array.isArray(args.value)
+        ? args.value
+        : [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return tasks.filter((t) => {
+        const due = t.scheduledend;
+        if (!due || typeof due !== 'string')
+            return false;
+        const d = new Date(due);
+        return !isNaN(d.getTime()) && d < today;
+    }).length;
+};
+// ── task_priority_label ──────────────────────────────────────────────
+//
+// Human-readable priority label from Dataverse task prioritycode.
+// Widget spec: 1=High, 2=Normal, 3=Low.
+//
+// Args: { value: number }
+const task_priority_label = (args) => {
+    const code = Number(args.value);
+    if (code === 1)
+        return 'High';
+    if (code === 2)
+        return 'Normal';
+    if (code === 3)
+        return 'Low';
+    return '';
+};
+// ── task_priority_tone ───────────────────────────────────────────────
+//
+// Tone badge colour for task priority.
+// 1=High → destructive, 2=Normal → muted, 3=Low → info.
+//
+// Args: { value: number }
+const task_priority_tone = (args) => {
+    const code = Number(args.value);
+    if (code === 1)
+        return 'destructive';
+    if (code === 3)
+        return 'info';
+    return 'muted';
+};
+// ── account_risk_label ───────────────────────────────────────────────
+//
+// Risk label based on days since modifiedon:
+//   ≥30 days → "At Risk", ≥14 days → "Warning", else "".
+//
+// Args: { value: string | undefined } — ISO datetime (modifiedon)
+const account_risk_label = (args) => {
+    const raw = args.value;
+    if (!raw || typeof raw !== 'string')
+        return '';
+    const ms = Date.parse(raw);
+    if (!Number.isFinite(ms))
+        return '';
+    const daysSince = Math.floor((Date.now() - ms) / (24 * 60 * 60 * 1000));
+    if (daysSince >= 30)
+        return 'At Risk';
+    if (daysSince >= 14)
+        return 'Warning';
+    return '';
+};
+// ── account_risk_tone ────────────────────────────────────────────────
+//
+// Tone for the account risk badge.
+//   ≥30 days → destructive, ≥14 days → warning, else muted.
+//
+// Args: { value: string | undefined } — ISO datetime (modifiedon)
+const account_risk_tone = (args) => {
+    const raw = args.value;
+    if (!raw || typeof raw !== 'string')
+        return 'muted';
+    const ms = Date.parse(raw);
+    if (!Number.isFinite(ms))
+        return 'muted';
+    const daysSince = Math.floor((Date.now() - ms) / (24 * 60 * 60 * 1000));
+    if (daysSince >= 30)
+        return 'destructive';
+    if (daysSince >= 14)
+        return 'warning';
+    return 'muted';
+};
+// ── activity_type_icon ───────────────────────────────────────────────
+//
+// Lucide icon name for a Dataverse activitytypecode string.
+//
+// Args: { value: string | undefined }
+const activity_type_icon = (args) => {
+    switch (String(args.value ?? '').toLowerCase()) {
+        case 'email': return 'Mail';
+        case 'phonecall': return 'Phone';
+        case 'task': return 'CheckSquare';
+        case 'appointment': return 'Calendar';
+        case 'letter': return 'FileText';
+        case 'fax': return 'Printer';
+        default: return 'Activity';
+    }
+};
 const elements = {
     slug: 'dataverse',
     functions: {
@@ -162,6 +267,12 @@ const elements = {
         weighted,
         close_label,
         close_tone,
+        task_overdue_count,
+        task_priority_label,
+        task_priority_tone,
+        account_risk_label,
+        account_risk_tone,
+        activity_type_icon,
     },
 };
 export default elements;
