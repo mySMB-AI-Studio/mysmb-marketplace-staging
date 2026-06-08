@@ -160,7 +160,17 @@
       "tableArea": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["colHeaders", "colHeaderDivider", "dataRow"]
+        "children": ["headerWrapper", "colHeaderDivider", "list"]
+      },
+      "headerWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["headerRowWrapper"]
+      },
+      "headerRowWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["colHeaders"]
       },
       "colHeaders": {
         "type": "Row",
@@ -198,14 +208,24 @@
         "type": "Divider"
       },
 
-      "dataRow": {
-        "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
-        "children": ["nameCol", "dateCol", "amtCol"],
+      "list": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["rowWrapper"],
         "repeat": {
           "statePath": "/myob-accounting/list_bills/Items",
           "key": "UID"
         }
+      },
+      "rowWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["row", "rowDivider"]
+      },
+      "row": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 7rem 8rem" },
+        "children": ["nameCol", "dateCol", "amtCol"]
       },
       "nameCol": {
         "type": "Stack",
@@ -269,6 +289,9 @@
           }
         }
       },
+      "rowDivider": {
+        "type": "Divider"
+      }
 
     }
   },

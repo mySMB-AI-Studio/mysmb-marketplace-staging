@@ -163,7 +163,17 @@
       "tableArea": {
         "type": "Stack",
         "props": { "gap": "none" },
-        "children": ["colHeaders", "colHeaderDivider", "dataRow"]
+        "children": ["headerWrapper", "colHeaderDivider", "list"]
+      },
+      "headerWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["headerRowWrapper"]
+      },
+      "headerRowWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["colHeaders"]
       },
       "colHeaders": {
         "type": "Row",
@@ -201,14 +211,24 @@
         "type": "Divider"
       },
 
-      "dataRow": {
-        "type": "Row",
-        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 8rem" },
-        "children": ["nameCol", "invCol", "amtCol"],
+      "list": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["rowWrapper"],
         "repeat": {
           "statePath": "/ui/arData/entries",
           "key": "uid"
         }
+      },
+      "rowWrapper": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["row", "rowDivider"]
+      },
+      "row": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 6rem 8rem" },
+        "children": ["nameCol", "invCol", "amtCol"]
       },
       "nameCol": {
         "type": "Stack",
@@ -253,6 +273,9 @@
           "tone": { "$item": "badgeTone" }
         }
       },
+      "rowDivider": {
+        "type": "Divider"
+      }
 
     }
   },
