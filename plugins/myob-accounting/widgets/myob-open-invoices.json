@@ -57,7 +57,7 @@
 
       "body": {
         "type": "Body",
-        "props": {},
+        "props": { "gap": "md" },
         "children": ["loading", "statGrid", "divider0", "empty", "colHeaders", "colHeaderDivider", "list"]
       },
 
@@ -275,7 +275,8 @@
             "args": { "value": { "$item": "BalanceDueAmount" } }
           },
           "size": "sm",
-          "weight": "semibold"
+          "weight": "semibold",
+          "tone": "accent"
         }
       },
       "rowDivider": {

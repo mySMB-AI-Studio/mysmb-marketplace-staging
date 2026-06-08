@@ -71,7 +71,7 @@
 
       "body": {
         "type": "Body",
-        "props": {},
+        "props": { "gap": "md" },
         "children": ["loading", "statGrid", "divider0", "empty", "colHeaders", "colHeaderDivider", "list"]
       },
 
@@ -230,7 +230,7 @@
       "nameCol": {
         "type": "Stack",
         "props": { "gap": "xs" },
-        "children": ["nameText", "overdueText"]
+        "children": ["nameText"]
       },
       "nameText": {
         "type": "Text",
@@ -239,16 +239,6 @@
           "size": "sm",
           "weight": "semibold",
           "truncate": true
-        }
-      },
-      "overdueText": {
-        "type": "Caption",
-        "props": {
-          "text": {
-            "$computed": "fmt",
-            "args": { "pattern": "{n} overdue", "n": { "$item": "overdueCount" } }
-          },
-          "tone": "warning"
         }
       },
       "invCol": {
@@ -276,7 +266,8 @@
             "args": { "value": { "$item": "total" } }
           },
           "size": "sm",
-          "weight": "semibold"
+          "weight": "semibold",
+          "tone": { "$item": "badgeTone" }
         }
       },
       "rowDivider": {
