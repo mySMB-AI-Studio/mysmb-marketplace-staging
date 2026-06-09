@@ -324,6 +324,7 @@ const flatten_invoices = (args) => {
             customerName: String(item.Customer?.Name ?? ''),
             number: String(item.Number ?? ''),
             dueDate: fmtDate(rawDue),
+            rawDue,
             dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
             amount: fmtAmt(item.BalanceDueAmount),
         };
@@ -359,10 +360,25 @@ const flatten_bills = (args) => {
             supplierName: String(item.Supplier?.Name ?? ''),
             number: String(item.Number ?? ''),
             dueDate: fmtDate(rawDue),
+            rawDue,
             dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
             amount: fmtAmt(item.BalanceDueAmount),
         };
     });
+};
+// ── is_overdue ───────────────────────────────────────────────────────
+// Returns 'destructive' if the date is in the past, 'default' otherwise.
+// Strips a leading "TDD:" prefix if present, then handles MYOB
+// /Date(ms+tz)/ format and ISO strings.
+// Args: { value: string }
+const is_overdue = (args) => {
+    const raw = String(args.value ?? '');
+    if (!raw) return 'default';
+    const stripped = raw.startsWith('TDD:') ? raw.slice(4) : raw;
+    const msMatch = stripped.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    const due = msMatch ? Number(msMatch[1]) : new Date(stripped).getTime();
+    if (!Number.isFinite(due)) return 'default';
+    return due < Date.now() ? 'destructive' : 'default';
 };
 const elements = {
     slug: 'myob-accounting',
@@ -381,6 +397,7 @@ const elements = {
         pnl_summary_bars,
         flatten_invoices,
         flatten_bills,
+        is_overdue,
     },
 };
 export default elements;

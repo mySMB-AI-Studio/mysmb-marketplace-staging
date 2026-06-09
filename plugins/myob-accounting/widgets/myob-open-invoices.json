@@ -144,21 +144,59 @@
       "tableBody": {
         "type": "Body",
         "props": {},
-        "children": ["table"]
+        "children": ["headerRow", "list"]
       },
-      "table": {
-        "type": "Table",
+      "headerRow": {
+        "type": "Row",
         "props": {
-          "loading": { "$state": "/_loading/myob-accounting.list_invoices" },
-          "skeletonRows": 4,
-          "rows": { "$state": "/ui/tableRows" },
-          "columns": [
-            { "id": "customer", "header": "Customer",  "field": "customerName", "priority": 1 },
-            { "id": "number",   "header": "Invoice #", "field": "number",       "width": 96,  "priority": 2 },
-            { "id": "dueDate",  "header": "Due Date",  "field": "dueDate",      "width": 130, "priority": 1, "tone": "dueDateTone" },
-            { "id": "amount",   "header": "Amount",    "field": "amount",       "width": 120, "priority": 1 }
-          ]
+          "template": "minmax(0, 1fr) 96px 130px 120px",
+          "gap": "sm"
+        },
+        "children": ["hdrCustomer", "hdrNumber", "hdrDue", "hdrAmount"]
+      },
+      "hdrCustomer": { "type": "Caption", "props": { "text": "CUSTOMER" } },
+      "hdrNumber":   { "type": "Caption", "props": { "text": "INVOICE #" } },
+      "hdrDue":      { "type": "Caption", "props": { "text": "DUE DATE" } },
+      "hdrAmount":   { "type": "Caption", "props": { "text": "AMOUNT" } },
+
+      "list": {
+        "type": "Stack",
+        "props": {
+          "gap": "none",
+          "repeat": { "over": { "$state": "/ui/tableRows" } }
+        },
+        "children": ["dataRow"]
+      },
+      "dataRow": {
+        "type": "Row",
+        "props": {
+          "template": "minmax(0, 1fr) 96px 130px 120px",
+          "gap": "sm",
+          "align": "center"
+        },
+        "children": ["cellCustomer", "cellNumber", "cellDue", "cellAmount"]
+      },
+      "cellCustomer": {
+        "type": "Text",
+        "props": { "text": { "$item": "customerName" } }
+      },
+      "cellNumber": {
+        "type": "Text",
+        "props": { "text": { "$item": "number" } }
+      },
+      "cellDue": {
+        "type": "Text",
+        "props": {
+          "text": { "$item": "dueDate" },
+          "tone": {
+            "$computed": "myob-accounting_is_overdue",
+            "args": { "value": { "$item": "rawDue" } }
+          }
         }
+      },
+      "cellAmount": {
+        "type": "Text",
+        "props": { "text": { "$item": "amount" } }
       }
 
     }
