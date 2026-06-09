@@ -1,7 +1,7 @@
 {
-  "id": "dataverse-call-qa-scorecard",
-  "title": "Call QA Scorecard",
-  "description": "Recent call QA scores from Dynamics 365 — call summary, score out of 100, and pass/fail grade with dynamic colour coding.",
+  "id": "dataverse-call-qa-scorecard-v2",
+  "title": "Call QA Scorecard (Enhanced)",
+  "description": "Recent call QA scores from Dynamics 365 — enriched with agent name, pass rate, and dynamic colour-coded score and grade badges.",
   "category": "support",
   "tags": ["dataverse", "dynamics-365", "call-qa", "scoring", "agent-performance", "customer-service", "support"],
   "keywords": ["call qa", "quality assurance", "agent score", "call scoring", "transcript", "pass fail", "d365"],
@@ -15,7 +15,7 @@
   "dataProvider": {
     "mcp": "dataverse",
     "tool": "list_call_qa_scores",
-    "params": { "org_url": "mySMB.com Prod", "top": 5 }
+    "params": { "org_url": "https://mysmb-dev.crm6.dynamics.com", "top": 5 }
   },
   "spec": {
     "root": "card",
