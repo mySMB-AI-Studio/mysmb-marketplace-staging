@@ -365,7 +365,7 @@ const flatten_invoices: ComputedFunction = (args) => {
     if (!raw) return '';
     const t = parseDue(raw);
     const d = new Date(t);
-    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
   const fmtAmt = (n: unknown) => {
     const v = Number(n);
@@ -404,7 +404,7 @@ const flatten_bills: ComputedFunction = (args) => {
     if (!raw) return '';
     const t = parseDue(raw);
     const d = new Date(t);
-    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
   };
   const fmtAmt = (n: unknown) => {
     const v = Number(n);
