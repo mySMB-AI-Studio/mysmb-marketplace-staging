@@ -297,6 +297,54 @@ const pnl_summary_bars = (args) => {
         { label: 'Net Profit', amount: get('netProfit') },
     ];
 };
+// ── flatten_invoices ─────────────────────────────────────────────────
+// Flattens MYOB invoice items into display-ready flat rows for Table.
+// Extracts nested Customer.Name, Terms.DueDate and pre-formats date/amount.
+// Args: { value: Invoice[] }
+const flatten_invoices = (args) => {
+    const items = Array.isArray(args.value) ? args.value : [];
+    const fmtDate = (raw) => {
+        if (!raw) return '';
+        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+        const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+        return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    };
+    const fmtAmt = (n) => {
+        const v = Number(n);
+        if (!Number.isFinite(v)) return '';
+        return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+    };
+    return items.map(item => ({
+        customerName: String(item.Customer?.Name ?? ''),
+        number: String(item.Number ?? ''),
+        dueDate: fmtDate(String(item.Terms?.DueDate ?? '')),
+        amount: fmtAmt(item.BalanceDueAmount),
+    }));
+};
+// ── flatten_bills ─────────────────────────────────────────────────────
+// Flattens MYOB bill items into display-ready flat rows for Table.
+// Extracts nested Supplier.Name, Terms.DueDate and pre-formats date/amount.
+// Args: { value: Bill[] }
+const flatten_bills = (args) => {
+    const items = Array.isArray(args.value) ? args.value : [];
+    const fmtDate = (raw) => {
+        if (!raw) return '';
+        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+        const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+        return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+    };
+    const fmtAmt = (n) => {
+        const v = Number(n);
+        if (!Number.isFinite(v)) return '';
+        return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+    };
+    return items.map(item => ({
+        supplierName: String(item.Supplier?.Name ?? ''),
+        number: String(item.Number ?? ''),
+        dueDate: fmtDate(String(item.Terms?.DueDate ?? '')),
+        amount: fmtAmt(item.BalanceDueAmount),
+    }));
+};
 const elements = {
     slug: 'myob-accounting',
     functions: {
@@ -312,6 +360,8 @@ const elements = {
         pnl_entries,
         pnl_debug,
         pnl_summary_bars,
+        flatten_invoices,
+        flatten_bills,
     },
 };
 export default elements;

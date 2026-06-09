@@ -24,7 +24,19 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["titleRow", "statGrid", "divider", "tableBody"]
+        "children": ["titleRow", "statGrid", "divider", "tableBody"],
+        "watch": {
+          "/myob-accounting/list_bills/Items": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/tableRows",
+              "value": {
+                "$computed": "myob-accounting_flatten_bills",
+                "args": { "value": { "$state": "/myob-accounting/list_bills/Items" } }
+              }
+            }
+          }
+        }
       },
 
       "titleRow": {
@@ -137,12 +149,12 @@
         "props": {
           "loading": { "$state": "/_loading/myob-accounting.list_bills" },
           "skeletonRows": 4,
-          "rows": { "$state": "/myob-accounting/list_bills/Items" },
+          "rows": { "$state": "/ui/tableRows" },
           "columns": [
-            { "id": "supplier", "header": "Supplier",  "field": "Supplier.Name",    "priority": 1 },
-            { "id": "number",   "header": "Bill #",    "field": "Number",           "width": 100, "priority": 2 },
-            { "id": "dueDate",  "header": "Due Date",  "field": "Terms.DueDate",    "width": 110, "priority": 1, "format": "date" },
-            { "id": "amount",   "header": "Amount",    "field": "BalanceDueAmount", "width": 120, "priority": 1, "format": "currency" }
+            { "id": "supplier", "header": "Supplier", "field": "supplierName", "priority": 1 },
+            { "id": "number",   "header": "Bill #",   "field": "number",       "width": 100, "priority": 2 },
+            { "id": "dueDate",  "header": "Due Date", "field": "dueDate",      "width": 110, "priority": 1 },
+            { "id": "amount",   "header": "Amount",   "field": "amount",       "width": 120, "priority": 1 }
           ]
         }
       }

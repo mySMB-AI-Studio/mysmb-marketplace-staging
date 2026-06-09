@@ -352,6 +352,64 @@ const pnl_summary_bars: ComputedFunction = (args) => {
   ];
 };
 
+// ── flatten_invoices ─────────────────────────────────────────────────
+// Flattens MYOB invoice items into display-ready flat rows for Table.
+// Extracts nested Customer.Name, Terms.DueDate and pre-formats date/amount.
+// Args: { value: Invoice[] }
+const flatten_invoices: ComputedFunction = (args) => {
+  const items = Array.isArray(args.value) ? (args.value as Record<string, unknown>[]) : [];
+  const fmtDate = (raw: string) => {
+    if (!raw) return '';
+    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+  };
+  const fmtAmt = (n: unknown) => {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return '';
+    return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+  };
+  return items.map(item => {
+    const customer = item.Customer as Record<string, unknown> | undefined;
+    const terms = item.Terms as Record<string, unknown> | undefined;
+    return {
+      customerName: String(customer?.Name ?? ''),
+      number: String(item.Number ?? ''),
+      dueDate: fmtDate(String(terms?.DueDate ?? '')),
+      amount: fmtAmt(item.BalanceDueAmount),
+    };
+  });
+};
+
+// ── flatten_bills ─────────────────────────────────────────────────────
+// Flattens MYOB bill items into display-ready flat rows for Table.
+// Extracts nested Supplier.Name, Terms.DueDate and pre-formats date/amount.
+// Args: { value: Bill[] }
+const flatten_bills: ComputedFunction = (args) => {
+  const items = Array.isArray(args.value) ? (args.value as Record<string, unknown>[]) : [];
+  const fmtDate = (raw: string) => {
+    if (!raw) return '';
+    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+  };
+  const fmtAmt = (n: unknown) => {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return '';
+    return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+  };
+  return items.map(item => {
+    const supplier = item.Supplier as Record<string, unknown> | undefined;
+    const terms = item.Terms as Record<string, unknown> | undefined;
+    return {
+      supplierName: String(supplier?.Name ?? ''),
+      number: String(item.Number ?? ''),
+      dueDate: fmtDate(String(terms?.DueDate ?? '')),
+      amount: fmtAmt(item.BalanceDueAmount),
+    };
+  });
+};
+
 const elements: PluginElementsModule = {
   slug: 'myob-accounting',
   functions: {
@@ -367,6 +425,8 @@ const elements: PluginElementsModule = {
     pnl_entries,
     pnl_debug,
     pnl_summary_bars,
+    flatten_invoices,
+    flatten_bills,
   },
 };
 
