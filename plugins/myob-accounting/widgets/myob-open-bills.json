@@ -139,9 +139,9 @@
           "skeletonRows": 4,
           "rows": { "$state": "/myob-accounting/list_bills/Items" },
           "columns": [
-            { "id": "supplier", "header": "Supplier",  "field": "Supplier/Name",    "priority": 1 },
+            { "id": "supplier", "header": "Supplier",  "field": "Supplier.Name",    "priority": 1 },
             { "id": "number",   "header": "Bill #",    "field": "Number",           "width": 100, "priority": 2 },
-            { "id": "dueDate",  "header": "Due Date",  "field": "Terms/DueDate",    "width": 110, "priority": 1, "format": "date" },
+            { "id": "dueDate",  "header": "Due Date",  "field": "Terms.DueDate",    "width": 110, "priority": 1, "format": "date" },
             { "id": "amount",   "header": "Amount",    "field": "BalanceDueAmount", "width": 120, "priority": 1, "format": "currency" }
           ]
         }
