@@ -183,20 +183,16 @@ const sort_toggle_dir: ComputedFunction = (args) => {
 };
 
 // ── format_date ──────────────────────────────────────────────────────
-// Formats a date value to "d MMM" (e.g. "15 Jan").
+// Formats a date value to "d MMMM YYYY" (e.g. "15 January 2026").
 // Handles ISO strings and MYOB /Date(ms+tz)/ format.
 // Args: { value: string }
 const format_date: ComputedFunction = (args) => {
   const raw = String(args.value ?? '');
   if (!raw) return '';
-  // MYOB /Date(timestamp+offset)/ format
   const msMatch = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
-  if (msMatch) {
-    return new Date(Number(msMatch[1])).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
-  }
-  const d = new Date(raw);
-  if (isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  const d = msMatch ? new Date(Number(msMatch[1])) : new Date(raw);
+  if (isNaN(d.getTime())) return msMatch ? '' : raw;
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
 };
 
 // ── sort_label ───────────────────────────────────────────────────────

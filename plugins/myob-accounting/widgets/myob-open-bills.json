@@ -24,19 +24,7 @@
       "card": {
         "type": "Card",
         "props": {},
-        "children": ["titleRow", "statGrid", "divider", "tableBody"],
-        "watch": {
-          "/myob-accounting/list_bills/Items": {
-            "action": "setState",
-            "params": {
-              "statePath": "/ui/tableRows",
-              "value": {
-                "$computed": "myob-accounting_flatten_bills",
-                "args": { "value": { "$state": "/myob-accounting/list_bills/Items" } }
-              }
-            }
-          }
-        }
+        "children": ["titleRow", "statGrid", "divider", "tableBody"]
       },
 
       "titleRow": {
@@ -142,22 +130,105 @@
       "tableBody": {
         "type": "Body",
         "props": {},
-        "children": ["table"]
+        "children": ["tableArea"]
       },
-      "table": {
-        "type": "Table",
-        "props": {
-          "loading": { "$state": "/_loading/myob-accounting.list_bills" },
-          "skeletonRows": 4,
-          "rows": { "$state": "/ui/tableRows" },
-          "columns": [
-            { "id": "supplier", "header": "Supplier", "field": "supplierName", "priority": 1 },
-            { "id": "number",   "header": "Bill #",   "field": "number",       "width": 100, "priority": 2 },
-            { "id": "dueDate",  "header": "Due Date", "field": "dueDate",      "width": 110, "priority": 1, "toneField": "dueDateTone" },
-            { "id": "amount",   "header": "Amount",   "field": "amount",       "width": 120, "priority": 1 }
-          ]
+      "tableArea": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["headerRow", "headerDivider", "list"]
+      },
+
+      "headerRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "template": "minmax(0, 1fr) 100px 130px 120px" },
+        "children": ["hdrCol1", "hdrCol2", "hdrCol3", "hdrCol4"]
+      },
+      "hdrCol1": { "type": "Stack", "props": { "gap": "none" }, "children": ["hdrLabel1"] },
+      "hdrLabel1": { "type": "Eyebrow", "props": { "text": "Supplier" } },
+      "hdrCol2": { "type": "Stack", "props": { "gap": "none" }, "children": ["hdrLabel2"] },
+      "hdrLabel2": { "type": "Eyebrow", "props": { "text": "Bill #" } },
+      "hdrCol3": { "type": "Stack", "props": { "gap": "none" }, "children": ["hdrLabel3"] },
+      "hdrLabel3": { "type": "Eyebrow", "props": { "text": "Due Date" } },
+      "hdrCol4": { "type": "Row", "props": { "justify": "end" }, "children": ["hdrLabel4"] },
+      "hdrLabel4": { "type": "Eyebrow", "props": { "text": "Amount" } },
+      "headerDivider": { "type": "Divider" },
+
+      "list": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["row", "rowDivider"],
+        "repeat": {
+          "statePath": "/myob-accounting/list_bills/Items",
+          "key": "UID"
         }
-      }
+      },
+      "row": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "hover": true, "template": "minmax(0, 1fr) 100px 130px 120px" },
+        "children": ["nameCol", "numCol", "dateCol", "amtCol"]
+      },
+      "nameCol": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["nameText"]
+      },
+      "nameText": {
+        "type": "Text",
+        "props": {
+          "text": { "$item": "Supplier/Name" },
+          "size": "sm",
+          "weight": "semibold",
+          "truncate": true
+        }
+      },
+      "numCol": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["numText"]
+      },
+      "numText": {
+        "type": "Text",
+        "props": {
+          "text": { "$item": "Number" },
+          "size": "sm"
+        }
+      },
+      "dateCol": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["dateText"]
+      },
+      "dateText": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$computed": "myob-accounting_format_date",
+            "args": { "value": { "$item": "Terms/DueDate" } }
+          },
+          "size": "sm",
+          "tone": {
+            "$computed": "myob-accounting_due_tone",
+            "args": { "value": { "$item": "Terms/DueDate" } }
+          }
+        }
+      },
+      "amtCol": {
+        "type": "Row",
+        "props": { "justify": "end" },
+        "children": ["amtText"]
+      },
+      "amtText": {
+        "type": "Text",
+        "props": {
+          "text": {
+            "$computed": "myob-accounting_format_currency",
+            "args": { "value": { "$item": "BalanceDueAmount" } }
+          },
+          "size": "sm",
+          "weight": "semibold"
+        }
+      },
+      "rowDivider": { "type": "Divider" }
 
     }
   },
