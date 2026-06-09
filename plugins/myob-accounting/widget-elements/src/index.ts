@@ -355,13 +355,20 @@ const pnl_summary_bars: ComputedFunction = (args) => {
 // ── flatten_invoices ─────────────────────────────────────────────────
 // Flattens MYOB invoice items into display-ready flat rows for Table.
 // Extracts nested Customer.Name, Terms.DueDate and pre-formats date/amount.
+// Adds dueDateTone: "destructive" when the due date is in the past.
 // Args: { value: Invoice[] }
 const flatten_invoices: ComputedFunction = (args) => {
   const items = Array.isArray(args.value) ? (args.value as Record<string, unknown>[]) : [];
+  const now = Date.now();
+  const parseDue = (raw: string): number => {
+    if (!raw) return NaN;
+    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    return ms ? Number(ms[1]) : new Date(raw).getTime();
+  };
   const fmtDate = (raw: string) => {
     if (!raw) return '';
-    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
-    const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+    const t = parseDue(raw);
+    const d = new Date(t);
     return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
   };
   const fmtAmt = (n: unknown) => {
@@ -372,10 +379,13 @@ const flatten_invoices: ComputedFunction = (args) => {
   return items.map(item => {
     const customer = item.Customer as Record<string, unknown> | undefined;
     const terms = item.Terms as Record<string, unknown> | undefined;
+    const rawDue = String(terms?.DueDate ?? '');
+    const dueMs = parseDue(rawDue);
     return {
       customerName: String(customer?.Name ?? ''),
       number: String(item.Number ?? ''),
-      dueDate: fmtDate(String(terms?.DueDate ?? '')),
+      dueDate: fmtDate(rawDue),
+      dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
       amount: fmtAmt(item.BalanceDueAmount),
     };
   });
@@ -384,13 +394,20 @@ const flatten_invoices: ComputedFunction = (args) => {
 // ── flatten_bills ─────────────────────────────────────────────────────
 // Flattens MYOB bill items into display-ready flat rows for Table.
 // Extracts nested Supplier.Name, Terms.DueDate and pre-formats date/amount.
+// Adds dueDateTone: "destructive" when the due date is in the past.
 // Args: { value: Bill[] }
 const flatten_bills: ComputedFunction = (args) => {
   const items = Array.isArray(args.value) ? (args.value as Record<string, unknown>[]) : [];
+  const now = Date.now();
+  const parseDue = (raw: string): number => {
+    if (!raw) return NaN;
+    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+    return ms ? Number(ms[1]) : new Date(raw).getTime();
+  };
   const fmtDate = (raw: string) => {
     if (!raw) return '';
-    const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
-    const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+    const t = parseDue(raw);
+    const d = new Date(t);
     return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
   };
   const fmtAmt = (n: unknown) => {
@@ -401,10 +418,13 @@ const flatten_bills: ComputedFunction = (args) => {
   return items.map(item => {
     const supplier = item.Supplier as Record<string, unknown> | undefined;
     const terms = item.Terms as Record<string, unknown> | undefined;
+    const rawDue = String(terms?.DueDate ?? '');
+    const dueMs = parseDue(rawDue);
     return {
       supplierName: String(supplier?.Name ?? ''),
       number: String(item.Number ?? ''),
-      dueDate: fmtDate(String(terms?.DueDate ?? '')),
+      dueDate: fmtDate(rawDue),
+      dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
       amount: fmtAmt(item.BalanceDueAmount),
     };
   });

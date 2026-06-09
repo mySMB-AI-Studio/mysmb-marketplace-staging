@@ -300,13 +300,19 @@ const pnl_summary_bars = (args) => {
 // ── flatten_invoices ─────────────────────────────────────────────────
 // Flattens MYOB invoice items into display-ready flat rows for Table.
 // Extracts nested Customer.Name, Terms.DueDate and pre-formats date/amount.
+// Adds dueDateTone: "destructive" when the due date is in the past.
 // Args: { value: Invoice[] }
 const flatten_invoices = (args) => {
     const items = Array.isArray(args.value) ? args.value : [];
+    const now = Date.now();
+    const parseDue = (raw) => {
+        if (!raw) return NaN;
+        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+        return ms ? Number(ms[1]) : new Date(raw).getTime();
+    };
     const fmtDate = (raw) => {
         if (!raw) return '';
-        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
-        const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+        const d = new Date(parseDue(raw));
         return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
     };
     const fmtAmt = (n) => {
@@ -314,23 +320,34 @@ const flatten_invoices = (args) => {
         if (!Number.isFinite(v)) return '';
         return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
     };
-    return items.map(item => ({
-        customerName: String(item.Customer?.Name ?? ''),
-        number: String(item.Number ?? ''),
-        dueDate: fmtDate(String(item.Terms?.DueDate ?? '')),
-        amount: fmtAmt(item.BalanceDueAmount),
-    }));
+    return items.map(item => {
+        const rawDue = String(item.Terms?.DueDate ?? '');
+        const dueMs = parseDue(rawDue);
+        return {
+            customerName: String(item.Customer?.Name ?? ''),
+            number: String(item.Number ?? ''),
+            dueDate: fmtDate(rawDue),
+            dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
+            amount: fmtAmt(item.BalanceDueAmount),
+        };
+    });
 };
 // ── flatten_bills ─────────────────────────────────────────────────────
 // Flattens MYOB bill items into display-ready flat rows for Table.
 // Extracts nested Supplier.Name, Terms.DueDate and pre-formats date/amount.
+// Adds dueDateTone: "destructive" when the due date is in the past.
 // Args: { value: Bill[] }
 const flatten_bills = (args) => {
     const items = Array.isArray(args.value) ? args.value : [];
+    const now = Date.now();
+    const parseDue = (raw) => {
+        if (!raw) return NaN;
+        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
+        return ms ? Number(ms[1]) : new Date(raw).getTime();
+    };
     const fmtDate = (raw) => {
         if (!raw) return '';
-        const ms = raw.match(/\/Date\((-?\d+)(?:[+-]\d{4})?\)\//);
-        const d = ms ? new Date(Number(ms[1])) : new Date(raw);
+        const d = new Date(parseDue(raw));
         return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
     };
     const fmtAmt = (n) => {
@@ -338,12 +355,17 @@ const flatten_bills = (args) => {
         if (!Number.isFinite(v)) return '';
         return 'A$' + new Intl.NumberFormat('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
     };
-    return items.map(item => ({
-        supplierName: String(item.Supplier?.Name ?? ''),
-        number: String(item.Number ?? ''),
-        dueDate: fmtDate(String(item.Terms?.DueDate ?? '')),
-        amount: fmtAmt(item.BalanceDueAmount),
-    }));
+    return items.map(item => {
+        const rawDue = String(item.Terms?.DueDate ?? '');
+        const dueMs = parseDue(rawDue);
+        return {
+            supplierName: String(item.Supplier?.Name ?? ''),
+            number: String(item.Number ?? ''),
+            dueDate: fmtDate(rawDue),
+            dueDateTone: Number.isFinite(dueMs) && dueMs < now ? 'destructive' : '',
+            amount: fmtAmt(item.BalanceDueAmount),
+        };
+    });
 };
 const elements = {
     slug: 'myob-accounting',

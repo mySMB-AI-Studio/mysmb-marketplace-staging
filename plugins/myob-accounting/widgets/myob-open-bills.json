@@ -153,7 +153,7 @@
           "columns": [
             { "id": "supplier", "header": "Supplier", "field": "supplierName", "priority": 1 },
             { "id": "number",   "header": "Bill #",   "field": "number",       "width": 100, "priority": 2 },
-            { "id": "dueDate",  "header": "Due Date", "field": "dueDate",      "width": 110, "priority": 1 },
+            { "id": "dueDate",  "header": "Due Date", "field": "dueDate",      "width": 110, "priority": 1, "toneField": "dueDateTone" },
             { "id": "amount",   "header": "Amount",   "field": "amount",       "width": 120, "priority": 1 }
           ]
         }
