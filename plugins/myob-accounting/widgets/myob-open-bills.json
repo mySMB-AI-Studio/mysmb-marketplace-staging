@@ -144,59 +144,31 @@
       "tableBody": {
         "type": "Body",
         "props": {},
-        "children": ["headerRow", "list"]
+        "children": ["table"]
       },
-      "headerRow": {
-        "type": "Row",
+      "table": {
+        "type": "Table",
         "props": {
-          "template": "minmax(0, 1fr) 96px 130px 120px",
-          "gap": "sm"
-        },
-        "children": ["hdrSupplier", "hdrNumber", "hdrDue", "hdrAmount"]
-      },
-      "hdrSupplier": { "type": "Caption", "props": { "text": "SUPPLIER" } },
-      "hdrNumber":   { "type": "Caption", "props": { "text": "BILL #" } },
-      "hdrDue":      { "type": "Caption", "props": { "text": "DUE DATE" } },
-      "hdrAmount":   { "type": "Caption", "props": { "text": "AMOUNT" } },
-
-      "list": {
-        "type": "Stack",
-        "props": {
-          "gap": "none",
-          "repeat": { "over": { "$state": "/ui/tableRows" } }
-        },
-        "children": ["dataRow"]
-      },
-      "dataRow": {
-        "type": "Row",
-        "props": {
-          "template": "minmax(0, 1fr) 96px 130px 120px",
-          "gap": "sm",
-          "align": "center"
-        },
-        "children": ["cellSupplier", "cellNumber", "cellDue", "cellAmount"]
-      },
-      "cellSupplier": {
-        "type": "Text",
-        "props": { "text": { "$item": "supplierName" } }
-      },
-      "cellNumber": {
-        "type": "Text",
-        "props": { "text": { "$item": "number" } }
-      },
-      "cellDue": {
-        "type": "Text",
-        "props": {
-          "text": { "$item": "dueDate" },
-          "tone": {
-            "$computed": "myob-accounting_is_overdue",
-            "args": { "value": { "$item": "rawDue" } }
-          }
+          "loading": { "$state": "/_loading/myob-accounting.list_bills" },
+          "skeletonRows": 4,
+          "rows": { "$state": "/ui/tableRows" },
+          "columns": [
+            { "id": "supplier", "header": "Supplier",  "field": "supplierName", "priority": 1 },
+            { "id": "number",   "header": "Bill #",    "field": "number",       "width": 96,  "priority": 2 },
+            {
+              "id": "dueDate",
+              "header": "Due Date",
+              "field": "dueDate",
+              "width": 130,
+              "priority": 1,
+              "tone": {
+                "$computed": "myob-accounting_is_overdue",
+                "args": { "value": { "$item": "rawDue" } }
+              }
+            },
+            { "id": "amount",   "header": "Amount",    "field": "amount",       "width": 120, "priority": 1 }
+          ]
         }
-      },
-      "cellAmount": {
-        "type": "Text",
-        "props": { "text": { "$item": "amount" } }
       }
 
     }
