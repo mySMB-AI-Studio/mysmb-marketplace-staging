@@ -1,0 +1,300 @@
+{
+  "id": "dataverse-opportunities-by-owner-v1",
+  "title": "All Opportunities",
+  "description": "Every open opportunity in one list — group by owner, stage, or deal age, search across deals, and spot stalled (untouched 30d+) deals at a glance.",
+  "category": "sales",
+  "tags": ["dataverse", "dynamics-365", "sales", "opportunities", "owner", "pipeline", "crm", "stalled"],
+  "keywords": ["opportunities", "opportunity", "owner", "salesperson", "rep", "stalled", "stale", "age", "pipeline", "deals", "sales", "crm"],
+  "connectorsUsed": ["dataverse"],
+  "popularity": 0,
+  "sizing": {
+    "preferred": { "colSpan": 6, "rowSpan": 12 },
+    "min":       { "colSpan": 4, "rowSpan": 9 },
+    "max":       { "colSpan": 12, "rowSpan": 16 }
+  },
+  "dataProvider": {
+    "mcp": "dataverse",
+    "tool": "list_opportunity_pipeline",
+    "params": {
+      "org_url": "mySMB.com Prod",
+      "top": 200
+    }
+  },
+  "spec": {
+    "root": "card",
+    "elements": {
+      "card": {
+        "type": "Card",
+        "props": {},
+        "children": ["headerRow", "controlsRow", "div1", "listBody"],
+        "watch": {
+          "/dataverse/list_opportunity_pipeline/items": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/groups",
+              "value": {
+                "$computed": "dataverse_group_opportunities",
+                "args": {
+                  "value": { "$state": "/dataverse/list_opportunity_pipeline/items" },
+                  "mode": { "$state": "/ui/groupBy" },
+                  "search": { "$state": "/ui/search" }
+                }
+              }
+            }
+          },
+          "/ui/groupBy": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/groups",
+              "value": {
+                "$computed": "dataverse_group_opportunities",
+                "args": {
+                  "value": { "$state": "/dataverse/list_opportunity_pipeline/items" },
+                  "mode": { "$state": "/ui/groupBy" },
+                  "search": { "$state": "/ui/search" }
+                }
+              }
+            }
+          },
+          "/ui/search": {
+            "action": "setState",
+            "params": {
+              "statePath": "/ui/groups",
+              "value": {
+                "$computed": "dataverse_group_opportunities",
+                "args": {
+                  "value": { "$state": "/dataverse/list_opportunity_pipeline/items" },
+                  "mode": { "$state": "/ui/groupBy" },
+                  "search": { "$state": "/ui/search" }
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "headerRow": {
+        "type": "Row",
+        "props": { "justify": "between", "align": "center" },
+        "children": ["titleGroup", "statsRow"]
+      },
+      "titleGroup": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["titleIcon", "titleStack"]
+      },
+      "titleIcon": { "type": "Icon", "props": { "name": "TrendingUp", "tone": "accent", "size": "sm" } },
+      "titleStack": { "type": "Stack", "props": { "gap": "none" }, "children": ["title", "eyebrow"] },
+      "title": { "type": "Heading", "props": { "text": "All Opportunities", "level": "h2" } },
+      "eyebrow": { "type": "Eyebrow", "props": { "text": "Dynamics 365 Sales" } },
+
+      "statsRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["statOpen", "statStalled", "statWin"]
+      },
+      "statOpen": { "type": "Section", "props": { "variant": "muted" }, "children": ["rowOpen"] },
+      "rowOpen": { "type": "Row", "props": { "gap": "xs", "align": "center" }, "children": ["lblOpen", "valOpen"] },
+      "lblOpen": { "type": "Caption", "props": { "text": "Open" } },
+      "valOpen": {
+        "type": "Text",
+        "props": {
+          "text": { "$computed": "count", "args": { "value": { "$state": "/dataverse/list_opportunity_pipeline/items" } } },
+          "size": "sm", "weight": "semibold"
+        }
+      },
+      "statStalled": { "type": "Section", "props": { "variant": "muted" }, "children": ["rowStalled"] },
+      "rowStalled": { "type": "Row", "props": { "gap": "xs", "align": "center" }, "children": ["lblStalled", "valStalled"] },
+      "lblStalled": { "type": "Caption", "props": { "text": "Stalled" } },
+      "valStalled": {
+        "type": "Text",
+        "props": {
+          "text": { "$computed": "dataverse_count_stalled", "args": { "value": { "$state": "/dataverse/list_opportunity_pipeline/items" } } },
+          "size": "sm", "weight": "semibold", "tone": "destructive"
+        }
+      },
+      "statWin": { "type": "Section", "props": { "variant": "muted" }, "children": ["rowWin"] },
+      "rowWin": { "type": "Row", "props": { "gap": "xs", "align": "center" }, "children": ["lblWin", "valWin"] },
+      "lblWin": { "type": "Caption", "props": { "text": "Win rate" } },
+      "valWin": {
+        "type": "Text",
+        "props": { "text": { "$state": "/dataverse/list_opportunity_pipeline/win_rate" }, "size": "sm", "weight": "semibold" }
+      },
+
+      "controlsRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "justify": "between" },
+        "children": ["segControl", "searchInput"]
+      },
+      "segControl": {
+        "type": "Row",
+        "props": { "gap": "xs", "align": "center" },
+        "children": ["segLabel", "segOwner", "segStage", "segAge"]
+      },
+      "segLabel": { "type": "Caption", "props": { "text": "Group by" } },
+      "segOwner": {
+        "type": "Row",
+        "props": {
+          "gap": "xs", "align": "center", "hover": true, "clickable": true,
+          "selected": { "$computed": "dataverse_is_mode", "args": { "value": { "$state": "/ui/groupBy" }, "mode": "owner" } }
+        },
+        "children": ["segOwnerLbl"],
+        "on": { "click": { "action": "setState", "params": { "statePath": "/ui/groupBy", "value": "owner" } } }
+      },
+      "segOwnerLbl": { "type": "Text", "props": { "text": "Owner", "size": "sm", "weight": "medium" } },
+      "segStage": {
+        "type": "Row",
+        "props": {
+          "gap": "xs", "align": "center", "hover": true, "clickable": true,
+          "selected": { "$computed": "dataverse_is_mode", "args": { "value": { "$state": "/ui/groupBy" }, "mode": "stage" } }
+        },
+        "children": ["segStageLbl"],
+        "on": { "click": { "action": "setState", "params": { "statePath": "/ui/groupBy", "value": "stage" } } }
+      },
+      "segStageLbl": { "type": "Text", "props": { "text": "Stage", "size": "sm", "weight": "medium" } },
+      "segAge": {
+        "type": "Row",
+        "props": {
+          "gap": "xs", "align": "center", "hover": true, "clickable": true,
+          "selected": { "$computed": "dataverse_is_mode", "args": { "value": { "$state": "/ui/groupBy" }, "mode": "age" } }
+        },
+        "children": ["segAgeLbl"],
+        "on": { "click": { "action": "setState", "params": { "statePath": "/ui/groupBy", "value": "age" } } }
+      },
+      "segAgeLbl": { "type": "Text", "props": { "text": "Age", "size": "sm", "weight": "medium" } },
+      "searchInput": {
+        "type": "TextInput",
+        "props": {
+          "value": { "$bindState": "/ui/search" },
+          "placeholder": "Search opportunities or accounts",
+          "size": "sm",
+          "debounce": 150
+        }
+      },
+
+      "div1": { "type": "Divider", "props": {} },
+
+      "listBody": {
+        "type": "Body",
+        "props": {},
+        "children": ["loading", "empty", "groupsList"]
+      },
+
+      "loading": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["sk1", "sk2", "sk3", "sk4"],
+        "visible": { "$state": "/_loading/dataverse.list_opportunity_pipeline" }
+      },
+      "sk1": { "type": "Skeleton", "props": { "height": "2.5rem", "rounded": "md" } },
+      "sk2": { "type": "Skeleton", "props": { "height": "2.5rem", "rounded": "md" } },
+      "sk3": { "type": "Skeleton", "props": { "height": "2.5rem", "rounded": "md" } },
+      "sk4": { "type": "Skeleton", "props": { "height": "2.5rem", "rounded": "md" } },
+
+      "empty": {
+        "type": "Empty",
+        "props": { "message": "No open opportunities — time to prospect." },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_opportunity_pipeline", "not": true },
+            { "$state": "/dataverse/list_opportunity_pipeline/items/0", "not": true }
+          ]
+        }
+      },
+
+      "groupsList": {
+        "type": "Stack",
+        "props": { "gap": "sm" },
+        "children": ["groupItem"],
+        "repeat": { "statePath": "/ui/groups", "key": "rowkey" },
+        "visible": {
+          "$and": [
+            { "$state": "/_loading/dataverse.list_opportunity_pipeline", "not": true },
+            { "$state": "/dataverse/list_opportunity_pipeline/items/0" }
+          ]
+        }
+      },
+      "groupItem": {
+        "type": "Stack",
+        "props": { "gap": "none" },
+        "children": ["groupHeader", "dealRow"]
+      },
+
+      "groupHeader": {
+        "type": "Section",
+        "props": { "variant": "muted" },
+        "children": ["groupHeaderRow"],
+        "visible": { "$item": "isHeader" }
+      },
+      "groupHeaderRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "justify": "between" },
+        "children": ["groupHeaderLeft", "groupHeaderRight"]
+      },
+      "groupHeaderLeft": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "grow": true },
+        "children": ["groupAvatar", "groupLabel"]
+      },
+      "groupAvatar": {
+        "type": "Badge",
+        "props": { "text": { "$item": "initials" }, "tone": "accent", "variant": "soft" },
+        "visible": { "$item": "initials" }
+      },
+      "groupLabel": { "type": "Text", "props": { "text": { "$item": "label" }, "size": "sm", "weight": "semibold", "truncate": true } },
+      "groupHeaderRight": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center" },
+        "children": ["groupStalled", "groupCount", "groupTotal"]
+      },
+      "groupStalled": {
+        "type": "Badge",
+        "props": {
+          "text": { "$computed": "fmt", "args": { "pattern": "{n} stalled", "n": { "$item": "stalled" } } },
+          "tone": "destructive", "variant": "soft"
+        },
+        "visible": { "$item": "stalled" }
+      },
+      "groupCount": {
+        "type": "Caption",
+        "props": { "text": { "$computed": "fmt", "args": { "pattern": "{n} open", "n": { "$item": "count" } } } }
+      },
+      "groupTotal": {
+        "type": "Text",
+        "props": {
+          "text": { "$computed": "format_currency", "args": { "value": { "$item": "total" } } },
+          "size": "sm", "weight": "semibold"
+        }
+      },
+
+      "dealRow": {
+        "type": "Row",
+        "props": { "gap": "sm", "align": "center", "hover": true },
+        "children": ["dealLeft", "dealStage", "dealAge", "dealAmount"],
+        "visible": { "$item": "isDeal" }
+      },
+      "dealLeft": {
+        "type": "Stack",
+        "props": { "gap": "none", "grow": true },
+        "children": ["dealName", "dealAccount"]
+      },
+      "dealName": { "type": "Text", "props": { "text": { "$item": "name" }, "size": "sm", "weight": "medium", "truncate": true } },
+      "dealAccount": { "type": "Caption", "props": { "text": { "$item": "account" }, "truncate": true } },
+      "dealStage": {
+        "type": "Badge",
+        "props": { "text": { "$item": "stageLabel" }, "tone": { "$item": "stageTone" }, "variant": "soft" }
+      },
+      "dealAge": {
+        "type": "Badge",
+        "props": { "text": { "$item": "ageLabel" }, "tone": { "$item": "ageTone" }, "variant": "soft" }
+      },
+      "dealAmount": {
+        "type": "Text",
+        "props": {
+          "text": { "$computed": "format_currency", "args": { "value": { "$item": "amount" } } },
+          "size": "sm", "weight": "semibold"
+        }
+      }
+    }
+  }
+}
