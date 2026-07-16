@@ -1,3 +1,15 @@
+> # ⚠️ DEPRECATED — this repo has been consolidated
+>
+> The staging marketplace is no longer a separate repo. It is now the **`staging`
+> branch** of the single consolidated marketplace:
+> **[`mySMB-AI-Studio/mysmb-marketplace`](https://github.com/mySMB-AI-Studio/mysmb-marketplace/tree/staging)**.
+>
+> - Production = `main`, staging = `staging`, dev = `dev` (one repo, branch tiers).
+> - Do all new plugin work there — see its
+>   [`ONBOARDING.md`](https://github.com/mySMB-AI-Studio/mysmb-marketplace/blob/main/ONBOARDING.md)
+>   and [`CONTRIBUTING.md`](https://github.com/mySMB-AI-Studio/mysmb-marketplace/blob/main/CONTRIBUTING.md).
+> - This repo is read-only / archived; it is kept only for history.
+
 <div align="center">
 
 # mySMB Marketplace
