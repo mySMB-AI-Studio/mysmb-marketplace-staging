@@ -21,6 +21,18 @@
       "widgetElements": "widget-elements/dist/index.js"
     },
     {
+      "name": "business-central",
+      "displayName": "Dynamics 365 Business Central",
+      "description": "Microsoft Dynamics 365 Business Central ERP via Microsoft's hosted MCP server — customers, items, sales invoices, receivables. Direct HTTP connection with Entra ID OAuth; read-only by default, writes only when enabled in BC. Ships Receivables Aging, Unpaid Invoices, and Low Stock tiles.",
+      "category": "accounting",
+      "version": "0.1.0",
+      "author": { "name": "mySMB AI Studio" },
+      "tags": ["business-central", "dynamics-365", "erp", "accounting", "invoices", "inventory", "receivables", "microsoft", "oauth", "smb"],
+      "source": "./plugins/business-central",
+      "widgets": "widgets",
+      "widgetElements": "widget-elements/dist/index.js"
+    },
+    {
       "name": "deskcrm",
       "displayName": "deskcrm",
       "description": "Lightweight SMB CRM backed by an Excel workbook. Stores contacts and accounts in Contacts and Accounts sheets and exposes CRUD operations over a stdio MCP server. Primarily used for testing the marketplace and plugin lifecycle.",
